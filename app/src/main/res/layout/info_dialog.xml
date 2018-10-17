@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="280dp"
+    android:layout_height="150dp">
+
+
+    <TextView
+        android:id="@+id/info_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/parking_kori"
+        android:textAlignment="center"
+        android:textAppearance="@style/CustomFont"
+        android:textColor="@color/buttonColor"
+        android:textSize="5pt"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/a_product_of_dex_hub"
+        android:layout_below="@+id/info_heading"
+        android:textAlignment="center"
+        android:textAppearance="@style/CustomFont"
+        android:textColor="@color/blackText"
+        android:textSize="5pt"/>
+</RelativeLayout>

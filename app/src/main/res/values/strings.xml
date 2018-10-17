@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">ParkingKoriV4</string>
+    <string name="goto_login">LOGIN</string>
+    <string name="login">LOGIN</string>
+    <string name="cancel">Cancel</string>
+    <string name="keep_me_logged_in">Keep me logged in</string>
+    <string name="action_settings">Profile</string>
+    <string name="logout">Logout</string>
+    <string name="boshundhora_city">Boshundhora City</string>
+    <string name="scan_barcode">Scan Barcode</string>
+    <string name="vip">VIP</string>
+    <string name="available_car_parking">Available Car Parking:</string>
+    <string name="available_bike_parking">Available Bike Parking:</string>
+    <string name="extra_parking">Extra Parking:</string>
+    <string name="parking_kori">Parking Kori</string>
+    <string name="a_product_of_dex_hub">A Product of Dex Hub</string>
+    <string name="select_vehicle_type">Select Vehicle Type</string>
+    <string name="type_in_registration_number">Type In Registration Number</string>
+    <string name="vip_registration">Vip Registration</string>
+    <string name="end_shift">End Shift</string>
+    <string name="report">Report</string>
+    <string name="information">Information</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="or">OR</string>
+    <string name="registration_ticket_no">Registration/Ticket No.</string>
+    <string name="confirm">Confirm</string>
+    <string name="car">Car</string>
+</resources>
