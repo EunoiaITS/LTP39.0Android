@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,6 +36,22 @@ public class DashboardActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
+        navigationFunction();
+        buttonsClicked();
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toobar_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void navigationFunction (){
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -47,12 +64,22 @@ public class DashboardActivity extends AppCompatActivity {
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
+                        switch (menuItem.getItemId()){
+                            case R.id.end_shift:
+                                Log.d("clicked", "end shift clicked");
+                                break;
+                            case R.id.report:
+                                break;
+                            case R.id.info:
+
+                        }
 
                         return true;
                     }
                 });
+    }
 
-
+    public void buttonsClicked(){
         final Button checkInButton = findViewById(R.id.checkin_button);
         checkInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,15 +118,6 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toobar_menu, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
@@ -109,11 +127,16 @@ public class DashboardActivity extends AppCompatActivity {
 
             case R.id.user_profile:
                 // User chose the "Settings" item, show the app settings UI...
+
                 return true;
 
             case R.id.logout:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
+                return true;
+
+            case R.id.end_shift:
+
                 return true;
 
             default:
