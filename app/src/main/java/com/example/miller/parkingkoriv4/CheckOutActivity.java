@@ -221,6 +221,9 @@ public class CheckOutActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     CheckOut check_out_data = response.body().getData();
 
+                    SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+                    final String client_name = userData.getString("client_name", "");
+
                     //final String ticID = check_out_data.getTicketId();
                     final String regNo = check_out_data.getVehicleReg();
                     final String inTime = check_out_data.getCreatedAt();
@@ -235,6 +238,10 @@ public class CheckOutActivity extends AppCompatActivity {
 
                     AlertDialog.Builder checkInDialogue = new AlertDialog.Builder(CheckOutActivity.this);
                     View checkOutReceipt = getLayoutInflater().inflate(R.layout.check_out_ticket, null);
+
+
+                    TextView clientName = checkOutReceipt.findViewById(R.id.ticket_title);
+                    clientName.setText(client_name);
 
                     TextView receiptText = checkOutReceipt.findViewById(R.id.checkout_print_receipt_number_show);
                     receiptText.setText(receipt_id);
@@ -262,7 +269,7 @@ public class CheckOutActivity extends AppCompatActivity {
                     printCheckOut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            printCheckOut(receipt_id, regNo, inTime, vType, outTime, fair);
+                            printCheckOut(client_name, receipt_id, regNo, inTime, vType, outTime, fair);
                             dialogue.dismiss();
                         }
                     });
@@ -287,14 +294,14 @@ public class CheckOutActivity extends AppCompatActivity {
     }
 
 
-    public void printCheckOut(String receiptID, String regNo, String entryAt, String vType, String outTime, String totalFair) {
+    public void printCheckOut(String clientName, String receiptID, String regNo, String entryAt, String vType, String outTime, String totalFair) {
 
 
         BluetoothUtil.connectBlueTooth(CheckOutActivity.this);
 
         //BluetoothUtil.sendData(ESCUtil.getPrintQRCode(ticketNo, 8, 1));
         String BILL = "";
-        BILL = "\n \n Boshundhora City  \n"
+        BILL = "\n \n "+clientName+"  \n"
                 + "Parking Ticket\n ";
         BILL = BILL
                 + "-----------------------------------------------\n";

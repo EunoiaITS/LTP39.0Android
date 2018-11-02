@@ -1,12 +1,16 @@
 package com.example.miller.parkingkoriv4;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -31,6 +35,7 @@ import retrofit2.Response;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     private DrawerLayout mDrawerLayout;
     private ApiInterface apiInterface;
     TextView toolTitle;
@@ -59,6 +64,27 @@ public class DashboardActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(DashboardActivity.this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(DashboardActivity.this,
+                    new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
+
+            // MY_PERMISSIONS_REQUEST_CAMERA is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+
+        } else {
+            // Permission has already been granted
+        }
+
+
+
 
         navigationFunction();
         buttonsClicked();
@@ -241,4 +267,28 @@ public class DashboardActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // camera related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
+
 }

@@ -32,6 +32,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.security.Policy;
 
 public class ScanBarcodeActivity extends AppCompatActivity {
 
