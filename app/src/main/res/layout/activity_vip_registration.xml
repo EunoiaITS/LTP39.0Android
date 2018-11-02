@@ -229,14 +229,14 @@
                         android:layout_margin="30dp"/>
 
                     <Button
-                        android:id="@+id/checkin_cancel_button"
+                        android:id="@+id/cancel_vipReg_button"
+                        style="?android:borderlessButtonStyle"
                         android:layout_width="70dp"
                         android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:text="Cancel"
                         android:layout_margin="30dp"
+                        android:layout_weight="1"
                         android:background="@color/buttonColor"
-                        style="?android:borderlessButtonStyle"/>
+                        android:text="Cancel" />
                 </LinearLayout>
             </LinearLayout>
 

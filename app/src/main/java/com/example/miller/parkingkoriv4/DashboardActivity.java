@@ -1,13 +1,16 @@
 package com.example.miller.parkingkoriv4;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -15,20 +18,41 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
+import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.User.UserResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DashboardActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
+    private ApiInterface apiInterface;
+    TextView toolTitle;
 
+    private boolean exit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        int i = 0;
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+
+        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        String client_name = userData.getString("client_name", "");
+        toolTitle = findViewById(R.id.toolbar_title);
+        toolTitle.setText(client_name);
+
         if (actionbar != null) {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
@@ -38,6 +62,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         navigationFunction();
         buttonsClicked();
+
+        getDataForId();
 
 
     }
@@ -131,8 +157,22 @@ public class DashboardActivity extends AppCompatActivity {
                 return true;
 
             case R.id.logout:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
+
+                //Remove token
+                SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
+                SharedPreferences.Editor tokenDataEditor = authToken.edit();
+                tokenDataEditor.clear();
+                tokenDataEditor.commit();
+
+                //remove user data
+                SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+                SharedPreferences.Editor userDataEditor = userData.edit();
+                userDataEditor.clear();
+                userDataEditor.commit();
+
+                Intent logoutIntent = new Intent(this, LoginActivity.class);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(logoutIntent);
                 return true;
 
             case R.id.end_shift:
@@ -143,6 +183,61 @@ public class DashboardActivity extends AppCompatActivity {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    public void getDataForId(){
+
+        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
+
+        String token = authToken.getString("token", "");
+
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<UserResponse> call = apiInterface.getData("Bearer " + token);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+
+                if (response.isSuccessful()){
+
+                    UserResponse empData = response.body();
+                    SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+
+                    SharedPreferences.Editor userEditor = userData.edit();
+                    userEditor.putString("emp_id", String.valueOf(empData.getUser().getId()));
+                    userEditor.putString("emp_name", empData.getUser().getName());
+                    userEditor.putString("client_id", empData.getUser().getDetails().getClientId());
+                    userEditor.putString("client_name", empData.getUser().getClient().getName());
+                    userEditor.apply();
+
+                }else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+            }
+        });
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        if (exit)
+            DashboardActivity.this.finish();
+        else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
 
         }
     }

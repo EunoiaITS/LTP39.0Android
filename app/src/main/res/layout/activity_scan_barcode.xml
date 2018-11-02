@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ScanBarcodeActivity"
+    android:orientation="horizontal"
     android:background="@drawable/dashboard_background">
 
 
@@ -55,63 +56,28 @@
                     android:id="@+id/scanbarcode_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Scan Barcode"
+                    android:text="@string/scan_barcode"
                     android:textAppearance="@style/CustomFont"
                     android:textColor="@color/buttonColor"
                     android:textSize="13pt"
                     android:gravity="center"
                     android:layout_marginTop="5pt"/>
 
-                <Button
-                    android:id="@+id/scanbarcode_button"
-                    android:layout_width="135dp"
-                    android:layout_height="26dp"
-                    android:text="@string/scan_barcode"
-                    android:background="@color/buttonColor"
-                    android:textColor="@color/backgroundWhite"
-                    android:textAppearance="@style/CustomFont"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    style="?android:borderlessButtonStyle"/>
-
                 <SurfaceView
+                    android:id="@+id/barcode_scan_view"
                     android:layout_width="300dp"
                     android:layout_height="250dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/cancel_scanBarcode_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-
-                    <EditText
-                        android:id="@+id/checkout_regnum__input"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:ems="10"
-                        android:inputType="number"
-                        android:textAlignment="center"
-                        android:layout_gravity="center"
-                        android:background="@drawable/input_box_border"
-                        android:layout_weight="3"
-                        android:layout_marginLeft="20dp"
-                        android:backgroundTint="@color/backgroundWhite"
-                        android:textColor="@color/rememberme"
-                        android:hint="Registration/Ticket No."/>
-
-                    <Button
-                        android:id="@+id/checkin_confirm_button"
-                        android:layout_width="50dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="1"
-                        android:text="Confirm"
-                        style="?android:borderlessButtonStyle"
-                        android:background="@color/buttonColor"
-                        android:layout_margin="30dp"/>
-
-
-                </LinearLayout>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/buttonColor"
+                    android:text="@string/cancel" />
 
             </LinearLayout>
 
@@ -130,4 +96,4 @@
             app:itemTextColor="@color/blackText" />
 
     </android.support.v4.widget.DrawerLayout>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

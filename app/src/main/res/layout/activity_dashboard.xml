@@ -35,7 +35,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/boshundhora_city"
                     android:textColor="@color/backgroundWhite"
                     android:textSize="8pt"
                     android:fontFamily="@font/lato_light"

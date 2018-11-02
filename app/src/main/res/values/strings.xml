@@ -24,6 +24,12 @@
     <string name="check_out">Check Out</string>
     <string name="or">OR</string>
     <string name="registration_ticket_no">Registration/Ticket No.</string>
-    <string name="confirm">Confirm</string>
     <string name="car">Car</string>
+    <string name="_12457">12457</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="toast_3">Bluetooth device is unavailable</string>
+    <string name="toast_4">Bluetooth device not detected. Please open Bluetooth!</string>
+    <string name="toast_5">Not Found InnterPrinter!</string>
+    <string name="toast_6">Bluetooth connect failed!</string>
 </resources>
