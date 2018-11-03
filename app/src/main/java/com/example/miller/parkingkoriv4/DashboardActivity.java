@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -84,11 +85,8 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
-
-
         navigationFunction();
         buttonsClicked();
-
         getDataForId();
 
 
@@ -123,12 +121,32 @@ public class DashboardActivity extends AppCompatActivity {
                             case R.id.report:
                                 break;
                             case R.id.info:
+                                    infoAlert();
+                                break;
 
                         }
 
                         return true;
                     }
                 });
+    }
+
+    private void infoAlert() {
+        AlertDialog.Builder infoDialogue = new AlertDialog.Builder(DashboardActivity.this);
+        View infoAlert = getLayoutInflater().inflate(R.layout.info_dialog, null);
+
+        infoDialogue.setView(infoAlert);
+        final AlertDialog dialogue = infoDialogue.create();
+        dialogue.show();
+
+
+        final Button end = infoAlert.findViewById(R.id.end_info_dialog);
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogue.dismiss();
+            }
+        });
     }
 
     public void buttonsClicked(){

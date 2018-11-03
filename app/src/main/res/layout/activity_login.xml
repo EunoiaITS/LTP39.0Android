@@ -33,7 +33,8 @@
         android:textAppearance="@style/CustomFont"
         android:textSize="7pt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="CancelApp"/>
 
     <EditText
         android:id="@+id/username_input"
@@ -47,7 +48,8 @@
         android:textSize="10pt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="" tools:targetApi="o" />
+        android:autofillHints="" tools:targetApi="o"
+        android:textColor="@color/blackText"/>
 
     <EditText
         android:id="@+id/password_input"
@@ -59,7 +61,8 @@
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:importantForAutofill="no" tools:targetApi="o"/>
+        android:importantForAutofill="no" tools:targetApi="o"
+        android:textColor="@color/blackText"/>
 
     <CheckBox
         android:id="@+id/remember_input"
@@ -72,6 +75,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/rememberme"
-        android:textAppearance="@style/CustomFont"/>
+        android:textAppearance="@style/CustomFont"
+        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

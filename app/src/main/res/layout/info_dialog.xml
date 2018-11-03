@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="280dp"
-    android:layout_height="150dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundWhite">
 
+    <Button
+        android:id="@+id/end_info_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:text="X"
+        android:textColor="@color/buttonColor"
+        android:layout_alignParentRight="true"
+        android:background="@color/backgroundWhite"/>
 
     <TextView
         android:id="@+id/info_heading"
@@ -12,16 +23,110 @@
         android:textAlignment="center"
         android:textAppearance="@style/CustomFont"
         android:textColor="@color/buttonColor"
-        android:textSize="5pt"/>
+        android:textSize="10pt"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/end_info_dialog"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/product_if_dexhub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/a_product_of_dex_hub"
         android:layout_below="@+id/info_heading"
+        android:text="@string/a_product_of_dex_hub"
         android:textAlignment="center"
         android:textAppearance="@style/CustomFont"
         android:textColor="@color/blackText"
-        android:textSize="5pt"/>
+        android:textSize="5pt" />
+
+    <TableLayout
+        android:id="@+id/infoTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/product_if_dexhub"
+        android:layout_margin="10dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version : "
+                android:textColor="@color/blackText"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:id="@+id/version_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0.0"
+                android:textColor="@color/blackText"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact : "
+                android:textColor="@color/blackText"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:id="@+id/contact_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0.0"
+                android:textColor="@color/blackText"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email : "
+                android:textColor="@color/blackText"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:id="@+id/email_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0.0"
+                android:textColor="@color/blackText"
+                android:layout_margin="5dp"/>
+        </TableRow>
+    </TableLayout>
+
+
+    <TextView
+        android:id="@+id/powred_by"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/infoTable"
+        android:text="@string/powered_by_eunoia_i_t_solutions"
+        android:textAlignment="center"
+        android:textAppearance="@style/CustomFont"
+        android:textColor="@color/blackText"
+        android:textSize="5pt"
+        android:layout_marginBottom="5dp"/>
+
+
 </RelativeLayout>

@@ -81,4 +81,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void CancelApp(View view){
+        LoginActivity.this.finish();
+    }
+
 }
