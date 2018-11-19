@@ -42,9 +42,7 @@
             android:theme="@style/NoActionBar" />
         <activity android:name=".CheckInActivity" />
         <activity android:name=".CheckOutActivity" />
-        <activity android:name=".ScanBarcodeActivity" />
         <activity android:name=".VipRegistrationActivity" />
-        <activity android:name=".BaseActivity" />
         <activity android:name=".ScanVipBarcode" />
         <activity android:name=".QRScanActivity"></activity>
     </application>
