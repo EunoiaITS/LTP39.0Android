@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,8 +31,6 @@ import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckIn.CheckIn;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckIn.CheckInResponse;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckIn.VipCheckIn;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckIn.VipCheckInResponse;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.vision.barcode.Barcode;
 
 import java.util.ArrayList;
 
@@ -178,29 +175,6 @@ public class CheckInActivity extends AppCompatActivity {
         });
     }
 
-    public void scanBarcode (View view){
-        Intent intent = new Intent(this, ScanBarcodeActivity.class);
-        startActivityForResult(intent, 0);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        if (requestCode == 0){
-            if (resultCode == CommonStatusCodes.SUCCESS){
-                if (data != null){
-                    Barcode barcodeData = data.getParcelableExtra("barcode");
-                    checkInVip(barcodeData.displayValue);
-                    //Toast.makeText(CheckInActivity.this, String.valueOf(barcodeData.displayValue), Toast.LENGTH_SHORT).show();
-                }else {
-                    //ticket_id.setText("No barcode found");
-                    Toast.makeText(CheckInActivity.this, "No barcode found!!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 
     public void checkInVip(String vipId){
 
