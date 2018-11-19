@@ -18,8 +18,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +27,9 @@ import android.widget.Toast;
 import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
 import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.User.UserResponse;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.User.VehicleType;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +67,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        
+
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(DashboardActivity.this,
                 Manifest.permission.CAMERA)
@@ -88,20 +89,21 @@ public class DashboardActivity extends AppCompatActivity {
         navigationFunction();
         buttonsClicked();
         getDataForId();
+        getVehicleType();
 
 
     }
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toobar_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
-    public void navigationFunction (){
+    public void navigationFunction() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -114,18 +116,20 @@ public class DashboardActivity extends AppCompatActivity {
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
-                        switch (menuItem.getItemId()){
+                        switch (menuItem.getItemId()) {
                             case R.id.end_shift:
                                 Log.d("clicked", "end shift clicked");
                                 break;
                             case R.id.report:
                                 break;
                             case R.id.info:
-                                    infoAlert();
+                                infoAlert();
                                 break;
-
+                            case R.id.nav_logout:
+                                logoutApp();
+                                break;
                         }
-
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                     }
                 });
@@ -149,7 +153,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-    public void buttonsClicked(){
+    public void buttonsClicked() {
         final Button checkInButton = findViewById(R.id.checkin_button);
         checkInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +176,7 @@ public class DashboardActivity extends AppCompatActivity {
         scanbarcodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent scanbarcodeIntent = new Intent(DashboardActivity.this, ScanBarcodeActivity.class);
+                Intent scanbarcodeIntent = new Intent(DashboardActivity.this, ScanVipBarcode.class);
                 startActivity(scanbarcodeIntent);
             }
         });
@@ -195,33 +199,15 @@ public class DashboardActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
 
-            case R.id.user_profile:
+            /*case R.id.user_profile:
                 // User chose the "Settings" item, show the app settings UI...
 
                 return true;
 
             case R.id.logout:
 
-                //Remove token
-                SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
-                SharedPreferences.Editor tokenDataEditor = authToken.edit();
-                tokenDataEditor.clear();
-                tokenDataEditor.commit();
-
-                //remove user data
-                SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
-                SharedPreferences.Editor userDataEditor = userData.edit();
-                userDataEditor.clear();
-                userDataEditor.commit();
-
-                Intent logoutIntent = new Intent(this, LoginActivity.class);
-                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(logoutIntent);
-                return true;
-
-            case R.id.end_shift:
-
-                return true;
+                logoutApp();
+                return true;*/
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -231,7 +217,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    public void getDataForId(){
+    public void getDataForId() {
 
         SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
 
@@ -243,7 +229,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
 
                     UserResponse empData = response.body();
                     SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
@@ -255,7 +241,7 @@ public class DashboardActivity extends AppCompatActivity {
                     userEditor.putString("client_name", empData.getUser().getClient().getName());
                     userEditor.apply();
 
-                }else {
+                } else {
 
                 }
             }
@@ -265,7 +251,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     @Override
@@ -308,5 +293,75 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
+
+    public void getVehicleType() {
+        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
+
+        String token = authToken.getString("token", "");
+
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<UserResponse> call = apiInterface.getData("Bearer " + token);
+
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    List<VehicleType> vt = response.body().getUser().getVehicleTypes();
+
+                    StringBuilder vID = new StringBuilder();
+                    StringBuilder vName = new StringBuilder();
+
+                    for (int i = 0; i < vt.size(); i++) {
+                        //Log.d("Type", vt.get(i).getTypeName());
+
+                        SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
+
+                        SharedPreferences.Editor vehicleEditor = vehicleData.edit();
+
+                        vID.append(vt.get(i).getId()).append(",");
+                        vName.append(vt.get(i).getTypeName()).append(",");
+
+
+                        vehicleEditor.putString("vehicle_type_id", vID.toString());
+                        vehicleEditor.putString("vehicle_type_name", vName.toString());
+
+                        vehicleEditor.apply();
+                    }
+
+                } else {
+                    //Toast.makeText(CheckInActivity.this, "Not login", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Toast.makeText(DashboardActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void zxingqr(View view){
+        Intent logoutIntent = new Intent(this, QRScanActivity.class);
+        startActivity(logoutIntent);
+    }
+
+
+    public void logoutApp() {
+        //Remove token
+        SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
+        SharedPreferences.Editor tokenDataEditor = authToken.edit();
+        tokenDataEditor.clear();
+        tokenDataEditor.commit();
+
+        //remove user data
+        SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences.Editor userDataEditor = userData.edit();
+        userDataEditor.clear();
+        userDataEditor.commit();
+
+        Intent logoutIntent = new Intent(this, LoginActivity.class);
+        logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(logoutIntent);
+    }
 
 }

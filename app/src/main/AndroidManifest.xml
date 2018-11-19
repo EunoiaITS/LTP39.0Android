@@ -3,30 +3,30 @@
     package="com.example.miller.parkingkoriv4">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/app_ic_launcher_round"
         android:supportsRtl="true"
+        android:testOnly="false"
         android:theme="@style/NoActionBar">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
 
-        <meta-data android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version">
-        </meta-data>
-
-        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="barcode">
-        </meta-data>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,9 +44,9 @@
         <activity android:name=".CheckOutActivity" />
         <activity android:name=".ScanBarcodeActivity" />
         <activity android:name=".VipRegistrationActivity" />
-        <activity android:name=".BaseActivity"></activity>
-
-
+        <activity android:name=".BaseActivity" />
+        <activity android:name=".ScanVipBarcode" />
+        <activity android:name=".QRScanActivity"></activity>
     </application>
 
 </manifest>

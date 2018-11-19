@@ -10,7 +10,7 @@
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
-        android:layout_height="22dp"
+        android:layout_height="50dp"
         android:layout_marginStart="74dp"
         android:layout_marginLeft="74dp"
         android:layout_marginTop="420dp"
@@ -24,17 +24,17 @@
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
-        android:layout_height="22dp"
+        android:layout_height="50dp"
         android:layout_marginStart="200dp"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="420dp"
         android:background="@color/buttonColor"
+        android:onClick="CancelApp"
         android:text="@string/cancel"
         android:textAppearance="@style/CustomFont"
         android:textSize="7pt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="CancelApp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/username_input"

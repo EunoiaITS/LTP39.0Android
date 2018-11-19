@@ -85,4 +85,22 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity.this.finish();
     }
 
+    public void logoutApp() {
+        //Remove token
+        SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
+        SharedPreferences.Editor tokenDataEditor = authToken.edit();
+        tokenDataEditor.clear();
+        tokenDataEditor.commit();
+
+        //remove user data
+        SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences.Editor userDataEditor = userData.edit();
+        userDataEditor.clear();
+        userDataEditor.commit();
+
+        Intent logoutIntent = new Intent(this, LoginActivity.class);
+        logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(logoutIntent);
+    }
+
 }

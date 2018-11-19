@@ -2,5 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke
         android:width="1dp"
-        android:color="@color/rememberme" />
+        android:color="@color/rememberme"
+        android:backgroundTint="@color/backgroundWhite"
+        />
 </shape>

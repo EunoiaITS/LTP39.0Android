@@ -74,29 +74,6 @@
                         android:gravity="center">
 
                         <TextView
-                            android:id="@+id/vip_id_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="VIP ID:"
-                            android:textColor="@color/blackText" />
-
-                        <EditText
-                            android:id="@+id/vip_id_input"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/input_box_border"
-                            android:ems="10"
-                            android:inputType="text"
-                            android:textColor="@color/rememberme" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center">
-
-                        <TextView
                             android:id="@+id/vip_name_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -106,8 +83,9 @@
                         <EditText
                             android:id="@+id/vip_name_input"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:background="@drawable/input_box_border"
+                            android:backgroundTint="@color/backgroundWhite"
                             android:ems="10"
                             android:inputType="textPersonName"
                             android:textColor="@color/rememberme" />
@@ -129,33 +107,12 @@
                         <EditText
                             android:id="@+id/vip_phone_input"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:background="@drawable/input_box_border"
+                            android:backgroundTint="@color/backgroundWhite"
+
                             android:ems="10"
                             android:inputType="phone"
-                            android:textColor="@color/rememberme" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/vip_vhicle_type_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Vehicle Type:"
-                            android:textColor="@color/blackText" />
-
-                        <EditText
-                            android:id="@+id/vip_vehicle_type_input"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/input_box_border"
-                            android:ems="10"
-                            android:inputType="text"
                             android:textColor="@color/rememberme" />
                     </TableRow>
 
@@ -175,65 +132,83 @@
                         <EditText
                             android:id="@+id/vip_vehicle_num_input"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:background="@drawable/input_box_border"
+                            android:backgroundTint="@color/backgroundWhite"
                             android:ems="10"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:textColor="@color/rememberme" />
                     </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/vip_vhicle_pur"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Purpose:"
+                            android:textColor="@color/blackText" />
+
+                        <EditText
+                            android:id="@+id/vip_vehicle_purpose_input"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:background="@drawable/input_box_border"
+                            android:backgroundTint="@color/backgroundWhite"
+                            android:ems="10"
+                            android:inputType="text"
+                            android:textColor="@color/rememberme" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/vip_vhicle_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vehicle Type:"
+                            android:textColor="@color/blackText" />
+
+                        <Spinner
+                            android:id="@+id/vipvType_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/appbargradient" />
+
+                    </TableRow>
+
+
                 </TableLayout>
 
-                <Button
-                    android:id="@+id/apply_vipreg_button"
-                    android:layout_width="200dp"
-                    android:layout_height="30dp"
-                    android:text="Apply for Registration"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/backgroundWhite"
-                    android:background="@color/buttonColor"
-                    android:textAppearance="@style/CustomFont"/>
-
-                <Button
-                    android:id="@+id/process_vip_qr_button"
-                    android:layout_width="200dp"
-                    android:layout_height="30dp"
-                    android:text="Process QR"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/backgroundWhite"
-                    android:background="@color/buttonColor"
-                    android:textAppearance="@style/CustomFont"/>
-
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/qr_sample" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_height="wrap_content">
 
                     <Button
                         android:id="@+id/checkin_confirm_button"
-                        android:layout_width="70dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:text="Confirm"
                         style="?android:borderlessButtonStyle"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="20dp"
+                        android:layout_weight="1"
                         android:background="@color/buttonColor"
-                        android:layout_margin="30dp"/>
+                        android:text="Apply" />
 
                     <Button
                         android:id="@+id/cancel_vipReg_button"
                         style="?android:borderlessButtonStyle"
                         android:layout_width="70dp"
-                        android:layout_height="30dp"
-                        android:layout_margin="30dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="20dp"
                         android:layout_weight="1"
                         android:background="@color/buttonColor"
                         android:text="Cancel" />
@@ -247,9 +222,10 @@
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
+            app:headerLayout="@layout/navigation_header"
             app:menu="@menu/navigation_drawer_menu"
             android:background="@color/backgroundWhite"
             app:itemTextColor="@color/blackText" />

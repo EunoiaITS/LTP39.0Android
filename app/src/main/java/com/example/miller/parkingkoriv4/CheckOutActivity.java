@@ -13,8 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
@@ -30,7 +29,6 @@ import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckOut.CheckOut;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckOut.CheckOutResponse;
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.vision.barcode.Barcode;
 
 import java.util.Calendar;
 
@@ -55,6 +53,7 @@ public class CheckOutActivity extends AppCompatActivity {
         ticket_id = findViewById(R.id.checkout_regnum_input);
 
 
+        //navigationFunction();
         showNavigator();
         onClickCheckout();
         clickCancel();
@@ -63,9 +62,11 @@ public class CheckOutActivity extends AppCompatActivity {
     }
 
     public void scanBarcode (View view){
-        Intent intent = new Intent(this, ScanBarcodeActivity.class);
+        Intent intent = new Intent(this, QRScanActivity.class);
         startActivityForResult(intent, 0);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -73,18 +74,18 @@ public class CheckOutActivity extends AppCompatActivity {
         if (requestCode == 0){
             if (resultCode == CommonStatusCodes.SUCCESS){
                 if (data != null){
-                    Barcode barcodeData = data.getParcelableExtra("barcode");
-                    ticket_id.setText(barcodeData.displayValue);
+                    String qrData = data.getExtras().getString("barcode");
+                    Log.d("Code Return Text ", qrData);
+                    ticket_id.setText(qrData);
                 }else {
                     //ticket_id.setText("No barcode found");
                     Toast.makeText(CheckOutActivity.this, "No barcode found!!", Toast.LENGTH_SHORT).show();
                 }
             }
-        }else{
+        }
+        else{
             super.onActivityResult(requestCode, resultCode, data);
         }
-
-
     }
 
 
@@ -116,6 +117,19 @@ public class CheckOutActivity extends AppCompatActivity {
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
+                        switch (menuItem.getItemId()) {
+                            case R.id.end_shift:
+                                Log.d("clicked", "end shift clicked");
+                                break;
+                            case R.id.report:
+                                break;
+                            case R.id.info:
+                                infoAlert();
+                                break;
+                            case R.id.nav_logout:
+                                logoutApp();
+                                break;
+                        }
 
                         return true;
                     }
@@ -123,14 +137,14 @@ public class CheckOutActivity extends AppCompatActivity {
 
     }
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toobar_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -140,7 +154,7 @@ public class CheckOutActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
 
-            case R.id.user_profile:
+/*            case R.id.user_profile:
                 // User chose the "Settings" item, show the app settings UI...
                 return true;
 
@@ -160,7 +174,7 @@ public class CheckOutActivity extends AppCompatActivity {
                 Intent logoutIntent = new Intent(this, LoginActivity.class);
                 logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(logoutIntent);
-                return true;
+                return true;*/
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -195,7 +209,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
     }
 
-    public void checkOutVehicle(String ticketID, String employee, String check_out_at) {
+    public void checkOutVehicle(final String ticketID, String employee, String check_out_at) {
 
         CheckOut checkoutVehicle = new CheckOut(ticketID, employee, check_out_at);
         SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
@@ -259,18 +273,19 @@ public class CheckOutActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             printCheckOut(client_name, receipt_id, regNo, inTime, vType, outTime, fair);
                             dialogue.dismiss();
+                            ticket_id.setText("");
                         }
                     });
 
-                    Button cancelCheckOutPrint = checkOutReceipt.findViewById(R.id.cancel_print_checkout);
+                    /*Button cancelCheckOutPrint = checkOutReceipt.findViewById(R.id.cancel_print_checkout);
                     cancelCheckOutPrint.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             dialogue.cancel();
                         }
-                    });
+                    });*/
                 } else {
-                    Toast.makeText(CheckOutActivity.this, "Not login", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CheckOutActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -286,18 +301,13 @@ public class CheckOutActivity extends AppCompatActivity {
 
 
         BluetoothUtil.connectBlueTooth(CheckOutActivity.this);
-
-        //BluetoothUtil.sendData(ESCUtil.getPrintQRCode(ticketNo, 8, 1));
         String BILL = "";
         BILL = "\n \n "+clientName+"  \n"
                 + "Parking Ticket\n ";
         BILL = BILL
                 + "-----------------------------------------------\n";
-
         BILL = BILL + String.format("%1$-10s %2$10s", "Ticket Number", receiptID);
         BILL = BILL + "\n";
-        //BILL = BILL
-        // + "-----------------------------------------------";
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Registration Number", regNo);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Vehicle Type", vType);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Entry At", entryAt);
@@ -307,7 +317,6 @@ public class CheckOutActivity extends AppCompatActivity {
                 + "\n-----------------------------------------------";
         BILL = BILL + "\n\n ";
         BILL = BILL + "\n\n ";
-
         PrintUtil printThis = new PrintUtil();
         printThis.printByBluTooth(BILL);
     }
@@ -327,4 +336,71 @@ public class CheckOutActivity extends AppCompatActivity {
         CheckOutActivity.this.finish();
     }
 
+/*    public void navigationFunction() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+                        switch (menuItem.getItemId()) {
+                            case R.id.end_shift:
+                                Log.d("clicked", "end shift clicked");
+                                break;
+                            case R.id.report:
+                                break;
+                            case R.id.info:
+                                infoAlert();
+                                break;
+                            case R.id.nav_logout:
+                                logoutApp();
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+    }*/
+
+    private void infoAlert() {
+        AlertDialog.Builder infoDialogue = new AlertDialog.Builder(CheckOutActivity.this);
+        View infoAlert = getLayoutInflater().inflate(R.layout.info_dialog, null);
+
+        infoDialogue.setView(infoAlert);
+        final AlertDialog dialogue = infoDialogue.create();
+        dialogue.show();
+
+
+        final Button end = infoAlert.findViewById(R.id.end_info_dialog);
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogue.dismiss();
+            }
+        });
+    }
+
+    public void logoutApp() {
+        //Remove token
+        SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
+        SharedPreferences.Editor tokenDataEditor = authToken.edit();
+        tokenDataEditor.clear();
+        tokenDataEditor.commit();
+
+        //remove user data
+        SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences.Editor userDataEditor = userData.edit();
+        userDataEditor.clear();
+        userDataEditor.commit();
+
+        Intent logoutIntent = new Intent(this, LoginActivity.class);
+        logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(logoutIntent);
+    }
 }

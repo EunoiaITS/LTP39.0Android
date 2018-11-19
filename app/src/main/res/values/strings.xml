@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ParkingKoriV4</string>
+    <string name="app_name">Parking Kori</string>
     <string name="goto_login">LOGIN</string>
     <string name="login">LOGIN</string>
     <string name="cancel">Cancel</string>
@@ -22,7 +22,7 @@
     <string name="information">Information</string>
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
-    <string name="or">OR</string>
+    <string name="or">Enter Ticket Number</string>
     <string name="registration_ticket_no">Registration/Ticket No.</string>
     <string name="car">Car</string>
     <string name="_12457">12457</string>
@@ -33,4 +33,5 @@
     <string name="toast_5">Not Found InnterPrinter!</string>
     <string name="toast_6">Bluetooth connect failed!</string>
     <string name="powered_by_eunoia_i_t_solutions">Powered By Eunoia I.T Solutions</string>
+    <string name="scan_vip">Scan VIP</string>
 </resources>

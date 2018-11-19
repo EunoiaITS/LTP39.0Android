@@ -12,11 +12,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,18 +36,23 @@ public class ScanBarcodeActivity extends AppCompatActivity {
 
     SurfaceView scanarSurface;
     private DrawerLayout mDrawerLayout;
+    android.hardware.Camera camera;
+    android.hardware.Camera.Parameters params;
+    boolean isFlashOn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_barcode);
-
+        camera = android.hardware.Camera.open();
+        //navigationFunction();
         showNavigator();
 
         createScannerSource();
         clickCancel();
 
     }
+
 
 
     public void createScannerSource() {
@@ -113,6 +118,8 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         });
     }
 
+
+
     public void showNavigator() {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -141,6 +148,19 @@ public class ScanBarcodeActivity extends AppCompatActivity {
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
+                        switch (menuItem.getItemId()) {
+                            case R.id.end_shift:
+                                Log.d("clicked", "end shift clicked");
+                                break;
+                            case R.id.report:
+                                break;
+                            case R.id.info:
+                                infoAlert();
+                                break;
+                            case R.id.nav_logout:
+                                logoutApp();
+                                break;
+                        }
 
                         return true;
                     }
@@ -151,14 +171,14 @@ public class ScanBarcodeActivity extends AppCompatActivity {
 
 
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toobar_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -168,7 +188,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
 
-            case R.id.user_profile:
+/*            case R.id.user_profile:
                 // User chose the "Settings" item, show the app settings UI...
                 return true;
 
@@ -189,7 +209,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                 logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(logoutIntent);// User chose the "Favorite" action, mark the current item
                 // as a favorite...
-                return true;
+                return true;*/
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -204,12 +224,98 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScanBarcodeActivity.this.finish();
+                /*ScanBarcodeActivity.this.finish();*/
+                Context context = getApplicationContext();
+                if( context .getPackageManager().hasSystemFeature(getPackageManager().FEATURE_CAMERA_FLASH)) {
+                    android.hardware.Camera.Parameters params = camera.getParameters();
+                    if(isFlashOn) {
+                        params.setFlashMode(android.hardware.Camera.Parameters.FLASH_MODE_OFF);
+                        camera.setParameters(params);
+                        isFlashOn = false;
+                    } else {
+                        params.setFlashMode(android.hardware.Camera.Parameters.FLASH_MODE_TORCH);
+                        camera.setParameters(params);
+                        isFlashOn = true;
+                    }
+                }
+
             }
         });
     }
+
+
     @Override
     public void onBackPressed() {
         ScanBarcodeActivity.this.finish();
+    }
+
+/*
+    public void navigationFunction() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+                        switch (menuItem.getItemId()) {
+                            case R.id.end_shift:
+                                Log.d("clicked", "end shift clicked");
+                                break;
+                            case R.id.report:
+                                break;
+                            case R.id.info:
+                                infoAlert();
+                                break;
+                            case R.id.nav_logout:
+                                logoutApp();
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+    }
+*/
+
+    private void infoAlert() {
+        AlertDialog.Builder infoDialogue = new AlertDialog.Builder(ScanBarcodeActivity.this);
+        View infoAlert = getLayoutInflater().inflate(R.layout.info_dialog, null);
+
+        infoDialogue.setView(infoAlert);
+        final AlertDialog dialogue = infoDialogue.create();
+        dialogue.show();
+
+
+        final Button end = infoAlert.findViewById(R.id.end_info_dialog);
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogue.dismiss();
+            }
+        });
+    }
+
+    public void logoutApp() {
+        //Remove token
+        SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
+        SharedPreferences.Editor tokenDataEditor = authToken.edit();
+        tokenDataEditor.clear();
+        tokenDataEditor.commit();
+
+        //remove user data
+        SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences.Editor userDataEditor = userData.edit();
+        userDataEditor.clear();
+        userDataEditor.commit();
+
+        Intent logoutIntent = new Intent(this, LoginActivity.class);
+        logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(logoutIntent);
     }
 }

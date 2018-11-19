@@ -64,16 +64,15 @@
 
                 <Button
                     android:id="@+id/checkout_scanbarcode_button"
-                    android:layout_width="135dp"
-                    android:layout_height="26dp"
-                    android:text="@string/scan_barcode"
-                    android:background="@color/buttonColor"
-                    android:textColor="@color/backgroundWhite"
-                    android:textAppearance="@style/CustomFont"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    style="?android:borderlessButtonStyle"
-                    android:onClick="scanBarcode"/>
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/buttonColor"
+                    android:onClick="scanBarcode"
+                    android:text="Scan to  Check Out"
+                    android:textAppearance="@style/CustomFont"
+                    android:textColor="@color/backgroundWhite" />
 
 
                 <TextView
@@ -84,24 +83,21 @@
                     android:textColor="@color/rememberme"
                     android:textAppearance="@style/CustomFont"
                     android:gravity="center"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:layout_marginTop="10dp"/>
-
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/checkout_regnum_input"
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_weight="3"
+                        android:layout_margin="20dp"
                         android:background="@drawable/input_box_border"
                         android:backgroundTint="@color/backgroundWhite"
                         android:ems="10"
@@ -110,27 +106,33 @@
                         android:textAlignment="center"
                         android:textColor="@color/rememberme" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
                     <Button
                         android:id="@+id/checkout_confirm_button"
                         style="?android:borderlessButtonStyle"
-                        android:layout_width="50dp"
-                        android:layout_height="20dp"
-                        android:layout_margin="30dp"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="20dp"
                         android:layout_weight="1"
                         android:background="@color/buttonColor"
                         android:text="@string/confirm" />
 
-
+                    <Button
+                        android:id="@+id/cancel_checkout_button"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@color/buttonColor"
+                        android:text="Cancel" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/cancel_checkout_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel"
-                    android:background="@color/buttonColor"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"/>
 
             </LinearLayout>
 
@@ -141,9 +143,10 @@
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
+            app:headerLayout="@layout/navigation_header"
             app:menu="@menu/navigation_drawer_menu"
             android:background="@color/backgroundWhite"
             app:itemTextColor="@color/blackText" />

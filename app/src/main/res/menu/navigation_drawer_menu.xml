@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/end_shift"
-            android:title="@string/end_shift" />
+            android:title="@string/end_shift"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_block_black_24dp"/>
         <item
             android:id="@+id/report"
-            android:title="@string/report" />
+            android:title="@string/report"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_assignment_black_24dp"/>
         <item
             android:id="@+id/info"
-            android:title="@string/information" />
+            android:title="@string/information"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_info_black_24dp"/>
+
+        <item
+            android:id="@+id/nav_logout"
+            android:title="@string/logout"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"/>
     </group>
 
 </menu>

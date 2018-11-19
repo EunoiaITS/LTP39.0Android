@@ -1,6 +1,8 @@
 package com.example.miller.parkingkoriv4;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,8 +20,23 @@ public class MainActivity extends AppCompatActivity {
         gotoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login_page = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(login_page);
+
+                Intent activityIntent;
+
+
+                SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
+                String token = authToken.getString("token", "");
+
+
+                if (token != "") {
+                    activityIntent = new Intent(MainActivity.this, DashboardActivity.class);
+                } else {
+                    activityIntent = new Intent(MainActivity.this, LoginActivity.class);
+                }
+
+
+                startActivity(activityIntent);
+                finish();
             }
         });
     }

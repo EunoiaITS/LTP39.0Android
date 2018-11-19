@@ -64,15 +64,17 @@
 
                 <Button
                     android:id="@+id/checkin_scanbarcode_button"
-                    android:layout_width="135dp"
-                    android:layout_height="26dp"
-                    android:text="@string/scan_barcode"
-                    android:background="@color/buttonColor"
-                    android:textColor="@color/backgroundWhite"
-                    android:textAppearance="@style/CustomFont"
+                    style="?android:borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    style="?android:borderlessButtonStyle"/>
+                    android:layout_margin="20dp"
+                    android:background="@color/buttonColor"
+                    android:text="@string/scan_barcode"
+                    android:textAppearance="@style/CustomFont"
+                    android:textColor="@color/backgroundWhite"
+                    android:onClick="scanBarcode"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/type_selection_title"
@@ -82,7 +84,7 @@
                     android:textAppearance="@style/CustomFont"
                     android:textColor="@color/rememberme"
                     android:gravity="center"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="40dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -165,7 +167,8 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/input_box_border"
                     android:paddingLeft="20dp"
-                    android:paddingStart="20dp" />
+                    android:paddingStart="20dp"
+                    android:textColor="@color/blackText"/>
 
 
                 <LinearLayout
@@ -175,23 +178,23 @@
 
                     <Button
                         android:id="@+id/checkin_confirm_button"
-                        android:layout_width="70dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:text="@string/confirm"
                         style="?android:borderlessButtonStyle"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="30dp"
+                        android:layout_weight="1"
                         android:background="@color/buttonColor"
-                        android:layout_margin="30dp"/>
+                        android:text="@string/confirm" />
 
                     <Button
                         android:id="@+id/checkin_cancel_button"
+                        style="?android:borderlessButtonStyle"
                         android:layout_width="70dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:text="@string/cancel"
+                        android:layout_height="50dp"
                         android:layout_margin="30dp"
+                        android:layout_weight="1"
                         android:background="@color/buttonColor"
-                        style="?android:borderlessButtonStyle"/>
+                        android:text="@string/cancel" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -203,9 +206,10 @@
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
+            app:headerLayout="@layout/navigation_header"
             app:menu="@menu/navigation_drawer_menu"
             android:background="@color/backgroundWhite"
             app:itemTextColor="@color/blackText" />
