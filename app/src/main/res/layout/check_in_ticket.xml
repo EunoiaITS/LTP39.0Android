@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundWhite">
+
+
+    <TextView
+        android:id="@+id/ticket_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/textview"
+        android:textColor="@color/buttonColor"
+        android:textSize="10pt"/>
+
+    <TextView
+        android:textColor="@color/rememberme"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="68dp"
+        android:text="@string/check_in_token" />
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/textView15">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tickNum"
+                android:textColor="@color/rememberme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/ticket_number"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:id="@+id/checkin_print_ticket_number_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="@string/textview"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/ticketReg"
+                android:textColor="@color/rememberme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/registration_number"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:id="@+id/checkin_print_registration_number_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="@string/textview"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/EntryAt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="@string/entry_at"
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/checkin_print_entry_at_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="@string/textview"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/vehtyp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Vehicle Type"
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/checkin_print_vehicle_type_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/table"
+        android:layout_margin="20dp">
+
+        <Button
+            android:id="@+id/print_checkin_ticket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Print"
+            android:background="@color/buttonColor"
+            android:layout_margin="3dp"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

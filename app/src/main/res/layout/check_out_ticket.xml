@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundWhite">
+
+    <TextView
+        android:id="@+id/ticket_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        android:textColor="@color/buttonColor"
+        android:textSize="10pt"/>
+
+    <TextView
+        android:textColor="@color/rememberme"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="68dp"
+        android:text="Check In Token" />
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/textView15">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/receiptNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Receipt Number"
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/checkout_print_receipt_number_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/ticketReg"
+                android:textColor="@color/rememberme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Registration Number"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:id="@+id/checkout_print_registration_number_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/EntryAt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Entry At"
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/checkout_print_entry_at_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/vehtyp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Vehicle Type"
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/checkout_print_vehicle_type_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/out_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Out Time"
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/checkout_print_out_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/fair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Total Fair"
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/checkout_print_fair"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/table"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/print_checkout_ticket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:background="@color/buttonColor"
+            android:text="Print" />
+
+    </LinearLayout>
+
+</RelativeLayout>
