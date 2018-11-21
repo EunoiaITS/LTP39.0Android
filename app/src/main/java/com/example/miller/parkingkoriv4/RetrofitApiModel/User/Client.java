@@ -29,13 +29,11 @@ public class Client {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public Client() {
     }
 
     /**
-     *
      * @param updatedAt
      * @param id
      * @param status

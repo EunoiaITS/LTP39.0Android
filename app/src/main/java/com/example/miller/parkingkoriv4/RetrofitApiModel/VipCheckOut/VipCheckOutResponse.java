@@ -17,13 +17,11 @@ public class VipCheckOutResponse {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public VipCheckOutResponse() {
     }
 
     /**
-     *
      * @param message
      * @param status
      * @param data

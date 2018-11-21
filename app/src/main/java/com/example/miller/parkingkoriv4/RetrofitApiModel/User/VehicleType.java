@@ -32,13 +32,11 @@ public class VehicleType {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public VehicleType() {
     }
 
     /**
-     *
      * @param updatedAt
      * @param typeName
      * @param id

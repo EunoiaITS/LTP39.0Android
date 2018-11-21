@@ -17,13 +17,11 @@ public class CheckOutResponse {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public CheckOutResponse() {
     }
 
     /**
-     *
      * @param message
      * @param status
      * @param data

@@ -40,13 +40,11 @@ public class User {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public User() {
     }
 
     /**
-     *
      * @param updatedAt
      * @param id
      * @param client

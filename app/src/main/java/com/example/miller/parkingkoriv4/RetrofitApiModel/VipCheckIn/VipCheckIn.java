@@ -29,13 +29,11 @@ public class VipCheckIn {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public VipCheckIn() {
     }
 
     /**
-     *
      * @param id
      * @param updatedAt
      * @param ticketId

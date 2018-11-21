@@ -40,14 +40,12 @@ import retrofit2.Response;
 
 public class CheckInActivity extends AppCompatActivity {
 
+    Spinner typeSpinner;
+    Button vehicleCheckIn, scanBarcode;
+    EditText regNum;
     private DrawerLayout mDrawerLayout;
     private ApiInterface apiInterface;
     private boolean exit = false;
-
-    Spinner typeSpinner;
-
-    Button vehicleCheckIn, scanBarcode;
-    EditText regNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +64,7 @@ public class CheckInActivity extends AppCompatActivity {
 
     }
 
-    public void showNavigator(){
+    public void showNavigator() {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -164,7 +162,7 @@ public class CheckInActivity extends AppCompatActivity {
         }
     }
 
-    public void onCancelCheckIn(){
+    public void onCancelCheckIn() {
         Button cancelCheckin = findViewById(R.id.checkin_cancel_button);
         cancelCheckin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,7 +197,7 @@ public class CheckInActivity extends AppCompatActivity {
         }
     }*/
 
-    public void checkInVip(String vipId){
+    public void checkInVip(String vipId) {
 
         SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
         String client_id = userData.getString("client_id", "");
@@ -240,11 +238,12 @@ public class CheckInActivity extends AppCompatActivity {
                         }
                     });
                     //Toast.makeText(CheckInActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     //Toast.makeText(CheckInActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
                     Toast.makeText(CheckInActivity.this, "Wrong Data", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<VipCheckInResponse> call, Throwable t) {
                 Toast.makeText(CheckInActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
@@ -253,7 +252,7 @@ public class CheckInActivity extends AppCompatActivity {
 
     }
 
-    public void onClickCheckIn (){
+    public void onClickCheckIn() {
 
         regNum = findViewById(R.id.checkin_regnum__input);
         vehicleCheckIn = findViewById(R.id.checkin_confirm_button);
@@ -271,7 +270,7 @@ public class CheckInActivity extends AppCompatActivity {
 
         ArrayList<String> namelist = new ArrayList<>();
 
-        for (int i = 0; i < singleName.length; i ++){
+        for (int i = 0; i < singleName.length; i++) {
             namelist.add(singleID[i].concat(" ".concat(singleName[i])));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, namelist);
@@ -290,17 +289,17 @@ public class CheckInActivity extends AppCompatActivity {
 
 
                 checkInVehicle(client_id, reg_no, typeName, emp_id);
-                }
+            }
         });
     }
 
-    public void checkInVehicle (String clientID, String reg, String type, final String created_by){
+    public void checkInVehicle(String clientID, String reg, String type, final String created_by) {
 
         String vtypesID = type.split(" ")[0];
         final String vtypesName = type.split(" ")[1];
 
 
-        CheckIn checkInVehicle = new CheckIn (clientID, reg, vtypesID, created_by);
+        CheckIn checkInVehicle = new CheckIn(clientID, reg, vtypesID, created_by);
         SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
         String token = authToken.getString("token", "");
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
@@ -336,9 +335,6 @@ public class CheckInActivity extends AppCompatActivity {
                             vTName = "";
                         }
                     }*/
-
-
-
 
 
                     Toast.makeText(CheckInActivity.this, ticID, Toast.LENGTH_SHORT).show();
@@ -383,7 +379,7 @@ public class CheckInActivity extends AppCompatActivity {
                             CheckInActivity.this.finish();
                         }
                     });*/
-                }else{
+                } else {
                     Toast.makeText(CheckInActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -396,16 +392,14 @@ public class CheckInActivity extends AppCompatActivity {
     }
 
 
-
-
-    public void printCheckIn(String client_name, String ticketNo, String regNo, String entryAt, String vType){
+    public void printCheckIn(String client_name, String ticketNo, String regNo, String entryAt, String vType) {
 
 
         BluetoothUtil.connectBlueTooth(CheckInActivity.this);
 
         BluetoothUtil.sendData(ESCUtil.getPrintQRCode(ticketNo, 8, 1));
         String BILL = "";
-        BILL = "\n \n "+ client_name +"\n"
+        BILL = "\n \n " + client_name + "\n"
                 + "Parking Ticket\n ";
         BILL = BILL
                 + "-----------------------------------------------\n";
@@ -426,7 +420,7 @@ public class CheckInActivity extends AppCompatActivity {
         printThis.printByBluTooth(BILL);
     }
 
-    public void clickCancel (){
+    public void clickCancel() {
         final Button cancel = findViewById(R.id.checkin_cancel_button);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

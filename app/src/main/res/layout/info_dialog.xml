@@ -10,22 +10,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:text="X"
-        android:textColor="@color/buttonColor"
         android:layout_alignParentRight="true"
-        android:background="@color/backgroundWhite"/>
+        android:background="@color/backgroundWhite"
+        android:text="X"
+        android:textColor="@color/buttonColor" />
 
     <TextView
         android:id="@+id/info_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/end_info_dialog"
+        android:layout_marginTop="5dp"
         android:text="@string/parking_kori"
         android:textAlignment="center"
         android:textAppearance="@style/CustomFont"
         android:textColor="@color/buttonColor"
-        android:textSize="10pt"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/end_info_dialog"/>
+        android:textSize="10pt" />
 
     <TextView
         android:id="@+id/product_if_dexhub"
@@ -54,18 +54,18 @@
                 android:id="@+id/version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="Version : "
                 android:textColor="@color/blackText"
-                android:textStyle="bold"
-                android:layout_margin="5dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/version_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="1.0.0"
-                android:textColor="@color/blackText"
-                android:layout_margin="5dp"/>
+                android:textColor="@color/blackText" />
         </TableRow>
 
         <TableRow
@@ -77,18 +77,18 @@
                 android:id="@+id/contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="Contact : "
                 android:textColor="@color/blackText"
-                android:textStyle="bold"
-                android:layout_margin="5dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/contact_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="1.0.0"
-                android:textColor="@color/blackText"
-                android:layout_margin="5dp"/>
+                android:textColor="@color/blackText" />
         </TableRow>
 
         <TableRow
@@ -100,18 +100,18 @@
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="Email : "
                 android:textColor="@color/blackText"
-                android:textStyle="bold"
-                android:layout_margin="5dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/email_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="1.0.0"
-                android:textColor="@color/blackText"
-                android:layout_margin="5dp"/>
+                android:textColor="@color/blackText" />
         </TableRow>
     </TableLayout>
 
@@ -121,12 +121,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/infoTable"
+        android:layout_marginBottom="5dp"
         android:text="@string/powered_by_eunoia_i_t_solutions"
         android:textAlignment="center"
         android:textAppearance="@style/CustomFont"
         android:textColor="@color/blackText"
-        android:textSize="5pt"
-        android:layout_marginBottom="5dp"/>
+        android:textSize="5pt" />
 
 
 </RelativeLayout>

@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -39,35 +38,15 @@ import retrofit2.Response;
 public class DashboardActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
+    TextView toolTitle;
     private DrawerLayout mDrawerLayout;
     private ApiInterface apiInterface;
-    TextView toolTitle;
-
     private boolean exit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-        int i = 0;
-
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        ActionBar actionbar = getSupportActionBar();
-
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
-        String client_name = userData.getString("client_name", "");
-        toolTitle = findViewById(R.id.toolbar_title);
-        toolTitle.setText(client_name);
-
-        if (actionbar != null) {
-            actionbar.setDisplayHomeAsUpEnabled(true);
-        }
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-
 
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(DashboardActivity.this,
@@ -86,11 +65,28 @@ public class DashboardActivity extends AppCompatActivity {
             // Permission has already been granted
         }
 
+        int i = 0;
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionbar = getSupportActionBar();
+
+        if (actionbar != null) {
+            actionbar.setDisplayHomeAsUpEnabled(true);
+        }
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
         navigationFunction();
         buttonsClicked();
         getDataForId();
         getVehicleType();
+
+        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        String client_name = userData.getString("client_name", "");
+        toolTitle = findViewById(R.id.toolbar_title);
+        toolTitle.setText(client_name);
 
 
     }
@@ -341,7 +337,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-    public void zxingqr(View view){
+    public void zxingqr(View view) {
         Intent logoutIntent = new Intent(this, QRScanActivity.class);
         startActivity(logoutIntent);
     }
@@ -360,9 +356,11 @@ public class DashboardActivity extends AppCompatActivity {
         userDataEditor.clear();
         userDataEditor.commit();
 
+
         Intent logoutIntent = new Intent(this, LoginActivity.class);
         logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(logoutIntent);
+
     }
 
 }

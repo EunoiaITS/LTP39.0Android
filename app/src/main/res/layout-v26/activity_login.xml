@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    android:background="@drawable/landing_background">
+    android:background="@drawable/landing_background"
+    tools:context=".LoginActivity">
 
     <Button
         android:id="@+id/login_button"
@@ -33,18 +33,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/username_input"
         android:layout_width="215dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="74dp"
         android:layout_marginTop="300dp"
+        android:autofillHints=""
+        android:completionThreshold="1"
         android:inputType="textPersonName"
         android:textAppearance="@style/CustomFont"
         android:textSize="10pt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="" tools:targetApi="o" />
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/password_input"
@@ -52,10 +54,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="74dp"
         android:layout_marginTop="350dp"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:importantForAutofill="no" tools:targetApi="o"/>
+        tools:targetApi="o" />
 
     <CheckBox
         android:id="@+id/remember_input"

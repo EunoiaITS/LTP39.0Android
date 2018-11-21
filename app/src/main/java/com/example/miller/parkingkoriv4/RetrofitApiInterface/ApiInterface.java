@@ -26,22 +26,22 @@ public interface ApiInterface {
     Call<LoginResponse> loginEmployee(@Body LoginEmployee loginEmployee);
 
     @GET("user")
-    Call <UserResponse> getData(@Header("Authorization") String authToken);
+    Call<UserResponse> getData(@Header("Authorization") String authToken);
 
 
     @POST("check-in")
-    Call<CheckInResponse> checkedIn (@Header("Authorization") String authToken, @Body CheckIn checkInVehicle);
+    Call<CheckInResponse> checkedIn(@Header("Authorization") String authToken, @Body CheckIn checkInVehicle);
 
     @POST("check-out")
-    Call<CheckOutResponse> checkedOut (@Header("Authorization") String authToken, @Body CheckOut checkOutVehicle );
+    Call<CheckOutResponse> checkedOut(@Header("Authorization") String authToken, @Body CheckOut checkOutVehicle);
 
     @POST("vip-request")
-    Call<VIPRequestResponse> vipRequest (@Header("Authorization") String authToken, @Body VIPRequest vipRegistrationRequest );
+    Call<VIPRequestResponse> vipRequest(@Header("Authorization") String authToken, @Body VIPRequest vipRegistrationRequest);
 
     @POST("vip-check-in")
-    Call<VipCheckInResponse> vipcheckedIn (@Header("Authorization") String authToken, @Body VipCheckIn VipCheckInVehicle);
+    Call<VipCheckInResponse> vipcheckedIn(@Header("Authorization") String authToken, @Body VipCheckIn VipCheckInVehicle);
 
     @POST("vip-check-out")
-    Call<VipCheckOutResponse> vipcheckedOut (@Header("Authorization") String authToken, @Body VipCheckOut VipCheckOutVehicle);
+    Call<VipCheckOutResponse> vipcheckedOut(@Header("Authorization") String authToken, @Body VipCheckOut VipCheckOutVehicle);
 
 }

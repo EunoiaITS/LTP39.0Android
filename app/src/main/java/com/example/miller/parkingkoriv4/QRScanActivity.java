@@ -12,9 +12,9 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QRScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
+    private static final String AUTO_FOCUS_STATE = "AUTO_FOCUS_STATE";
     private ZXingScannerView mScannerView;
     private boolean mAutoFocus;
-    private static final String AUTO_FOCUS_STATE = "AUTO_FOCUS_STATE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class QRScanActivity extends AppCompatActivity implements ZXingScannerVie
     @Override
     public void handleResult(Result result) {
 
-        if (result.getText() != null){
+        if (result.getText() != null) {
             Intent qrCodeIntent = new Intent();
             qrCodeIntent.putExtra("barcode", result.getText());
             setResult(CommonStatusCodes.SUCCESS, qrCodeIntent);

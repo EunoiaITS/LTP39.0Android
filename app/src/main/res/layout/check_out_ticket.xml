@@ -13,27 +13,27 @@
         android:layout_marginTop="24dp"
         android:text="TextView"
         android:textColor="@color/buttonColor"
-        android:textSize="10pt"/>
+        android:textSize="10pt" />
 
     <TextView
-        android:textColor="@color/rememberme"
-        android:textStyle="bold"
-        android:textAlignment="center"
         android:id="@+id/textView15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="68dp"
-        android:text="Check In Token" />
+        android:text="Check In Token"
+        android:textAlignment="center"
+        android:textColor="@color/rememberme"
+        android:textStyle="bold" />
 
     <TableLayout
         android:id="@+id/table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView15"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
         android:layout_margin="5dp"
-        android:layout_below="@+id/textView15">
+        android:layout_marginTop="20dp">
 
         <TableRow>
 
@@ -63,24 +63,24 @@
 
             <TextView
                 android:id="@+id/ticketReg"
-                android:textColor="@color/rememberme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
                 android:text="Registration Number"
-                android:layout_margin="5dp"/>
+                android:textColor="@color/rememberme" />
 
             <TextView
                 android:id="@+id/checkout_print_registration_number_show"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
                 android:text="234ewdf"
                 android:textAlignment="center"
                 android:textColor="@color/rememberme"
-                android:textStyle="bold"
-                android:layout_margin="5dp"/>
+                android:textStyle="bold" />
         </TableRow>
 
         <TableRow>
@@ -100,11 +100,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
                 android:text="234ewdf"
                 android:textAlignment="center"
                 android:textColor="@color/rememberme"
-                android:textStyle="bold"
-                android:layout_margin="5dp"/>
+                android:textStyle="bold" />
         </TableRow>
 
         <TableRow>
@@ -124,11 +124,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
                 android:text="234ewdf"
                 android:textAlignment="center"
                 android:textColor="@color/rememberme"
-                android:textStyle="bold"
-                android:layout_margin="5dp"/>
+                android:textStyle="bold" />
         </TableRow>
 
         <TableRow>
@@ -148,11 +148,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
                 android:text="234ewdf"
                 android:textAlignment="center"
                 android:textColor="@color/rememberme"
-                android:textStyle="bold"
-                android:layout_margin="5dp"/>
+                android:textStyle="bold" />
         </TableRow>
 
         <TableRow>
@@ -172,11 +172,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
                 android:text="234ewdf"
                 android:textAlignment="center"
                 android:textColor="@color/rememberme"
-                android:textStyle="bold"
-                android:layout_margin="5dp"/>
+                android:textStyle="bold" />
         </TableRow>
     </TableLayout>
 

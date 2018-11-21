@@ -42,7 +42,7 @@ public class BluetoothUtil {
         BluetoothSocket socket;
         socket = device.createRfcommSocketToServiceRecord(PRINTER_UUID);
         socket.connect();
-        return  socket;
+        return socket;
     }
 
     /**

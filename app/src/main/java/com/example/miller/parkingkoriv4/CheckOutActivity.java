@@ -38,12 +38,11 @@ import retrofit2.Response;
 
 public class CheckOutActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawerLayout;
-    private ApiInterface apiInterface;
-
     EditText ticket_id;
     Button checkOutButton, scanBarcode;
     SurfaceView cameraReader;
+    private DrawerLayout mDrawerLayout;
+    private ApiInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,29 +60,27 @@ public class CheckOutActivity extends AppCompatActivity {
 
     }
 
-    public void scanBarcode (View view){
+    public void scanBarcode(View view) {
         Intent intent = new Intent(this, QRScanActivity.class);
         startActivityForResult(intent, 0);
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if (requestCode == 0){
-            if (resultCode == CommonStatusCodes.SUCCESS){
-                if (data != null){
+        if (requestCode == 0) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
                     String qrData = data.getExtras().getString("barcode");
                     Log.d("Code Return Text ", qrData);
                     ticket_id.setText(qrData);
-                }else {
+                } else {
                     //ticket_id.setText("No barcode found");
                     Toast.makeText(CheckOutActivity.this, "No barcode found!!", Toast.LENGTH_SHORT).show();
                 }
             }
-        }
-        else{
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -302,7 +299,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
         BluetoothUtil.connectBlueTooth(CheckOutActivity.this);
         String BILL = "";
-        BILL = "\n \n "+clientName+"  \n"
+        BILL = "\n \n " + clientName + "  \n"
                 + "Parking Ticket\n ";
         BILL = BILL
                 + "-----------------------------------------------\n";
@@ -321,7 +318,7 @@ public class CheckOutActivity extends AppCompatActivity {
         printThis.printByBluTooth(BILL);
     }
 
-    public void clickCancel (){
+    public void clickCancel() {
         final Button cancel = findViewById(R.id.cancel_checkout_button);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

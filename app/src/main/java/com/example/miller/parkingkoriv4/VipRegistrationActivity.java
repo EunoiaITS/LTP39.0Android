@@ -37,11 +37,11 @@ import retrofit2.Response;
 
 public class VipRegistrationActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawerLayout;
     EditText username, vreg, phonenumber, vipPurpose, vType;
-    private ApiInterface apiInterface;
     Button regApply;
     Spinner typeSpinner;
+    private DrawerLayout mDrawerLayout;
+    private ApiInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
 
         ArrayList<String> namelist = new ArrayList<>();
 
-        for (int i = 0; i < singleName.length; i ++){
+        for (int i = 0; i < singleName.length; i++) {
             namelist.add(singleID[i].concat(" ".concat(singleName[i])));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, namelist);
@@ -125,7 +125,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
         clickCancel();
     }
 
-    public void onRegistrationClick(){
+    public void onRegistrationClick() {
 
 
         //vType = findViewById(R.id.vip_vehicle_type_input);
@@ -137,11 +137,11 @@ public class VipRegistrationActivity extends AppCompatActivity {
         //String vT = vType.getText().toString();
         String typeName = String.valueOf(typeSpinner.getSelectedItem());
 
-        RegisterVIP(vipName,vregNum, phn, purp, typeName);
+        RegisterVIP(vipName, vregNum, phn, purp, typeName);
     }
 
 
-    public void RegisterVIP(String name, String car_reg, String phone, final String purpose, String vTy){
+    public void RegisterVIP(String name, String car_reg, String phone, final String purpose, String vTy) {
 
         String vtypesID = vTy.split(" ")[0];
         //final String vtypesName = vTy.split(" ")[1];
@@ -203,7 +203,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
                         }
                     });
 
-                }else{
+                } else {
                     Toast.makeText(VipRegistrationActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -220,7 +220,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
 
         BluetoothUtil.connectBlueTooth(VipRegistrationActivity.this);
         String BILL = "";
-        BILL = "\n \n "+clientName+"  \n"
+        BILL = "\n \n " + clientName + "  \n"
                 + "Parking Ticket\n ";
         BILL = BILL
                 + "-----------------------------------------------\n";
@@ -284,7 +284,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
     }
 
 
-    public void clickCancel (){
+    public void clickCancel() {
         final Button cancel = findViewById(R.id.cancel_vipReg_button);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,6 +293,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public void onBackPressed() {
         VipRegistrationActivity.this.finish();

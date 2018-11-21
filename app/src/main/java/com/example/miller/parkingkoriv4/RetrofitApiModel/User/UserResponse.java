@@ -11,13 +11,11 @@ public class UserResponse {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public UserResponse() {
     }
 
     /**
-     *
      * @param user
      */
     public UserResponse(User user) {

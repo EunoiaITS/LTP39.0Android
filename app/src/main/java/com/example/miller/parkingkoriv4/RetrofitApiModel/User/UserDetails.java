@@ -44,13 +44,11 @@ public class UserDetails {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public UserDetails() {
     }
 
     /**
-     *
      * @param updatedAt
      * @param employeeId
      * @param id

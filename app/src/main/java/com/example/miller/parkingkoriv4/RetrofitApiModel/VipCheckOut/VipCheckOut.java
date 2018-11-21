@@ -49,7 +49,6 @@ public class VipCheckOut {
     }
 
     /**
-     *
      * @param updatedAt
      * @param id
      * @param ticketId

@@ -13,9 +13,9 @@ public class ApiClient {
     public static Retrofit retrofit = null;
 
     //create and instance of retrofil
-    public static Retrofit getApiClient(){
+    public static Retrofit getApiClient() {
 
-        if (retrofit == null){
+        if (retrofit == null) {
 
 
             OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new LoggingInterceptors()).build();

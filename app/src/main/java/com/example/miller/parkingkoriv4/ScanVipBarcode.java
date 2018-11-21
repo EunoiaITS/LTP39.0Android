@@ -53,7 +53,7 @@ public class ScanVipBarcode extends AppCompatActivity {
     }
 
 
-    public void showNavigator(){
+    public void showNavigator() {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -156,7 +156,7 @@ public class ScanVipBarcode extends AppCompatActivity {
     }
 
     //vipcheckin
-    public void scanBarcode (View view){
+    public void scanBarcode(View view) {
         Intent intent = new Intent(this, QRScanActivity.class);
         startActivityForResult(intent, 0);
     }
@@ -183,30 +183,29 @@ public class ScanVipBarcode extends AppCompatActivity {
 
                 }
             }
-        }
-        else if (requestCode == 1) {
-                    if (resultCode == CommonStatusCodes.SUCCESS) {
-                        if (data != null) {
-                            String qrData = data.getExtras().getString("barcode");
-                            Log.d("Code Return Text ", qrData);
-                            checkOutVIP(qrData);
-                            //Barcode barcodeData = data.getParcelableExtra("barcode");
-                            //ticket_id.setText(barcodeData.displayValue);
+        } else if (requestCode == 1) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    String qrData = data.getExtras().getString("barcode");
+                    Log.d("Code Return Text ", qrData);
+                    checkOutVIP(qrData);
+                    //Barcode barcodeData = data.getParcelableExtra("barcode");
+                    //ticket_id.setText(barcodeData.displayValue);
 
-                            //checkOutVIP(barcodeData.displayValue);
-                            //Toast.makeText(CheckOutActivity.this, barcodeData.displayValue, Toast.LENGTH_SHORT).show();
-                        } else {
-                            //ticket_id.setText("No barcode found");
-                            Toast.makeText(ScanVipBarcode.this, "No Check Out barcode found!!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    //checkOutVIP(barcodeData.displayValue);
+                    //Toast.makeText(CheckOutActivity.this, barcodeData.displayValue, Toast.LENGTH_SHORT).show();
                 } else {
-                    super.onActivityResult(requestCode, resultCode, data);
+                    //ticket_id.setText("No barcode found");
+                    Toast.makeText(ScanVipBarcode.this, "No Check Out barcode found!!", Toast.LENGTH_SHORT).show();
                 }
             }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
 
-    public void checkInVip(String vipID){
+    public void checkInVip(String vipID) {
 
 
         SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
@@ -249,11 +248,12 @@ public class ScanVipBarcode extends AppCompatActivity {
                         }
                     });
                     //Toast.makeText(CheckInActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     //Toast.makeText(CheckInActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
                     Toast.makeText(ScanVipBarcode.this, "Wrong Data", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<VipCheckInResponse> call, Throwable t) {
                 Toast.makeText(ScanVipBarcode.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
@@ -262,7 +262,7 @@ public class ScanVipBarcode extends AppCompatActivity {
 
     }
 
-    public void checkOutVIP (String vip_id){
+    public void checkOutVIP(String vip_id) {
 
 
         SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);

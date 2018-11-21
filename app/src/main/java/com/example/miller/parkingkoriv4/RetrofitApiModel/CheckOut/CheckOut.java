@@ -56,7 +56,6 @@ public class CheckOut {
     }
 
     /**
-     *
      * @param updatedAt
      * @param id
      * @param ticketId

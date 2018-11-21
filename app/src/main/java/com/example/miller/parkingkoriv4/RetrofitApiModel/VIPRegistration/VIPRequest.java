@@ -3,7 +3,7 @@ package com.example.miller.parkingkoriv4.RetrofitApiModel.VIPRegistration;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VIPRequest{
+public class VIPRequest {
     @SerializedName("vipId")
     @Expose
     private String vipId;
@@ -43,13 +43,11 @@ public class VIPRequest{
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public VIPRequest() {
     }
 
     /**
-     *
      * @param id
      * @param updatedAt
      * @param phone

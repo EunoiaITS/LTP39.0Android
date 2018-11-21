@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <gradient
-        android:startColor="@color/appBarColorStart"
         android:centerColor="@color/appbarColorMid"
-        android:endColor="@color/appBarColorEnd" />
+        android:endColor="@color/appBarColorEnd"
+        android:startColor="@color/appBarColorStart" />
 </shape>

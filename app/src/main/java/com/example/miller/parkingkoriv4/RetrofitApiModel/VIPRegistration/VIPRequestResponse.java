@@ -16,13 +16,11 @@ public class VIPRequestResponse {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public VIPRequestResponse() {
     }
 
     /**
-     *
      * @param message
      * @param status
      * @param data

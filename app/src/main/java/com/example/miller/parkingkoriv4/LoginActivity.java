@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,13 +18,8 @@ import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.Login.LoginEmployee;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.Login.LoginResponse;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.User.UserResponse;
+import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -33,10 +29,30 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    ArrayList<String> userList = new ArrayList<>();
+    ArrayList<String> listEmails;
+    Boolean login_success = false;
     private ApiInterface apiInterface;
     private EditText userPass;
     private AutoCompleteTextView userEmail;
+
+    public static void saveToPrefs(Context context, ArrayList<String> listEmail) {
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+        Gson gson = new Gson();
+        String list = gson.toJson(listEmail);
+        prefsEditor.putString("list", list);
+        prefsEditor.commit();
+    }
+
+    public static ArrayList<String> getFromPrefs(Context context) {
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        Gson gson = new Gson();
+        String list = appSharedPrefs.getString("list", "");
+        ArrayList<String> listEmail = gson.fromJson(list, ArrayList.class);
+        return listEmail;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
         userEmail = findViewById(R.id.username_input);
         userPass = findViewById(R.id.password_input);
 
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,12 +71,27 @@ public class LoginActivity extends AppCompatActivity {
                 String pass = userPass.getText().toString();
                 if (email != null && pass != null) {
                     clickLogin(email, pass);
+                    login_success = true;
                 }
             }
         });
 
+        String email = getFromPrefs(LoginActivity.this).toString();
+        String trim_email = email.substring(1, email.length() - 1);
+        String[] splitEmail = trim_email.split(", ");
 
-        FileInputStream fis = null;
+        for (int i = 0; i < splitEmail.length; i++) {
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                    (this, android.R.layout.select_dialog_item, splitEmail);
+
+            userEmail.setThreshold(1);
+            userEmail.setAdapter(adapter);
+
+            //Toast.makeText(LoginActivity.this, splitEmail[0], Toast.LENGTH_SHORT).show();
+        }
+
+        /*FileInputStream fis = null;
         try {
             fis = openFileInput("save.txt");
             InputStreamReader isr = new InputStreamReader(fis);
@@ -95,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
 
 
     }
@@ -151,7 +181,22 @@ public class LoginActivity extends AppCompatActivity {
 
                     String emp_email = response.body().getUser().getEmail();
 
-                    FileOutputStream fos = null;
+                    listEmails = getFromPrefs(LoginActivity.this);
+
+                    if (listEmails == null) {
+                        listEmails = new ArrayList<>();
+                        listEmails.add(emp_email);
+                    } else {
+                        if (!listEmails.contains(emp_email)) {
+                            listEmails.add(emp_email);
+                        }
+                    }
+
+
+                    saveToPrefs(LoginActivity.this, listEmails);
+
+                    //Log.i("MainActivity", "onCreate: " + getFromPrefs(LoginActivity.this).toString());
+                    /*FileOutputStream fos = null;
 
                     try {
                         fos = openFileOutput("save.txt", MODE_APPEND);
@@ -167,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                    }
+                    }*/
 
                 } else {
                 }

@@ -32,13 +32,11 @@ public class CheckIn {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public CheckIn() {
     }
 
     /**
-     *
      * @param id
      * @param updatedAt
      * @param ticketId

@@ -6,6 +6,12 @@ public class LoginResponse {
     private String message;
     private int success;
 
+    public LoginResponse(String token, String message, int success) {
+        this.token = token;
+        this.message = message;
+        this.success = success;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -19,12 +25,6 @@ public class LoginResponse {
     }
 
     public void setSuccess(int success) {
-        this.success = success;
-    }
-
-    public LoginResponse(String token, String message, int success) {
-        this.token = token;
-        this.message = message;
         this.success = success;
     }
 

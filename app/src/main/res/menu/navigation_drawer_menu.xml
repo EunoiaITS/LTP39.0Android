@@ -4,25 +4,25 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/end_shift"
+            android:icon="@drawable/ic_block_black_24dp"
             android:title="@string/end_shift"
-            app:showAsAction="always"
-            android:icon="@drawable/ic_block_black_24dp"/>
+            app:showAsAction="always" />
         <item
             android:id="@+id/report"
+            android:icon="@drawable/ic_assignment_black_24dp"
             android:title="@string/report"
-            app:showAsAction="always"
-            android:icon="@drawable/ic_assignment_black_24dp"/>
+            app:showAsAction="always" />
         <item
             android:id="@+id/info"
+            android:icon="@drawable/ic_info_black_24dp"
             android:title="@string/information"
-            app:showAsAction="always"
-            android:icon="@drawable/ic_info_black_24dp"/>
+            app:showAsAction="always" />
 
         <item
             android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="@string/logout"
-            app:showAsAction="always"
-            android:icon="@drawable/ic_power_settings_new_black_24dp"/>
+            app:showAsAction="always" />
     </group>
 
 </menu>
