@@ -26,6 +26,9 @@ public class VipCheckIn {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("_token")
+    @Expose
+    private String _token;
 
     /**
      * No args constructor for use in serialization
@@ -53,10 +56,11 @@ public class VipCheckIn {
         this.id = id;
     }
 
-    public VipCheckIn(String vipId, String client_id, String emp_id) {
+    public VipCheckIn(String vipId, String client_id, String emp_id, String _token) {
         this.clientId = client_id;
         this.vipId = vipId;
         this.createdBy = emp_id;
+        this._token=_token;
     }
 
     public String getTicketId() {
@@ -113,5 +117,13 @@ public class VipCheckIn {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String get_token() {
+        return _token;
+    }
+
+    public void set_token(String _token) {
+        this._token = _token;
     }
 }

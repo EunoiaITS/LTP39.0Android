@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CheckInResponse {
+
     @SerializedName("status")
     @Expose
     private String status;
@@ -16,11 +17,13 @@ public class CheckInResponse {
 
     /**
      * No args constructor for use in serialization
+     *
      */
     public CheckInResponse() {
     }
 
     /**
+     *
      * @param message
      * @param status
      * @param data
@@ -55,4 +58,5 @@ public class CheckInResponse {
     public void setData(CheckIn data) {
         this.data = data;
     }
+
 }

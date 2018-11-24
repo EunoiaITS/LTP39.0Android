@@ -1,15 +1,33 @@
 package com.example.miller.parkingkoriv4.RetrofitApiModel.Login;
 
+import com.example.miller.parkingkoriv4.RetrofitApiModel.User.User;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class LoginResponse {
 
-    private String token;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("message")
+    @Expose
     private String message;
-    private int success;
+    @SerializedName("user")
+    @Expose
+    private User user;
 
-    public LoginResponse(String token, String message, int success) {
-        this.token = token;
+    public LoginResponse(User user, String message, String success) {
+        this.user = user;
         this.message = message;
-        this.success = success;
+        this.status = success;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getMessage() {
@@ -20,20 +38,11 @@ public class LoginResponse {
         this.message = message;
     }
 
-    public int getSuccess() {
-        return success;
+    public User getUser() {
+        return user;
     }
 
-    public void setSuccess(int success) {
-        this.success = success;
+    public void setUser(User user) {
+        this.user = user;
     }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
 }

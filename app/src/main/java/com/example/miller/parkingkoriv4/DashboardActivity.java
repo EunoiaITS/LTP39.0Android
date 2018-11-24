@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
 import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Login.LoginResponse;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.User.UserResponse;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.User.VehicleType;
 
@@ -80,10 +81,10 @@ public class DashboardActivity extends AppCompatActivity {
 
         navigationFunction();
         buttonsClicked();
-        getDataForId();
-        getVehicleType();
+        //getDataForId();
+        //getVehicleType();
 
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_name = userData.getString("client_name", "");
         toolTitle = findViewById(R.id.toolbar_title);
         toolTitle.setText(client_name);
@@ -214,14 +215,14 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    public void getDataForId() {
+    /*public void getDataForId() {
 
         SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
 
         String token = authToken.getString("token", "");
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<UserResponse> call = apiInterface.getData("Bearer " + token);
+        Call<LoginResponse> call = apiInterface.
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -247,7 +248,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onFailure(Call<UserResponse> call, Throwable t) {
             }
         });
-    }
+    }*/
 
 
     @Override
@@ -291,7 +292,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-    public void getVehicleType() {
+    /*public void getVehicleType() {
         SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
 
         String token = authToken.getString("token", "");
@@ -335,7 +336,7 @@ public class DashboardActivity extends AppCompatActivity {
                 Toast.makeText(DashboardActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 
     public void zxingqr(View view) {
         Intent logoutIntent = new Intent(this, QRScanActivity.class);

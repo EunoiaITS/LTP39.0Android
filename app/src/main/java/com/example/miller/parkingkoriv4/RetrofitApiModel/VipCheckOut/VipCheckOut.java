@@ -32,6 +32,9 @@ public class VipCheckOut {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("_token")
+    @Expose
+    private String _token;
 
     /**
      * No args constructor for use in serialization
@@ -41,11 +44,12 @@ public class VipCheckOut {
      * @param s
      * @param client_id
      */
-    public VipCheckOut(String vip_id, String employee, String s, String client_id) {
+    public VipCheckOut(String vip_id, String employee, String s, String client_id, String _token) {
         this.vipId = vip_id;
         this.clientId = client_id;
         this.updatedAt = s;
         this.updatedBy = employee;
+        this._token=_token;
     }
 
     /**
@@ -142,5 +146,13 @@ public class VipCheckOut {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String get_token() {
+        return _token;
+    }
+
+    public void set_token(String _token) {
+        this._token = _token;
     }
 }

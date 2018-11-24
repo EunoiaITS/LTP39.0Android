@@ -29,24 +29,25 @@ public class CheckIn {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("_token")
+    @Expose
+    private String _token;
 
     /**
      * No args constructor for use in serialization
+     *
      */
     public CheckIn() {
     }
 
     /**
-     * @param id
-     * @param updatedAt
-     * @param ticketId
+     *
      * @param createdBy
-     * @param createdAt
      * @param vehicleType
      * @param vehicleReg
      * @param clientId
      */
-    public CheckIn(String ticketId, String clientId, String vehicleReg, String vehicleType, String createdBy, String updatedAt, String createdAt, Integer id) {
+    public CheckIn(String ticketId, String clientId, String vehicleReg, String vehicleType, String createdBy, String updatedAt, String createdAt, Integer id, String _token) {
         super();
         this.ticketId = ticketId;
         this.clientId = clientId;
@@ -56,13 +57,18 @@ public class CheckIn {
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
         this.id = id;
+        this._token = _token;
     }
 
-    public CheckIn(String clientId, String vehicleReg, String vehicleType, String createdBy) {
+
+    public CheckIn(String clientId, String vehicleReg, String vehicleType, String createdBy, String _token) {
+        super();
+
         this.clientId = clientId;
         this.vehicleReg = vehicleReg;
         this.vehicleType = vehicleType;
         this.createdBy = createdBy;
+        this._token = _token;
     }
 
     public String getTicketId() {
@@ -127,5 +133,13 @@ public class CheckIn {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String get_token() {
+        return _token;
+    }
+
+    public void set_token(String _token) {
+        this._token = _token;
     }
 }

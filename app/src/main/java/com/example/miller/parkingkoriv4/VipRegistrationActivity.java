@@ -55,7 +55,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
 
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_name = userData.getString("client_name", "");
         final TextView toolTitle = findViewById(R.id.toolbar_title);
         toolTitle.setText(client_name);
@@ -146,16 +146,15 @@ public class VipRegistrationActivity extends AppCompatActivity {
         String vtypesID = vTy.split(" ")[0];
         //final String vtypesName = vTy.split(" ")[1];
 
-        final SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        final SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         final String client_id = userData.getString("client_id", "");
-        String emp_id = userData.getString("emp_id", "");
+        String emp_id = String.valueOf(userData.getInt("emp_id", 0));
+        String get_token = userData.getString("token", "");
 
-        VIPRequest newRequest = new VIPRequest(name, vtypesID, client_id, car_reg, phone, purpose, emp_id);
+        VIPRequest newRequest = new VIPRequest(name, vtypesID, client_id, car_reg, phone, purpose, emp_id, get_token);
 
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-        String token = authToken.getString("token", "");
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<VIPRequestResponse> call = apiInterface.vipRequest("Bearer " + token, newRequest);
+        Call<VIPRequestResponse> call = apiInterface.vipRequest(newRequest);
 
         call.enqueue(new Callback<VIPRequestResponse>() {
             @Override

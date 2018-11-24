@@ -37,22 +37,19 @@ public class CheckOut {
     @SerializedName("fair")
     @Expose
     private Integer fair;
+    @SerializedName("_token")
+    @Expose
+    private String _token;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     * @param vip_id
-     * @param employee
-     * @param s
-     * @param client_id
-     */
-    public CheckOut(String vip_id, String employee, String s, String client_id) {
+
+    public CheckOut() {
     }
 
-    public CheckOut(String ticketId, String updatedBy, String updatedAt) {
+    public CheckOut(String ticketId, String updatedBy, String updatedAt, String _token) {
         this.ticketId = ticketId;
         this.updatedBy = updatedBy;
         this.updatedAt = updatedAt;
+        this._token = _token;
     }
 
     /**
@@ -169,5 +166,13 @@ public class CheckOut {
 
     public void setFair(Integer fair) {
         this.fair = fair;
+    }
+
+    public String get_token() {
+        return _token;
+    }
+
+    public void set_token(String _token) {
+        this._token = _token;
     }
 }

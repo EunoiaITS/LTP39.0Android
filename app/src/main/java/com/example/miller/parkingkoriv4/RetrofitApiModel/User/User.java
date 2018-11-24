@@ -28,6 +28,9 @@ public class User {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("api_token")
+    @Expose
+    private String apiToken;
     @SerializedName("details")
     @Expose
     private UserDetails details;
@@ -37,6 +40,7 @@ public class User {
     @SerializedName("vehicle_types")
     @Expose
     private List<VehicleType> vehicleTypes = null;
+
 
     /**
      * No args constructor for use in serialization
@@ -56,7 +60,7 @@ public class User {
      * @param role
      * @param vehicleTypes
      */
-    public User(int id, String name, String email, String role, String status, String createdAt, String updatedAt, UserDetails details, Client client, List<VehicleType> vehicleTypes) {
+    public User(int id, String name, String email, String role, String status, String createdAt,String apiToken, String updatedAt, UserDetails details, Client client, List<VehicleType> vehicleTypes) {
         super();
         this.id = id;
         this.name = name;
@@ -64,6 +68,7 @@ public class User {
         this.role = role;
         this.status = status;
         this.createdAt = createdAt;
+        this.apiToken = apiToken;
         this.updatedAt = updatedAt;
         this.details = details;
         this.client = client;
@@ -116,6 +121,14 @@ public class User {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
     }
 
     public String getUpdatedAt() {

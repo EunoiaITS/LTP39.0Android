@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -17,10 +18,12 @@ import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
 import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.Login.LoginEmployee;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.Login.LoginResponse;
-import com.example.miller.parkingkoriv4.RetrofitApiModel.User.UserResponse;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.User.VehicleType;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +33,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     ArrayList<String> listEmails;
-    Boolean login_success = false;
+    public boolean login_success;
     private ApiInterface apiInterface;
     private EditText userPass;
     private AutoCompleteTextView userEmail;
@@ -44,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         prefsEditor.putString("list", list);
         prefsEditor.commit();
     }
+
 
     public static ArrayList<String> getFromPrefs(Context context) {
         SharedPreferences appSharedPrefs = PreferenceManager
@@ -71,67 +75,37 @@ public class LoginActivity extends AppCompatActivity {
                 String pass = userPass.getText().toString();
                 if (email != null && pass != null) {
                     clickLogin(email, pass);
-                    login_success = true;
                 }
             }
         });
 
-        String email = getFromPrefs(LoginActivity.this).toString();
-        String trim_email = email.substring(1, email.length() - 1);
-        String[] splitEmail = trim_email.split(", ");
 
-        for (int i = 0; i < splitEmail.length; i++) {
+        if (getFromPrefs(LoginActivity.this)!=null) {
+            String pattern = "]"+", "+"\\[";
+            String email = getFromPrefs(LoginActivity.this).toString();
+            String trim_email = email.substring(2, email.length() - 2);
+            String[] splitEmail = trim_email.split(pattern);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (this, android.R.layout.select_dialog_item, splitEmail);
 
-            userEmail.setThreshold(1);
-            userEmail.setAdapter(adapter);
+            for (int i = 0; i < splitEmail.length; i++) {
 
-            //Toast.makeText(LoginActivity.this, splitEmail[0], Toast.LENGTH_SHORT).show();
+                //String trim_again = splitEmail[i].substring(1, splitEmail[i].length()-1);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                        (this, android.R.layout.select_dialog_item, splitEmail);
+
+                userEmail.setThreshold(1);
+                userEmail.setAdapter(adapter);
+
+
+                //Toast.makeText(LoginActivity.this, splitEmail[0], Toast.LENGTH_SHORT).show();
+            }
+            Log.i("MainActivity", "onCreate: " + getFromPrefs(this).toString());
         }
-
-        /*FileInputStream fis = null;
-        try {
-            fis = openFileInput("save.txt");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-
-            while ((text = br.readLine()) != null) {
-                sb.append(text).append("\n");
-                String[] sep = text.split(",");
-                for (int i = 0; i < sep.length; i++) {
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                            (this, android.R.layout.select_dialog_item, sep);
-
-                    userEmail.setThreshold(1);
-                    userEmail.setAdapter(adapter);
-                }
-                //Toast.makeText(LoginActivity.this, sep[1], Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
-
 
     }
 
     public void clickLogin(String email, String password) {
-        LoginEmployee loginEmployee = new LoginEmployee(email, password);
+        final LoginEmployee loginEmployee = new LoginEmployee(email, password);
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<LoginResponse> call = apiInterface.loginEmployee(loginEmployee);
 
@@ -139,14 +113,51 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
-                    SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
 
-                    SharedPreferences.Editor editor = authToken.edit();
-                    editor.putString("token", response.body().getToken());
+                    SharedPreferences userDetails = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = userDetails.edit();
+                    editor.putString("token", response.body().getUser().getApiToken());
+                    editor.putString("emp_email", response.body().getUser().getDetails().getEmail());
+                    editor.putString("emp_search_id", response.body().getUser().getDetails().getEmployeeId());
+                    editor.putInt("emp_id", response.body().getUser().getId());
+                    editor.putString("emp_name", response.body().getUser().getName());
+                    editor.putString("client_id", response.body().getUser().getDetails().getClientId());
+                    editor.putString("client_name", response.body().getUser().getClient().getName());
                     editor.apply();
 
-                    getDataForId();
 
+                    StringBuilder vID = new StringBuilder();
+                    StringBuilder vName = new StringBuilder();
+                    List<VehicleType> vt = response.body().getUser().getVehicleTypes();
+                    for (int i = 0; i < vt.size(); i++) {
+                        SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor vehicleEditor = vehicleData.edit();
+
+                        vID.append(vt.get(i).getId()).append(",");
+                        vName.append(vt.get(i).getTypeName()).append(",");
+
+                        vehicleEditor.putString("vehicle_type_id", vID.toString());
+                        vehicleEditor.putString("vehicle_type_name", vName.toString());
+
+                        vehicleEditor.apply();
+                    }
+
+                    String emp_email = String.valueOf(Collections.singleton(response.body().getUser().getDetails().getEmail()));
+                    listEmails = getFromPrefs(LoginActivity.this);
+                    if(listEmails == null){
+                        listEmails = new ArrayList<>();
+                        listEmails.add(emp_email);
+                    }else{
+                        if(!listEmails.contains(emp_email)){
+                            listEmails.add(emp_email);
+                        }
+                    }
+                    saveToPrefs(LoginActivity.this, listEmails);
+
+
+
+
+                    login_success = true;
                     Intent dashboard = new Intent(LoginActivity.this, DashboardActivity.class);
                     startActivity(dashboard);
 
@@ -164,64 +175,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void CancelApp(View view) {
         LoginActivity.this.finish();
-    }
-
-    public void getDataForId() {
-
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-        String token = authToken.getString("token", "");
-
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<UserResponse> call = apiInterface.getData("Bearer " + token);
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-
-                if (response.isSuccessful()) {
-
-                    String emp_email = response.body().getUser().getEmail();
-
-                    listEmails = getFromPrefs(LoginActivity.this);
-
-                    if (listEmails == null) {
-                        listEmails = new ArrayList<>();
-                        listEmails.add(emp_email);
-                    } else {
-                        if (!listEmails.contains(emp_email)) {
-                            listEmails.add(emp_email);
-                        }
-                    }
-
-
-                    saveToPrefs(LoginActivity.this, listEmails);
-
-                    //Log.i("MainActivity", "onCreate: " + getFromPrefs(LoginActivity.this).toString());
-                    /*FileOutputStream fos = null;
-
-                    try {
-                        fos = openFileOutput("save.txt", MODE_APPEND);
-                        fos.write(emp_email.getBytes());
-                        fos.write(',');
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (fos != null) {
-                            try {
-                                fos.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }*/
-
-                } else {
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-            }
-        });
     }
 
 }

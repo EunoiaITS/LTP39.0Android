@@ -40,6 +40,9 @@ public class VIPRequest {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("_token")
+    @Expose
+    private String _token;
 
     /**
      * No args constructor for use in serialization
@@ -77,7 +80,7 @@ public class VIPRequest {
         this.id = id;
     }
 
-    public VIPRequest(String name, String vTy, String client_id, String car_reg, String phone, String purpose, String emp_id) {
+    public VIPRequest(String name, String vTy, String client_id, String car_reg, String phone, String purpose, String emp_id, String _token) {
         this.name = name;
         this.vehicleType = vTy;
         this.clientId = client_id;
@@ -85,6 +88,7 @@ public class VIPRequest {
         this.phone = phone;
         this.purpose = purpose;
         this.requestedBy = emp_id;
+        this._token = _token;
     }
 
     public String getVipId() {
@@ -181,5 +185,13 @@ public class VIPRequest {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String get_token() {
+        return _token;
+    }
+
+    public void set_token(String _token) {
+        this._token = _token;
     }
 }

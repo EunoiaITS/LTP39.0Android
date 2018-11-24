@@ -61,7 +61,7 @@ public class ScanVipBarcode extends AppCompatActivity {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
 
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_name = userData.getString("client_name", "");
         final TextView toolTitle = findViewById(R.id.toolbar_title);
         toolTitle.setText(client_name);
@@ -138,14 +138,8 @@ public class ScanVipBarcode extends AppCompatActivity {
     }
 
     public void logoutApp() {
-        //Remove token
-        SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
-        SharedPreferences.Editor tokenDataEditor = authToken.edit();
-        tokenDataEditor.clear();
-        tokenDataEditor.commit();
-
         //remove user data
-        SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", MODE_PRIVATE);
         SharedPreferences.Editor userDataEditor = userData.edit();
         userDataEditor.clear();
         userDataEditor.commit();
@@ -208,16 +202,17 @@ public class ScanVipBarcode extends AppCompatActivity {
     public void checkInVip(String vipID) {
 
 
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_id = userData.getString("client_id", "");
-        String emp_id = userData.getString("emp_id", "");
+        String emp_id = String.valueOf(userData.getInt("emp_id", 0));
+        String get_token = userData.getString("token", "");
 
-        VipCheckIn checkInVehicle = new VipCheckIn(vipID, client_id, emp_id);
+        VipCheckIn checkInVehicle = new VipCheckIn(vipID, client_id, emp_id,get_token);
 
         SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
         String token = authToken.getString("token", "");
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<VipCheckInResponse> call = apiInterface.vipcheckedIn("Bearer " + token, checkInVehicle);
+        Call<VipCheckInResponse> call = apiInterface.vipcheckedIn(checkInVehicle);
 
         call.enqueue(new Callback<VipCheckInResponse>() {
             @Override
@@ -265,16 +260,17 @@ public class ScanVipBarcode extends AppCompatActivity {
     public void checkOutVIP(String vip_id) {
 
 
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_id = userData.getString("client_id", "");
-        String employee = userData.getString("emp_id", "");
+        String emp_id = String.valueOf(userData.getInt("emp_id", 0));
+        String get_token = userData.getString("token", "");
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
-        VipCheckOut checkoutVehicle = new VipCheckOut(vip_id, employee, currentTimestamp.toString(), client_id);
+        VipCheckOut checkoutVehicle = new VipCheckOut(vip_id, emp_id, currentTimestamp.toString(), client_id, get_token);
         SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
         String token = authToken.getString("token", "");
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<VipCheckOutResponse> call = apiInterface.vipcheckedOut("Bearer " + token, checkoutVehicle);
+        Call<VipCheckOutResponse> call = apiInterface.vipcheckedOut(checkoutVehicle);
 
         call.enqueue(new Callback<VipCheckOutResponse>() {
             @Override

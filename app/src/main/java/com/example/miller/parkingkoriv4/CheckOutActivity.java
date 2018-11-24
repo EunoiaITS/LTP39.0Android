@@ -94,7 +94,7 @@ public class CheckOutActivity extends AppCompatActivity {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
 
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_name = userData.getString("client_name", "");
         final TextView toolTitle = findViewById(R.id.toolbar_title);
         toolTitle.setText(client_name);
@@ -151,28 +151,6 @@ public class CheckOutActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
 
-/*            case R.id.user_profile:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-
-            case R.id.logout:
-                //Remove token
-                SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
-                SharedPreferences.Editor tokenDataEditor = authToken.edit();
-                tokenDataEditor.clear();
-                tokenDataEditor.commit();
-
-                //remove user data
-                SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
-                SharedPreferences.Editor userDataEditor = userData.edit();
-                userDataEditor.clear();
-                userDataEditor.commit();
-
-                Intent logoutIntent = new Intent(this, LoginActivity.class);
-                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(logoutIntent);
-                return true;*/
-
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -188,13 +166,14 @@ public class CheckOutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String tID = ticket_id.getText().toString();
-                SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
-
-                String emp_id = userData.getString("emp_id", "");
+                SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                String client_id = userData.getString("client_id", "");
+                String emp_id = String.valueOf(userData.getInt("emp_id", 0));
+                String get_token = userData.getString("token", "");
 
                 java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
-                checkOutVehicle(tID, emp_id, currentTimestamp.toString());
+                checkOutVehicle(tID, emp_id, currentTimestamp.toString(), get_token);
 
                 SharedPreferences outTime = getSharedPreferences("outTime", Context.MODE_PRIVATE);
 
@@ -206,13 +185,13 @@ public class CheckOutActivity extends AppCompatActivity {
 
     }
 
-    public void checkOutVehicle(final String ticketID, String employee, String check_out_at) {
+    public void checkOutVehicle(final String ticketID, String employee, String check_out_at, String _token) {
 
-        CheckOut checkoutVehicle = new CheckOut(ticketID, employee, check_out_at);
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-        String token = authToken.getString("token", "");
+        CheckOut checkoutVehicle = new CheckOut(ticketID, employee, check_out_at, _token);
+        //SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
+        //String token = authToken.getString("token", "");
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<CheckOutResponse> call = apiInterface.checkedOut("Bearer " + token, checkoutVehicle);
+        Call<CheckOutResponse> call = apiInterface.checkedOut(checkoutVehicle);
 
         call.enqueue(new Callback<CheckOutResponse>() {
             @Override

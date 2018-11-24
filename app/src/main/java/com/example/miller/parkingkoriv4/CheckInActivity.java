@@ -72,7 +72,7 @@ public class CheckInActivity extends AppCompatActivity {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
 
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_name = userData.getString("client_name", "");
         final TextView toolTitle = findViewById(R.id.toolbar_title);
         toolTitle.setText(client_name);
@@ -197,11 +197,12 @@ public class CheckInActivity extends AppCompatActivity {
         }
     }*/
 
-    public void checkInVip(String vipId) {
+    /*public void checkInVip(String vipId) {
 
-        SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_id = userData.getString("client_id", "");
         String emp_id = userData.getString("emp_id", "");
+        String get_token = userData.getString("token", "");
 
         VipCheckIn checkInVehicle = new VipCheckIn(vipId, client_id, emp_id);
 
@@ -250,7 +251,7 @@ public class CheckInActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
     public void onClickCheckIn() {
 
@@ -281,29 +282,27 @@ public class CheckInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //spinner
-                SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+                SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
                 String client_id = userData.getString("client_id", "");
-                String emp_id = userData.getString("emp_id", "");
+                String emp_id = String.valueOf(userData.getInt("emp_id", 0));
+                String get_token = userData.getString("token", "");
                 String typeName = String.valueOf(typeSpinner.getSelectedItem());
                 String reg_no = regNum.getText().toString();
 
 
-                checkInVehicle(client_id, reg_no, typeName, emp_id);
+                checkInVehicle(client_id, reg_no, typeName, emp_id, get_token);
             }
         });
     }
 
-    public void checkInVehicle(String clientID, String reg, String type, final String created_by) {
+    public void checkInVehicle(String clientID, String reg, String type, final String created_by, String get_token) {
 
         String vtypesID = type.split(" ")[0];
         final String vtypesName = type.split(" ")[1];
 
-
-        CheckIn checkInVehicle = new CheckIn(clientID, reg, vtypesID, created_by);
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-        String token = authToken.getString("token", "");
+        CheckIn checkInVehicle = new CheckIn(clientID, reg, vtypesID, created_by, get_token);
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<CheckInResponse> call = apiInterface.checkedIn("Bearer " + token, checkInVehicle);
+        Call<CheckInResponse> call = apiInterface.checkedIn(checkInVehicle);
 
         call.enqueue(new Callback<CheckInResponse>() {
             @Override
@@ -311,13 +310,16 @@ public class CheckInActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     CheckIn check_in_data = response.body().getData();
 
+                    String checkInStatus = response.body().getStatus();
+                    String checkInMessage = response.body().getMessage();
+
                     SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
                     final String client_name = userData.getString("client_name", "");
 
                     final String ticID = check_in_data.getTicketId();
                     final String regNo = check_in_data.getVehicleReg();
                     final String inTime = check_in_data.getCreatedAt();
-                    //final String vType = check_in_data.getVehicleType();
+                    final String vType = check_in_data.getVehicleType();
 
                     //String vTName;
 
