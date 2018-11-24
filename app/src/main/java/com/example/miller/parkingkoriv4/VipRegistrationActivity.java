@@ -40,6 +40,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
     EditText username, vreg, phonenumber, vipPurpose, vType;
     Button regApply;
     Spinner typeSpinner;
+    TextView toolTitle;
     private DrawerLayout mDrawerLayout;
     private ApiInterface apiInterface;
 
@@ -47,52 +48,13 @@ public class VipRegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vip_registration);
+        navigationFunction();
+        formData();
+        clickCancel();
+    }
 
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        ActionBar actionbar = getSupportActionBar();
-        if (actionbar != null) {
-            actionbar.setDisplayHomeAsUpEnabled(true);
-        }
 
-        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        String client_name = userData.getString("client_name", "");
-        final TextView toolTitle = findViewById(R.id.toolbar_title);
-        toolTitle.setText(client_name);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-                        switch (menuItem.getItemId()) {
-                            case R.id.end_shift:
-                                Log.d("clicked", "end shift clicked");
-                                break;
-                            case R.id.report:
-                                break;
-                            case R.id.info:
-                                infoAlert();
-                                break;
-                            case R.id.nav_logout:
-                                logoutApp();
-                                break;
-                        }
-
-                        return true;
-                    }
-                });
-
+    public void formData() {
         username = findViewById(R.id.vip_name_input);
         vreg = findViewById(R.id.vip_vehicle_num_input);
         phonenumber = findViewById(R.id.vip_phone_input);
@@ -122,8 +84,69 @@ public class VipRegistrationActivity extends AppCompatActivity {
                 onRegistrationClick();
             }
         });
-        clickCancel();
     }
+
+    public void navigationFunction() {
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionbar = getSupportActionBar();
+
+        if (actionbar != null) {
+            actionbar.setDisplayHomeAsUpEnabled(true);
+        }
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String client_name = userData.getString("client_name", "");
+        String emp_name = userData.getString("emp_name", "");
+        toolTitle = findViewById(R.id.toolbar_title);
+        toolTitle.setText(client_name);
+
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View hView = navigationView.getHeaderView(0);
+        TextView navHeader = hView.findViewById(R.id.company_name);
+        navHeader.setText(client_name);
+
+        TextView empHeader = hView.findViewById(R.id.emp_name);
+        empHeader.setText(emp_name);
+
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+                        switch (menuItem.getItemId()) {
+                            case R.id.end_shift:
+                                Log.d("clicked", "end shift clicked");
+                                break;
+                            case R.id.report:
+                                break;
+                            case R.id.info:
+                                infoAlert();
+                                break;
+                            case R.id.nav_logout:
+                                logoutApp();
+                                break;
+                        }
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        return true;
+                    }
+                });
+    }
+
 
     public void onRegistrationClick() {
 

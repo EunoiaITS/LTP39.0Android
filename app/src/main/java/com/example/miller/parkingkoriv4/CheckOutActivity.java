@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,8 +38,8 @@ import retrofit2.Response;
 public class CheckOutActivity extends AppCompatActivity {
 
     EditText ticket_id;
-    Button checkOutButton, scanBarcode;
-    SurfaceView cameraReader;
+    Button checkOutButton;
+    TextView toolTitle;
     private DrawerLayout mDrawerLayout;
     private ApiInterface apiInterface;
 
@@ -52,8 +51,7 @@ public class CheckOutActivity extends AppCompatActivity {
         ticket_id = findViewById(R.id.checkout_regnum_input);
 
 
-        //navigationFunction();
-        showNavigator();
+        navigationFunction();
         onClickCheckout();
         clickCancel();
 
@@ -86,23 +84,37 @@ public class CheckOutActivity extends AppCompatActivity {
     }
 
 
-    public void showNavigator() {
+    public void navigationFunction() {
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+
         if (actionbar != null) {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
-
-        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        String client_name = userData.getString("client_name", "");
-        final TextView toolTitle = findViewById(R.id.toolbar_title);
-        toolTitle.setText(client_name);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String client_name = userData.getString("client_name", "");
+        String emp_name = userData.getString("emp_name", "");
+        toolTitle = findViewById(R.id.toolbar_title);
+        toolTitle.setText(client_name);
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View hView = navigationView.getHeaderView(0);
+        TextView navHeader = hView.findViewById(R.id.company_name);
+        navHeader.setText(client_name);
+
+        TextView empHeader = hView.findViewById(R.id.emp_name);
+        empHeader.setText(emp_name);
+
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -127,21 +139,11 @@ public class CheckOutActivity extends AppCompatActivity {
                                 logoutApp();
                                 break;
                         }
-
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                     }
                 });
-
     }
-
-/*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toobar_menu, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -188,8 +190,6 @@ public class CheckOutActivity extends AppCompatActivity {
     public void checkOutVehicle(final String ticketID, String employee, String check_out_at, String _token) {
 
         CheckOut checkoutVehicle = new CheckOut(ticketID, employee, check_out_at, _token);
-        //SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-        //String token = authToken.getString("token", "");
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<CheckOutResponse> call = apiInterface.checkedOut(checkoutVehicle);
 
@@ -252,14 +252,6 @@ public class CheckOutActivity extends AppCompatActivity {
                             ticket_id.setText("");
                         }
                     });
-
-                    /*Button cancelCheckOutPrint = checkOutReceipt.findViewById(R.id.cancel_print_checkout);
-                    cancelCheckOutPrint.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogue.cancel();
-                        }
-                    });*/
                 } else {
                     Toast.makeText(CheckOutActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                 }
@@ -311,38 +303,6 @@ public class CheckOutActivity extends AppCompatActivity {
     public void onBackPressed() {
         CheckOutActivity.this.finish();
     }
-
-/*    public void navigationFunction() {
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-                        switch (menuItem.getItemId()) {
-                            case R.id.end_shift:
-                                Log.d("clicked", "end shift clicked");
-                                break;
-                            case R.id.report:
-                                break;
-                            case R.id.info:
-                                infoAlert();
-                                break;
-                            case R.id.nav_logout:
-                                logoutApp();
-                                break;
-                        }
-
-                        return true;
-                    }
-                });
-    }*/
 
     private void infoAlert() {
         AlertDialog.Builder infoDialogue = new AlertDialog.Builder(CheckOutActivity.this);

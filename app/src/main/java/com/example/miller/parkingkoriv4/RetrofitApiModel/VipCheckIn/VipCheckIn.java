@@ -60,7 +60,7 @@ public class VipCheckIn {
         this.clientId = client_id;
         this.vipId = vipId;
         this.createdBy = emp_id;
-        this._token=_token;
+        this._token = _token;
     }
 
     public String getTicketId() {

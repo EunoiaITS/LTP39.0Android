@@ -15,7 +15,6 @@ import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckOut.VipCheckOut
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface ApiInterface {

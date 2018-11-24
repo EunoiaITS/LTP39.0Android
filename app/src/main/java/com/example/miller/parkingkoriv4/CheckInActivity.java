@@ -29,8 +29,6 @@ import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
 import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckIn.CheckIn;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckIn.CheckInResponse;
-import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckIn.VipCheckIn;
-import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckIn.VipCheckInResponse;
 
 import java.util.ArrayList;
 
@@ -41,11 +39,11 @@ import retrofit2.Response;
 public class CheckInActivity extends AppCompatActivity {
 
     Spinner typeSpinner;
-    Button vehicleCheckIn, scanBarcode;
+    Button vehicleCheckIn;
     EditText regNum;
+    TextView toolTitle;
     private DrawerLayout mDrawerLayout;
     private ApiInterface apiInterface;
-    private boolean exit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,7 @@ public class CheckInActivity extends AppCompatActivity {
 
         //navigationFunction();
 
-        showNavigator();
+        navigationFunction();
 
         onClickCheckIn();
 
@@ -64,25 +62,37 @@ public class CheckInActivity extends AppCompatActivity {
 
     }
 
-    public void showNavigator() {
+    public void navigationFunction() {
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+
         if (actionbar != null) {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
-
-        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        String client_name = userData.getString("client_name", "");
-        final TextView toolTitle = findViewById(R.id.toolbar_title);
-        toolTitle.setText(client_name);
-
-
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String client_name = userData.getString("client_name", "");
+        String emp_name = userData.getString("emp_name", "");
+        toolTitle = findViewById(R.id.toolbar_title);
+        toolTitle.setText(client_name);
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View hView = navigationView.getHeaderView(0);
+        TextView navHeader = hView.findViewById(R.id.company_name);
+        navHeader.setText(client_name);
+
+        TextView empHeader = hView.findViewById(R.id.emp_name);
+        empHeader.setText(emp_name);
+
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -92,8 +102,6 @@ public class CheckInActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch (menuItem.getItemId()) {
@@ -109,20 +117,11 @@ public class CheckInActivity extends AppCompatActivity {
                                 logoutApp();
                                 break;
                         }
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                     }
                 });
-
     }
-
-/*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toobar_menu, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -131,28 +130,6 @@ public class CheckInActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-
-/*            case R.id.user_profile:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-
-            case R.id.logout:
-                //Remove token
-                SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
-                SharedPreferences.Editor tokenDataEditor = authToken.edit();
-                tokenDataEditor.clear();
-                tokenDataEditor.commit();
-
-                //remove user data
-                SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
-                SharedPreferences.Editor userDataEditor = userData.edit();
-                userDataEditor.clear();
-                userDataEditor.commit();
-
-                Intent logoutIntent = new Intent(this, LoginActivity.class);
-                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(logoutIntent);
-                return true;*/
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -173,92 +150,11 @@ public class CheckInActivity extends AppCompatActivity {
         });
     }
 
-    /*public void scanBarcode (View view){
-        Intent intent = new Intent(this, ScanBarcodeActivity.class);
-        startActivityForResult(intent, 0);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        if (requestCode == 0){
-            if (resultCode == CommonStatusCodes.SUCCESS){
-                if (data != null){
-                    //Barcode barcodeData = data.getParcelableExtra("barcode");
-                    //checkInVip(barcodeData.displayValue);
-                    //Toast.makeText(CheckInActivity.this, String.valueOf(barcodeData.displayValue), Toast.LENGTH_SHORT).show();
-                }else {
-                    //ticket_id.setText("No barcode found");
-                    Toast.makeText(CheckInActivity.this, "No barcode found!!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }*/
-
-    /*public void checkInVip(String vipId) {
-
-        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        String client_id = userData.getString("client_id", "");
-        String emp_id = userData.getString("emp_id", "");
-        String get_token = userData.getString("token", "");
-
-        VipCheckIn checkInVehicle = new VipCheckIn(vipId, client_id, emp_id);
-
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-        String token = authToken.getString("token", "");
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<VipCheckInResponse> call = apiInterface.vipcheckedIn("Bearer " + token, checkInVehicle);
-
-        call.enqueue(new Callback<VipCheckInResponse>() {
-            @Override
-            public void onResponse(Call<VipCheckInResponse> call, Response<VipCheckInResponse> response) {
-                if (response.isSuccessful()) {
-                    VipCheckIn check_in_data = response.body().getData();
-
-                    AlertDialog.Builder checkInDialogue = new AlertDialog.Builder(CheckInActivity.this);
-                    View checkOutReceipt = getLayoutInflater().inflate(R.layout.vip_alert, null);
-
-                    TextView clientName = checkOutReceipt.findViewById(R.id.vip_alert_title);
-                    clientName.setText(check_in_data.getVipId());
-
-                    TextView receiptText = checkOutReceipt.findViewById(R.id.textView15);
-                    receiptText.setText(response.message());
-
-
-                    checkInDialogue.setView(checkOutReceipt);
-                    final AlertDialog dialogue = checkInDialogue.create();
-                    dialogue.show();
-
-                    final Button printCheckOut = checkOutReceipt.findViewById(R.id.dismiss_dialog);
-                    printCheckOut.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogue.dismiss();
-                        }
-                    });
-                    //Toast.makeText(CheckInActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                } else {
-                    //Toast.makeText(CheckInActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(CheckInActivity.this, "Wrong Data", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<VipCheckInResponse> call, Throwable t) {
-                Toast.makeText(CheckInActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }*/
 
     public void onClickCheckIn() {
 
         regNum = findViewById(R.id.checkin_regnum__input);
         vehicleCheckIn = findViewById(R.id.checkin_confirm_button);
-
-        //getVehicleType();
 
         SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
         String ids = vehicleData.getString("vehicle_type_id", "");
@@ -330,15 +226,6 @@ public class CheckInActivity extends AppCompatActivity {
                     String[] singleName = names.split(",");
                     String[] singleID = ids.split(",");
 
-                    /*for (int i = 0; i < singleID.length; i ++){
-                        if (singleID[i] == vType){
-                            vTName = singleName[i];
-                        }else{
-                            vTName = "";
-                        }
-                    }*/
-
-
                     Toast.makeText(CheckInActivity.this, ticID, Toast.LENGTH_SHORT).show();
 
                     AlertDialog.Builder checkInDialogue = new AlertDialog.Builder(CheckInActivity.this);
@@ -372,15 +259,6 @@ public class CheckInActivity extends AppCompatActivity {
                             CheckInActivity.this.finish();
                         }
                     });
-
-                    /*Button cencelCheckInPrint = checkInTicket.findViewById(R.id.cancel_print_checkin);
-                    cencelCheckInPrint.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogue.cancel();
-                            CheckInActivity.this.finish();
-                        }
-                    });*/
                 } else {
                     Toast.makeText(CheckInActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
                 }
@@ -431,43 +309,6 @@ public class CheckInActivity extends AppCompatActivity {
             }
         });
     }
-
-/*    @Override
-    public void onBackPressed() {
-        CheckInActivity.this.finish();
-    }
-
-    public void navigationFunction() {
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-                        switch (menuItem.getItemId()) {
-                            case R.id.end_shift:
-                                Log.d("clicked", "end shift clicked");
-                                break;
-                            case R.id.report:
-                                break;
-                            case R.id.info:
-                                infoAlert();
-                                break;
-                            case R.id.nav_logout:
-                                logoutApp();
-                                break;
-                        }
-
-                        return true;
-                    }
-                });
-    }*/
 
     private void infoAlert() {
         AlertDialog.Builder infoDialogue = new AlertDialog.Builder(CheckInActivity.this);

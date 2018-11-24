@@ -32,8 +32,8 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    ArrayList<String> listEmails;
     public boolean login_success;
+    ArrayList<String> listEmails;
     private ApiInterface apiInterface;
     private EditText userPass;
     private AutoCompleteTextView userEmail;
@@ -80,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        if (getFromPrefs(LoginActivity.this)!=null) {
-            String pattern = "]"+", "+"\\[";
+        if (getFromPrefs(LoginActivity.this) != null) {
+            String pattern = "]" + ", " + "\\[";
             String email = getFromPrefs(LoginActivity.this).toString();
             String trim_email = email.substring(2, email.length() - 2);
             String[] splitEmail = trim_email.split(pattern);
@@ -144,17 +144,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     String emp_email = String.valueOf(Collections.singleton(response.body().getUser().getDetails().getEmail()));
                     listEmails = getFromPrefs(LoginActivity.this);
-                    if(listEmails == null){
+                    if (listEmails == null) {
                         listEmails = new ArrayList<>();
                         listEmails.add(emp_email);
-                    }else{
-                        if(!listEmails.contains(emp_email)){
+                    } else {
+                        if (!listEmails.contains(emp_email)) {
                             listEmails.add(emp_email);
                         }
                     }
                     saveToPrefs(LoginActivity.this, listEmails);
-
-
 
 
                     login_success = true;

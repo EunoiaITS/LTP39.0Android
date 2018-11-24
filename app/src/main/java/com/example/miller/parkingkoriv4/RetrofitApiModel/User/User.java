@@ -60,7 +60,7 @@ public class User {
      * @param role
      * @param vehicleTypes
      */
-    public User(int id, String name, String email, String role, String status, String createdAt,String apiToken, String updatedAt, UserDetails details, Client client, List<VehicleType> vehicleTypes) {
+    public User(int id, String name, String email, String role, String status, String createdAt, String apiToken, String updatedAt, UserDetails details, Client client, List<VehicleType> vehicleTypes) {
         super();
         this.id = id;
         this.name = name;

@@ -24,24 +24,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
-import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
-import com.example.miller.parkingkoriv4.RetrofitApiModel.Login.LoginResponse;
-import com.example.miller.parkingkoriv4.RetrofitApiModel.User.UserResponse;
-import com.example.miller.parkingkoriv4.RetrofitApiModel.User.VehicleType;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class DashboardActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     TextView toolTitle;
     private DrawerLayout mDrawerLayout;
-    private ApiInterface apiInterface;
     private boolean exit = false;
 
     @Override
@@ -66,30 +53,8 @@ public class DashboardActivity extends AppCompatActivity {
             // Permission has already been granted
         }
 
-        int i = 0;
-
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        ActionBar actionbar = getSupportActionBar();
-
-        if (actionbar != null) {
-            actionbar.setDisplayHomeAsUpEnabled(true);
-        }
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-
         navigationFunction();
         buttonsClicked();
-        //getDataForId();
-        //getVehicleType();
-
-        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        String client_name = userData.getString("client_name", "");
-        toolTitle = findViewById(R.id.toolbar_title);
-        toolTitle.setText(client_name);
-
-
     }
 
 /*    @Override
@@ -102,7 +67,36 @@ public class DashboardActivity extends AppCompatActivity {
     }*/
 
     public void navigationFunction() {
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionbar = getSupportActionBar();
+
+        if (actionbar != null) {
+            actionbar.setDisplayHomeAsUpEnabled(true);
+        }
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String client_name = userData.getString("client_name", "");
+        String emp_name = userData.getString("emp_name", "");
+        toolTitle = findViewById(R.id.toolbar_title);
+        toolTitle.setText(client_name);
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View hView = navigationView.getHeaderView(0);
+        TextView navHeader = hView.findViewById(R.id.company_name);
+        navHeader.setText(client_name);
+
+        TextView empHeader = hView.findViewById(R.id.emp_name);
+        empHeader.setText(emp_name);
+
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override

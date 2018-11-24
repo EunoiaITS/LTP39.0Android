@@ -37,9 +37,9 @@ import retrofit2.Response;
 public class ScanVipBarcode extends AppCompatActivity {
 
 
+    TextView toolTitle;
     private DrawerLayout mDrawerLayout;
     private ApiInterface apiInterface;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,31 +47,43 @@ public class ScanVipBarcode extends AppCompatActivity {
         setContentView(R.layout.activity_scan_vip_barcode);
 
 
-        showNavigator();
+        navigationFunction();
         //clickCancel();
 
     }
 
 
-    public void showNavigator() {
+    public void navigationFunction() {
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
+
         if (actionbar != null) {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
-
-        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        String client_name = userData.getString("client_name", "");
-        final TextView toolTitle = findViewById(R.id.toolbar_title);
-        toolTitle.setText(client_name);
-
-
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String client_name = userData.getString("client_name", "");
+        String emp_name = userData.getString("emp_name", "");
+        toolTitle = findViewById(R.id.toolbar_title);
+        toolTitle.setText(client_name);
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View hView = navigationView.getHeaderView(0);
+        TextView navHeader = hView.findViewById(R.id.company_name);
+        navHeader.setText(client_name);
+
+        TextView empHeader = hView.findViewById(R.id.emp_name);
+        empHeader.setText(emp_name);
+
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -81,8 +93,6 @@ public class ScanVipBarcode extends AppCompatActivity {
                         // close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch (menuItem.getItemId()) {
@@ -98,11 +108,12 @@ public class ScanVipBarcode extends AppCompatActivity {
                                 logoutApp();
                                 break;
                         }
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                     }
                 });
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -166,10 +177,6 @@ public class ScanVipBarcode extends AppCompatActivity {
         if (requestCode == 0) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    //Barcode barcodeData = data.getParcelableExtra("barcode");
-                    //checkInVip(barcodeData.displayValue);
-                    //Toast.makeText(CheckInActivity.this, String.valueOf(barcodeData.displayValue), Toast.LENGTH_SHORT).show();
-
                     String qrData = data.getExtras().getString("barcode");
                     Log.d("Code Return Text ", qrData);
                     checkInVip(qrData);
@@ -183,13 +190,7 @@ public class ScanVipBarcode extends AppCompatActivity {
                     String qrData = data.getExtras().getString("barcode");
                     Log.d("Code Return Text ", qrData);
                     checkOutVIP(qrData);
-                    //Barcode barcodeData = data.getParcelableExtra("barcode");
-                    //ticket_id.setText(barcodeData.displayValue);
-
-                    //checkOutVIP(barcodeData.displayValue);
-                    //Toast.makeText(CheckOutActivity.this, barcodeData.displayValue, Toast.LENGTH_SHORT).show();
                 } else {
-                    //ticket_id.setText("No barcode found");
                     Toast.makeText(ScanVipBarcode.this, "No Check Out barcode found!!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -207,7 +208,7 @@ public class ScanVipBarcode extends AppCompatActivity {
         String emp_id = String.valueOf(userData.getInt("emp_id", 0));
         String get_token = userData.getString("token", "");
 
-        VipCheckIn checkInVehicle = new VipCheckIn(vipID, client_id, emp_id,get_token);
+        VipCheckIn checkInVehicle = new VipCheckIn(vipID, client_id, emp_id, get_token);
 
         SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
         String token = authToken.getString("token", "");
@@ -242,9 +243,7 @@ public class ScanVipBarcode extends AppCompatActivity {
                             ScanVipBarcode.this.finish();
                         }
                     });
-                    //Toast.makeText(CheckInActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
                 } else {
-                    //Toast.makeText(CheckInActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
                     Toast.makeText(ScanVipBarcode.this, "Wrong Data", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -279,8 +278,6 @@ public class ScanVipBarcode extends AppCompatActivity {
                     VipCheckOut check_out_data = response.body().getData();
                     String respon = response.body().getMessage();
 
-                    //Toast.makeText(CheckOutActivity.this, ticID, Toast.LENGTH_SHORT).show();
-
                     AlertDialog.Builder checkInDialogue = new AlertDialog.Builder(ScanVipBarcode.this);
                     View checkOutReceipt = getLayoutInflater().inflate(R.layout.vip_alert, null);
 
@@ -313,14 +310,4 @@ public class ScanVipBarcode extends AppCompatActivity {
             }
         });
     }
-
-/*    public void clickCancel (){
-        final Button cancel = findViewById(R.id.checkin_cancel_button);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ScanVipBarcode.this.finish();
-            }
-        });
-    }*/
 }

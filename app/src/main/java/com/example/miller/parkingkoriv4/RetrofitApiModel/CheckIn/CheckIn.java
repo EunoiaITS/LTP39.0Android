@@ -35,13 +35,11 @@ public class CheckIn {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public CheckIn() {
     }
 
     /**
-     *
      * @param createdBy
      * @param vehicleType
      * @param vehicleReg

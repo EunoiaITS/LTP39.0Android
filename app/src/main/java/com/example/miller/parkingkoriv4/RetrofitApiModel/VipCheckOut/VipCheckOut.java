@@ -49,7 +49,7 @@ public class VipCheckOut {
         this.clientId = client_id;
         this.updatedAt = s;
         this.updatedBy = employee;
-        this._token=_token;
+        this._token = _token;
     }
 
     /**
