@@ -28,6 +28,7 @@ import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckOut.CheckOut;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckOut.CheckOutResponse;
 import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import java.util.Calendar;
 
@@ -37,6 +38,7 @@ import retrofit2.Response;
 
 public class CheckOutActivity extends AppCompatActivity {
 
+    private static final int RC_BARCODE_CAPTURE = 9001;
     EditText ticket_id;
     Button checkOutButton;
     TextView toolTitle;
@@ -59,7 +61,9 @@ public class CheckOutActivity extends AppCompatActivity {
     }
 
     public void scanBarcode(View view) {
-        Intent intent = new Intent(this, QRScanActivity.class);
+        Intent intent = new Intent(CheckOutActivity.this, QRReader.class);
+        //intent.putExtra(QRReader.AutoFocus, true);
+        //intent.putExtra(QRReader.UseFlash, true);
         startActivityForResult(intent, 0);
     }
 
@@ -70,9 +74,9 @@ public class CheckOutActivity extends AppCompatActivity {
         if (requestCode == 0) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    String qrData = data.getExtras().getString("barcode");
-                    Log.d("Code Return Text ", qrData);
-                    ticket_id.setText(qrData);
+                    Barcode barcode = data.getParcelableExtra(QRReader.BarcodeObject);
+                    //Log.d("Code Return Text ", qrData);
+                    ticket_id.setText(barcode.displayValue);
                 } else {
                     //ticket_id.setText("No barcode found");
                     Toast.makeText(CheckOutActivity.this, "No barcode found!!", Toast.LENGTH_SHORT).show();

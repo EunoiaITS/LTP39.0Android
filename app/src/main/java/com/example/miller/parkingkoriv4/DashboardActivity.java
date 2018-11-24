@@ -190,17 +190,6 @@ public class DashboardActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-
-            /*case R.id.user_profile:
-                // User chose the "Settings" item, show the app settings UI...
-
-                return true;
-
-            case R.id.logout:
-
-                logoutApp();
-                return true;*/
-
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -208,42 +197,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         }
     }
-
-    /*public void getDataForId() {
-
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-
-        String token = authToken.getString("token", "");
-
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<LoginResponse> call = apiInterface.
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-
-                if (response.isSuccessful()) {
-
-                    UserResponse empData = response.body();
-                    SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
-
-                    SharedPreferences.Editor userEditor = userData.edit();
-                    userEditor.putString("emp_id", String.valueOf(empData.getUser().getId()));
-                    userEditor.putString("emp_name", empData.getUser().getName());
-                    userEditor.putString("client_id", empData.getUser().getDetails().getClientId());
-                    userEditor.putString("client_name", empData.getUser().getClient().getName());
-                    userEditor.apply();
-
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-            }
-        });
-    }*/
-
 
     @Override
     public void onBackPressed() {
@@ -280,63 +233,8 @@ public class DashboardActivity extends AppCompatActivity {
                 return;
             }
 
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
-
-
-    /*public void getVehicleType() {
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-
-        String token = authToken.getString("token", "");
-
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<UserResponse> call = apiInterface.getData("Bearer " + token);
-
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                if (response.isSuccessful()) {
-                    List<VehicleType> vt = response.body().getUser().getVehicleTypes();
-
-                    StringBuilder vID = new StringBuilder();
-                    StringBuilder vName = new StringBuilder();
-
-                    for (int i = 0; i < vt.size(); i++) {
-                        //Log.d("Type", vt.get(i).getTypeName());
-
-                        SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
-
-                        SharedPreferences.Editor vehicleEditor = vehicleData.edit();
-
-                        vID.append(vt.get(i).getId()).append(",");
-                        vName.append(vt.get(i).getTypeName()).append(",");
-
-
-                        vehicleEditor.putString("vehicle_type_id", vID.toString());
-                        vehicleEditor.putString("vehicle_type_name", vName.toString());
-
-                        vehicleEditor.apply();
-                    }
-
-                } else {
-                    //Toast.makeText(CheckInActivity.this, "Not login", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                Toast.makeText(DashboardActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }*/
-
-    public void zxingqr(View view) {
-        Intent logoutIntent = new Intent(this, QRScanActivity.class);
-        startActivity(logoutIntent);
-    }
-
 
     public void logoutApp() {
         //Remove token

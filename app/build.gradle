@@ -36,4 +36,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     //QR code reader
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
+    //QR Vision
+    implementation 'com.google.android.gms:play-services-vision:16.2.0'
 }

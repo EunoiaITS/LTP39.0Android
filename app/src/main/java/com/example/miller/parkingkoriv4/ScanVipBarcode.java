@@ -27,6 +27,7 @@ import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckIn.VipCheckInRe
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckOut.VipCheckOut;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckOut.VipCheckOutResponse;
 import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import java.util.Calendar;
 
@@ -162,12 +163,16 @@ public class ScanVipBarcode extends AppCompatActivity {
 
     //vipcheckin
     public void scanBarcode(View view) {
-        Intent intent = new Intent(this, QRScanActivity.class);
+        Intent intent = new Intent(ScanVipBarcode.this, QRReader.class);
+        //intent.putExtra(QRReader.AutoFocus, true);
+        //intent.putExtra(QRReader.UseFlash, true);
         startActivityForResult(intent, 0);
     }
 
     public void scanVipCheckOut(View view) {
-        Intent intent = new Intent(this, QRScanActivity.class);
+        Intent intent = new Intent(ScanVipBarcode.this, QRReader.class);
+        //intent.putExtra(QRReader.AutoFocus, true);
+        //intent.putExtra(QRReader.UseFlash, true);
         startActivityForResult(intent, 1);
     }
 
@@ -177,9 +182,9 @@ public class ScanVipBarcode extends AppCompatActivity {
         if (requestCode == 0) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    String qrData = data.getExtras().getString("barcode");
-                    Log.d("Code Return Text ", qrData);
-                    checkInVip(qrData);
+                    Barcode barcode = data.getParcelableExtra(QRReader.BarcodeObject);
+                    //Log.d("Code Return Text ", qrData);
+                    checkInVip(String.valueOf(barcode.displayValue));
 
 
                 }
@@ -187,9 +192,9 @@ public class ScanVipBarcode extends AppCompatActivity {
         } else if (requestCode == 1) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    String qrData = data.getExtras().getString("barcode");
-                    Log.d("Code Return Text ", qrData);
-                    checkOutVIP(qrData);
+                    Barcode barcode = data.getParcelableExtra(QRReader.BarcodeObject);
+                    //Log.d("Code Return Text ", qrData);
+                    checkOutVIP(barcode.displayValue);
                 } else {
                     Toast.makeText(ScanVipBarcode.this, "No Check Out barcode found!!", Toast.LENGTH_SHORT).show();
                 }
