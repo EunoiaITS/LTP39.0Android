@@ -1,5 +1,6 @@
 package com.example.miller.parkingkoriv4;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,9 +35,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean login_success;
     ArrayList<String> listEmails;
-    private ApiInterface apiInterface;
     private EditText userPass;
     private AutoCompleteTextView userEmail;
+    private ProgressDialog progress;
 
     public static void saveToPrefs(Context context, ArrayList<String> listEmail) {
         SharedPreferences appSharedPrefs = PreferenceManager
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
         userEmail = findViewById(R.id.username_input);
         userPass = findViewById(R.id.password_input);
+        progress = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (email != null && pass != null) {
                     clickLogin(email, pass);
                 }
+                progress.setTitle("Please wait for server to log you in");
+                progress.show();
             }
         });
 
@@ -105,8 +109,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void clickLogin(String email, String password) {
+
         final LoginEmployee loginEmployee = new LoginEmployee(email, password);
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<LoginResponse> call = apiInterface.loginEmployee(loginEmployee);
 
         call.enqueue(new Callback<LoginResponse>() {
@@ -114,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
 
+                    progress.hide();
                     SharedPreferences userDetails = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = userDetails.edit();
                     editor.putString("token", response.body().getUser().getApiToken());
@@ -137,7 +143,8 @@ public class LoginActivity extends AppCompatActivity {
                         vName.append(vt.get(i).getTypeName()).append(",");
 
                         vehicleEditor.putString("vehicle_type_id", vID.toString());
-                        vehicleEditor.putString("vehicle_type_name", vName.toString());
+                        //vehicleEditor.putString("vehicle_type_name", vName.toString());
+                        vehicleEditor.putString(vID.toString(), vName.toString());
 
                         vehicleEditor.apply();
                     }
@@ -166,7 +173,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "No Network!! : " + t, Toast.LENGTH_SHORT).show();
+                progress.hide();
+                Toast.makeText(LoginActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
             }
         });
     }

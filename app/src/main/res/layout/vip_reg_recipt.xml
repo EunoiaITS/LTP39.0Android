@@ -47,7 +47,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"
-                android:text="Applicant ID"
+                android:text="Applicant ID "
                 android:textColor="@color/rememberme" />
 
             <TextView
@@ -74,7 +74,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"
-                android:text="Applicant Name"
+                android:text="Applicant Name "
                 android:textColor="@color/rememberme" />
 
             <TextView
@@ -89,6 +89,86 @@
                 android:textStyle="bold" />
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/vip_phone_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Phone "
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/vip_phone_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/vip_regNo_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Car Registration No "
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/vip_regNo_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/vip_purpose_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="Purpose "
+                android:textColor="@color/rememberme" />
+
+            <TextView
+                android:id="@+id/vip_purpose_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:text="234ewdf"
+                android:textAlignment="center"
+                android:textColor="@color/rememberme"
+                android:textStyle="bold" />
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"

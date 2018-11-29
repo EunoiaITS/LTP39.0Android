@@ -1,12 +1,13 @@
 package com.example.miller.parkingkoriv4;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -17,12 +18,28 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
+import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Reports.Report;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Reports.ReportResponse;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Stats.Stats;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -30,11 +47,21 @@ public class DashboardActivity extends AppCompatActivity {
     TextView toolTitle;
     private DrawerLayout mDrawerLayout;
     private boolean exit = false;
+    private ProgressDialog progress;
+    private TableLayout reportTable;
+
+    private Timer timer;
+    private TimerTask timerTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        progress = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
+        reportTable = findViewById(R.id.report_table);
+
+        //Create EditText for parking status dynamically
+
 
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(DashboardActivity.this,
@@ -55,16 +82,32 @@ public class DashboardActivity extends AppCompatActivity {
 
         navigationFunction();
         buttonsClicked();
+
+        try {
+            timer = new Timer();
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    //Download file here and refresh
+                    getReport();
+                }
+            };
+            timer.schedule(timerTask, 100, 1000);
+        } catch (IllegalStateException e) {
+            android.util.Log.i("Damn", "resume error");
+        }
+
     }
 
-/*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toobar_menu, menu);
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
-        return super.onCreateOptionsMenu(menu);
-    }*/
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     public void navigationFunction() {
 
@@ -109,10 +152,9 @@ public class DashboardActivity extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch (menuItem.getItemId()) {
-                            case R.id.end_shift:
-                                Log.d("clicked", "end shift clicked");
-                                break;
+
                             case R.id.report:
+                                getStats();
                                 break;
                             case R.id.info:
                                 infoAlert();
@@ -126,6 +168,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     private void infoAlert() {
         AlertDialog.Builder infoDialogue = new AlertDialog.Builder(DashboardActivity.this);
@@ -199,24 +242,6 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (exit)
-            DashboardActivity.this.finish();
-        else {
-            Toast.makeText(this, "Press Back again to Exit.",
-                    Toast.LENGTH_SHORT).show();
-            exit = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    exit = false;
-                }
-            }, 3 * 1000);
-
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -254,6 +279,131 @@ public class DashboardActivity extends AppCompatActivity {
         logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(logoutIntent);
 
+    }
+
+
+    public void getReport() {
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        final String client_id = userData.getString("client_id", "");
+        final String get_token = userData.getString("token", "");
+
+        Report getReport = new Report(get_token, client_id);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<ReportResponse> call = apiInterface.GetEmployeeReport(getReport);
+
+        call.enqueue(new Callback<ReportResponse>() {
+            @Override
+            public void onResponse(Call<ReportResponse> call, Response<ReportResponse> response) {
+                if (response.isSuccessful()) {
+
+                    List<Report> showReport = response.body().getReport();
+                    int childCount = reportTable.getChildCount();
+                    // Remove all rows except the first one
+                    if (childCount > 0) {
+                        reportTable.removeAllViews();
+                    }
+
+                    StringBuilder vID = new StringBuilder();
+                    for (int i = 0; i < showReport.size(); i++) {
+
+                        TableRow row = new TableRow(DashboardActivity.this);
+
+                        row.setLayoutParams(new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+                        for (int j = 0; j < 1; j++) {
+                            TextView name = new TextView(DashboardActivity.this);
+                            TextView stat = new TextView(DashboardActivity.this);
+
+                            name.setTextColor(Color.RED);
+                            name.setTextSize(2, 15);
+                            stat.setTextColor(Color.BLACK);
+                            stat.setTextSize(2, 15);
+
+                            name.setText(showReport.get(i).getTypeName());
+                            row.addView(name);
+
+                            stat.setText(String.valueOf(showReport.get(i).getCheckIn()));
+                            row.addView(stat);
+
+                        }
+                        reportTable.addView(row);
+                    }
+
+
+                } else {
+                    Toast.makeText(DashboardActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReportResponse> call, Throwable t) {
+                Toast.makeText(DashboardActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    public void getStats() {
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String get_token = userData.getString("token", "");
+
+        Stats getStatus = new Stats(get_token);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Stats> call = apiInterface.getStats(getStatus);
+
+        call.enqueue(new Callback<Stats>() {
+            @Override
+            public void onResponse(Call<Stats> call, Response<Stats> response) {
+                if (response.isSuccessful()) {
+                    progress.hide();
+
+                    SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                    final String emp_name = userData.getString("emp_name", "");
+
+                    AlertDialog.Builder reportDialog = new AlertDialog.Builder(DashboardActivity.this);
+                    View reportData = getLayoutInflater().inflate(R.layout.employee_report, null);
+
+                    TextView eName = reportData.findViewById(R.id.emp_name);
+                    eName.setText(emp_name);
+
+                    java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+                    TextView dateTime = reportData.findViewById(R.id.date_and_time);
+                    dateTime.setText(String.valueOf(currentTimestamp));
+
+                    TextView checkIN = reportData.findViewById(R.id.checkIn_count);
+                    checkIN.setText(String.valueOf(response.body().getCheckIn()));
+
+                    TextView checkOut = reportData.findViewById(R.id.checkOut_count);
+                    checkOut.setText(String.valueOf(response.body().getCheckOut()));
+
+                    TextView earning = reportData.findViewById(R.id.earning_count);
+                    earning.setText(String.valueOf(response.body().getIncome()));
+
+                    reportDialog.setView(reportData);
+                    final AlertDialog dialogue = reportDialog.create();
+                    dialogue.show();
+
+                    final Button end = reportData.findViewById(R.id.end_report_dialog);
+                    end.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogue.dismiss();
+                        }
+                    });
+                } else {
+                    progress.hide();
+                    Toast.makeText(DashboardActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Stats> call, Throwable t) {
+                progress.hide();
+                Toast.makeText(DashboardActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

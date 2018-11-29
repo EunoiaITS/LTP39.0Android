@@ -45,11 +45,12 @@ public class CheckOut {
     public CheckOut() {
     }
 
-    public CheckOut(String ticketId, String updatedBy, String updatedAt, String _token) {
+    public CheckOut(String ticketId, String updatedBy, String updatedAt, String _token, String vech_reg) {
         this.ticketId = ticketId;
         this.updatedBy = updatedBy;
         this.updatedAt = updatedAt;
         this._token = _token;
+        this.vehicleReg = vech_reg;
     }
 
     /**

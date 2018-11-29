@@ -63,20 +63,6 @@
                     android:textColor="@color/buttonColor"
                     android:textSize="13pt" />
 
-                <Button
-                    android:id="@+id/checkin_scanbarcode_button"
-                    style="?android:borderlessButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="20dp"
-                    android:background="@color/buttonColor"
-                    android:onClick="scanBarcode"
-                    android:text="@string/scan_barcode"
-                    android:textAppearance="@style/CustomFont"
-                    android:textColor="@color/backgroundWhite"
-                    android:visibility="gone" />
-
                 <TextView
                     android:id="@+id/type_selection_title"
                     android:layout_width="match_parent"
@@ -92,46 +78,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!--<Button
-                        android:id="@+id/checkin_car_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/backgroundWhite"
-                        android:text="@string/car"
-                        android:textAppearance="@style/CustomFont"
-                        android:textColor="@color/rememberme"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginLeft="20dp"
-                        style="?android:borderlessButtonStyle"/>
-
-                    <Button
-                        android:id="@+id/checkin_bike_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/backgroundWhite"
-                        android:text="Bike"
-                        android:textAppearance="@style/CustomFont"
-                        android:textColor="@color/rememberme"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginBottom="20dp"
-                        style="?android:borderlessButtonStyle"/>
-
-                    <Button
-                        android:id="@+id/checkin_cycle_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/backgroundWhite"
-                        android:text="Cycle"
-                        android:textAppearance="@style/CustomFont"
-                        android:textColor="@color/rememberme"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        style="?android:borderlessButtonStyle"/>-->
                     <Spinner
                         android:id="@+id/vehicle_type_spinner"
                         android:layout_width="match_parent"
@@ -169,6 +115,7 @@
                     android:paddingStart="20dp"
                     android:paddingLeft="20dp"
                     android:textAlignment="center"
+                    android:maxLength="6"
                     android:textColor="@color/blackText" />
 
 

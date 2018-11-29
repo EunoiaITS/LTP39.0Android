@@ -77,7 +77,7 @@
 
 
                 <TextView
-                    android:id="@+id/or_title"
+                    android:id="@+id/ticket_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -91,14 +91,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/checkout_regnum_input"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_margin="20dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
                         android:background="@drawable/input_box_border"
                         android:backgroundTint="@color/backgroundWhite"
                         android:ems="10"
@@ -109,10 +109,44 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/or_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Enter Vehicle Number"
+                    android:textAppearance="@style/CustomFont"
+                    android:textColor="@color/rememberme"
+                    android:textSize="20sp" />
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/checkout_reg_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/input_box_border"
+                        android:backgroundTint="@color/backgroundWhite"
+                        android:ems="10"
+                        android:hint="@string/registration_ticket_no"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:textAlignment="center"
+                        android:textColor="@color/rememberme" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
 
                     <Button
                         android:id="@+id/checkout_confirm_button"

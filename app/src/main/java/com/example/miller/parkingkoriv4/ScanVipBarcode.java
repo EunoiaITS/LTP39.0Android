@@ -1,5 +1,6 @@
 package com.example.miller.parkingkoriv4;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +14,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
 import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Stats.Stats;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckIn.VipCheckIn;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckIn.VipCheckInResponse;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckOut.VipCheckOut;
@@ -41,15 +42,17 @@ public class ScanVipBarcode extends AppCompatActivity {
     TextView toolTitle;
     private DrawerLayout mDrawerLayout;
     private ApiInterface apiInterface;
+    private ProgressDialog progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_vip_barcode);
 
-
         navigationFunction();
         //clickCancel();
+        progress = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
 
     }
 
@@ -97,10 +100,9 @@ public class ScanVipBarcode extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch (menuItem.getItemId()) {
-                            case R.id.end_shift:
-                                Log.d("clicked", "end shift clicked");
-                                break;
+
                             case R.id.report:
+                                getStats();
                                 break;
                             case R.id.info:
                                 infoAlert();
@@ -184,6 +186,8 @@ public class ScanVipBarcode extends AppCompatActivity {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(QRReader.BarcodeObject);
                     //Log.d("Code Return Text ", qrData);
+                    progress.setTitle("Please wait.......");
+                    progress.show();
                     checkInVip(String.valueOf(barcode.displayValue));
 
 
@@ -194,6 +198,8 @@ public class ScanVipBarcode extends AppCompatActivity {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(QRReader.BarcodeObject);
                     //Log.d("Code Return Text ", qrData);
+                    progress.setTitle("Please wait.......");
+                    progress.show();
                     checkOutVIP(barcode.displayValue);
                 } else {
                     Toast.makeText(ScanVipBarcode.this, "No Check Out barcode found!!", Toast.LENGTH_SHORT).show();
@@ -224,6 +230,8 @@ public class ScanVipBarcode extends AppCompatActivity {
             @Override
             public void onResponse(Call<VipCheckInResponse> call, Response<VipCheckInResponse> response) {
                 if (response.isSuccessful()) {
+                    progress.hide();
+
                     VipCheckIn check_in_data = response.body().getData();
 
                     AlertDialog.Builder checkInDialogue = new AlertDialog.Builder(ScanVipBarcode.this);
@@ -249,12 +257,14 @@ public class ScanVipBarcode extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ScanVipBarcode.this, "Wrong Data", Toast.LENGTH_SHORT).show();
+                    progress.hide();
+                    Toast.makeText(ScanVipBarcode.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<VipCheckInResponse> call, Throwable t) {
+                progress.hide();
                 Toast.makeText(ScanVipBarcode.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
             }
         });
@@ -280,6 +290,8 @@ public class ScanVipBarcode extends AppCompatActivity {
             @Override
             public void onResponse(Call<VipCheckOutResponse> call, Response<VipCheckOutResponse> response) {
                 if (response.isSuccessful()) {
+                    progress.hide();
+
                     VipCheckOut check_out_data = response.body().getData();
                     String respon = response.body().getMessage();
 
@@ -305,13 +317,77 @@ public class ScanVipBarcode extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ScanVipBarcode.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    progress.hide();
+                    Toast.makeText(ScanVipBarcode.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<VipCheckOutResponse> call, Throwable t) {
-                Toast.makeText(ScanVipBarcode.this, "Not Connected" + t, Toast.LENGTH_SHORT).show();
+                progress.hide();
+                Toast.makeText(ScanVipBarcode.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getStats() {
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String get_token = userData.getString("token", "");
+
+        Stats getStatus = new Stats(get_token);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Stats> call = apiInterface.getStats(getStatus);
+
+        call.enqueue(new Callback<Stats>() {
+            @Override
+            public void onResponse(Call<Stats> call, Response<Stats> response) {
+                if (response.isSuccessful()) {
+                    progress.hide();
+
+                    SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                    final String emp_name = userData.getString("emp_name", "");
+
+                    AlertDialog.Builder reportDialog = new AlertDialog.Builder(ScanVipBarcode.this);
+                    View reportData = getLayoutInflater().inflate(R.layout.employee_report, null);
+
+                    TextView eName = reportData.findViewById(R.id.emp_name);
+                    eName.setText(emp_name);
+
+                    java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+                    TextView dateTime = reportData.findViewById(R.id.date_and_time);
+                    dateTime.setText(String.valueOf(currentTimestamp));
+
+                    TextView checkIN = reportData.findViewById(R.id.checkIn_count);
+                    checkIN.setText(String.valueOf(response.body().getCheckIn()));
+
+                    TextView checkOut = reportData.findViewById(R.id.checkOut_count);
+                    checkOut.setText(String.valueOf(response.body().getCheckOut()));
+
+                    TextView earning = reportData.findViewById(R.id.earning_count);
+                    earning.setText(String.valueOf(response.body().getIncome()));
+
+                    reportDialog.setView(reportData);
+                    final AlertDialog dialogue = reportDialog.create();
+                    dialogue.show();
+
+                    final Button end = reportData.findViewById(R.id.end_report_dialog);
+                    end.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogue.dismiss();
+                        }
+                    });
+                } else {
+                    progress.hide();
+                    Toast.makeText(ScanVipBarcode.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Stats> call, Throwable t) {
+                progress.hide();
+                Toast.makeText(ScanVipBarcode.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
             }
         });
     }

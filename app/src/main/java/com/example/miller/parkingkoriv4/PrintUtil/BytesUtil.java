@@ -293,8 +293,7 @@ public class BytesUtil {
 
 
     private static byte RGB2Gray(int r, int g, int b) {
-        return (false ? ((int) (0.29900 * r + 0.58700 * g + 0.11400 * b) > 200)
-                : ((int) (0.29900 * r + 0.58700 * g + 0.11400 * b) < 200)) ? (byte) 1 : (byte) 0;
+        return (((int) (0.29900 * r + 0.58700 * g + 0.11400 * b) < 200)) ? (byte) 1 : (byte) 0;
     }
 
     /**

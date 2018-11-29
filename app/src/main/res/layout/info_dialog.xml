@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="1.0.0"
+                android:text="+8801631448877"
                 android:textColor="@color/blackText" />
         </TableRow>
 
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="1.0.0"
+                android:text="info@dexhub.com"
                 android:textColor="@color/blackText" />
         </TableRow>
     </TableLayout>
@@ -121,7 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/infoTable"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="15dp"
         android:text="@string/powered_by_eunoia_i_t_solutions"
         android:textAlignment="center"
         android:textAppearance="@style/CustomFont"

@@ -5,7 +5,7 @@
     <string name="cancel">Cancel</string>
     <string name="keep_me_logged_in">Keep me logged in</string>
     <string name="action_settings">Profile</string>
-    <string name="logout">Logout</string>
+    <string name="logout">End Shift</string>
     <string name="boshundhora_city">Boshundhora City</string>
     <string name="scan_barcode">Scan Barcode</string>
     <string name="vip">VIP</string>

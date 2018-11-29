@@ -85,6 +85,6 @@ public class PrintUtil {
                 res = (byte) 0xff;
                 break;
         }
-        return (byte) res;
+        return res;
     }
 }

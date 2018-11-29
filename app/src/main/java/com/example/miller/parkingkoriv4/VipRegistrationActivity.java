@@ -1,5 +1,6 @@
 package com.example.miller.parkingkoriv4;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +13,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,13 +23,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.miller.parkingkoriv4.PrintUtil.BluetoothUtil;
+import com.example.miller.parkingkoriv4.PrintUtil.ESCUtil;
 import com.example.miller.parkingkoriv4.PrintUtil.PrintUtil;
 import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
 import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Stats.Stats;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VIPRegistration.VIPRequest;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VIPRegistration.VIPRequestResponse;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,12 +45,14 @@ public class VipRegistrationActivity extends AppCompatActivity {
     Spinner typeSpinner;
     TextView toolTitle;
     private DrawerLayout mDrawerLayout;
-    private ApiInterface apiInterface;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vip_registration);
+        progress = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
+
         navigationFunction();
         formData();
         clickCancel();
@@ -129,10 +134,8 @@ public class VipRegistrationActivity extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch (menuItem.getItemId()) {
-                            case R.id.end_shift:
-                                Log.d("clicked", "end shift clicked");
-                                break;
                             case R.id.report:
+                                getStats();
                                 break;
                             case R.id.info:
                                 infoAlert();
@@ -160,6 +163,8 @@ public class VipRegistrationActivity extends AppCompatActivity {
         //String vT = vType.getText().toString();
         String typeName = String.valueOf(typeSpinner.getSelectedItem());
 
+        progress.setTitle("Please wait.......");
+        progress.show();
         RegisterVIP(vipName, vregNum, phn, purp, typeName);
     }
 
@@ -176,13 +181,14 @@ public class VipRegistrationActivity extends AppCompatActivity {
 
         VIPRequest newRequest = new VIPRequest(name, vtypesID, client_id, car_reg, phone, purpose, emp_id, get_token);
 
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<VIPRequestResponse> call = apiInterface.vipRequest(newRequest);
 
         call.enqueue(new Callback<VIPRequestResponse>() {
             @Override
             public void onResponse(Call<VIPRequestResponse> call, Response<VIPRequestResponse> response) {
                 if (response.isSuccessful()) {
+                    progress.hide();
 
                     final VIPRequest vipData = response.body().getData();
 
@@ -202,6 +208,18 @@ public class VipRegistrationActivity extends AppCompatActivity {
                     vipName.setText(response.body().getData().getName());
                     final String vn = response.body().getData().getName();
 
+                    final TextView vipPhone = vipRegisterTicket.findViewById(R.id.vip_phone_input);
+                    vipPhone.setText(response.body().getData().getPhone());
+                    final String vp = response.body().getData().getPhone();
+
+                    final TextView vipCarNo = vipRegisterTicket.findViewById(R.id.vip_regNo_input);
+                    vipCarNo.setText(response.body().getData().getCarReg());
+                    final String vcar = response.body().getData().getCarReg();
+
+                    final TextView vipPurpose = vipRegisterTicket.findViewById(R.id.vip_purpose_input);
+                    vipPurpose.setText(response.body().getData().getPurpose());
+                    final String vpur = response.body().getData().getPurpose();
+
                     final TextView dateApply = vipRegisterTicket.findViewById(R.id.vip_application_date_input);
                     dateApply.setText(response.body().getData().getCreatedAt());
                     final String da = response.body().getData().getCreatedAt();
@@ -214,7 +232,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
                     printCheckOut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            printCheckOut(cn, vi, vn, da);
+                            printCheckOut(cn, vp, vcar, vpur, vi, vn, da);
                             dialogue.dismiss();
                             username.setText("");
                             vreg.setText("");
@@ -226,30 +244,38 @@ public class VipRegistrationActivity extends AppCompatActivity {
                     });
 
                 } else {
-                    Toast.makeText(VipRegistrationActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
+                    progress.hide();
+                    Toast.makeText(VipRegistrationActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<VIPRequestResponse> call, Throwable t) {
+                progress.hide();
                 Toast.makeText(VipRegistrationActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void printCheckOut(String clientName, String vipID, String vipName, String dateApply) {
+    public void printCheckOut(String clientName, String phone, String regNo, String purpose, String vipID, String vipName, String dateApply) {
 
-
+        String x = regNo.substring(0, 2) + "-" + regNo.substring(2, regNo.length());
         BluetoothUtil.connectBlueTooth(VipRegistrationActivity.this);
+        BluetoothUtil.sendData(ESCUtil.getPrintQRCode(vipID, 8, 1));
         String BILL = "";
-        BILL = "\n \n " + clientName + "  \n"
+
+        BILL = "Product of DEXHUB\n\n";
+        BILL = BILL + "\n \n " + clientName + "  \n"
                 + "Parking Ticket\n ";
         BILL = BILL
                 + "-----------------------------------------------\n";
-        BILL = BILL + String.format("%1$-10s %2$10s", "Ticket Number", vipID);
+        BILL = BILL + String.format("%1$-10s %2$10s", "Ticket Number ", vipID);
         BILL = BILL + "\n";
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Name ", vipName);
-        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Entry At", dateApply);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Phone ", phone);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Car Registration No. ", x);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Purpose  ", purpose);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Entry At ", dateApply);
         BILL = BILL
                 + "\n-----------------------------------------------";
         BILL = BILL + "\n\n ";
@@ -387,5 +413,67 @@ public class VipRegistrationActivity extends AppCompatActivity {
         Intent logoutIntent = new Intent(this, LoginActivity.class);
         logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(logoutIntent);
+    }
+
+    public void getStats() {
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String get_token = userData.getString("token", "");
+
+        Stats getStatus = new Stats(get_token);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Stats> call = apiInterface.getStats(getStatus);
+
+        call.enqueue(new Callback<Stats>() {
+            @Override
+            public void onResponse(Call<Stats> call, Response<Stats> response) {
+                if (response.isSuccessful()) {
+                    progress.hide();
+
+                    SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                    final String emp_name = userData.getString("emp_name", "");
+
+                    AlertDialog.Builder reportDialog = new AlertDialog.Builder(VipRegistrationActivity.this);
+                    View reportData = getLayoutInflater().inflate(R.layout.employee_report, null);
+
+                    TextView eName = reportData.findViewById(R.id.emp_name);
+                    eName.setText(emp_name);
+
+                    java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+                    TextView dateTime = reportData.findViewById(R.id.date_and_time);
+                    dateTime.setText(String.valueOf(currentTimestamp));
+
+                    TextView checkIN = reportData.findViewById(R.id.checkIn_count);
+                    checkIN.setText(String.valueOf(response.body().getCheckIn()));
+
+                    TextView checkOut = reportData.findViewById(R.id.checkOut_count);
+                    checkOut.setText(String.valueOf(response.body().getCheckOut()));
+
+                    TextView earning = reportData.findViewById(R.id.earning_count);
+                    earning.setText(String.valueOf(response.body().getIncome()));
+
+                    reportDialog.setView(reportData);
+                    final AlertDialog dialogue = reportDialog.create();
+                    dialogue.show();
+
+                    final Button end = reportData.findViewById(R.id.end_report_dialog);
+                    end.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogue.dismiss();
+                        }
+                    });
+                } else {
+                    progress.hide();
+                    Toast.makeText(VipRegistrationActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Stats> call, Throwable t) {
+                progress.hide();
+                Toast.makeText(VipRegistrationActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

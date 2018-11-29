@@ -45,7 +45,7 @@
         <activity android:name=".VipRegistrationActivity" />
         <activity android:name=".ScanVipBarcode" />
         <activity android:name=".QRScanActivity" />
-        <activity android:name=".QRReader"></activity>
+        <activity android:name=".QRReader" />
     </application>
 
 </manifest>

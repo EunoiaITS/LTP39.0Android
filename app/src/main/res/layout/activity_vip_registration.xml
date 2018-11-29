@@ -137,7 +137,8 @@
                             android:background="@drawable/input_box_border"
                             android:backgroundTint="@color/backgroundWhite"
                             android:ems="10"
-                            android:inputType="text"
+                            android:inputType="number"
+                            android:maxLength="6"
                             android:textColor="@color/rememberme" />
                     </TableRow>
 

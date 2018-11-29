@@ -1,5 +1,6 @@
 package com.example.miller.parkingkoriv4;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +13,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,8 +29,10 @@ import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
 import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckIn.CheckIn;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckIn.CheckInResponse;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Stats.Stats;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,12 +45,15 @@ public class CheckInActivity extends AppCompatActivity {
     EditText regNum;
     TextView toolTitle;
     private DrawerLayout mDrawerLayout;
-    private ApiInterface apiInterface;
+    private ProgressDialog progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
+        progress = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
+
 
         //navigationFunction();
 
@@ -105,10 +110,9 @@ public class CheckInActivity extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch (menuItem.getItemId()) {
-                            case R.id.end_shift:
-                                Log.d("clicked", "end shift clicked");
-                                break;
+
                             case R.id.report:
+                                getStats();
                                 break;
                             case R.id.info:
                                 infoAlert();
@@ -158,7 +162,7 @@ public class CheckInActivity extends AppCompatActivity {
 
         SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
         String ids = vehicleData.getString("vehicle_type_id", "");
-        String names = vehicleData.getString("vehicle_type_name", "");
+        final String names = vehicleData.getString(ids, "");
 
         String[] singleName = names.split(",");
         String[] singleID = ids.split(",");
@@ -169,6 +173,7 @@ public class CheckInActivity extends AppCompatActivity {
 
         for (int i = 0; i < singleName.length; i++) {
             namelist.add(singleID[i].concat(" ".concat(singleName[i])));
+            //namelist.add(singleName[i]);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, namelist);
         typeSpinner.setAdapter(adapter);
@@ -185,33 +190,37 @@ public class CheckInActivity extends AppCompatActivity {
                 String typeName = String.valueOf(typeSpinner.getSelectedItem());
                 String reg_no = regNum.getText().toString();
 
+                if (names == typeName) {
 
+                }
+
+                progress.setTitle("Please wait.......");
+                progress.show();
                 checkInVehicle(client_id, reg_no, typeName, emp_id, get_token);
             }
         });
     }
 
-    public void checkInVehicle(String clientID, String reg, String type, final String created_by, String get_token) {
+    public void checkInVehicle(String clientID, String reg, final String type, final String created_by, String get_token) {
 
-        String vtypesID = type.split(" ")[0];
+        final String vtypesID = type.split(" ")[0];
         final String vtypesName = type.split(" ")[1];
 
         CheckIn checkInVehicle = new CheckIn(clientID, reg, vtypesID, created_by, get_token);
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<CheckInResponse> call = apiInterface.checkedIn(checkInVehicle);
 
         call.enqueue(new Callback<CheckInResponse>() {
             @Override
             public void onResponse(Call<CheckInResponse> call, Response<CheckInResponse> response) {
                 if (response.isSuccessful()) {
+
+                    progress.hide();
                     CheckIn check_in_data = response.body().getData();
 
-                    String checkInStatus = response.body().getStatus();
-                    String checkInMessage = response.body().getMessage();
 
-                    SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+                    SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
                     final String client_name = userData.getString("client_name", "");
-
                     final String ticID = check_in_data.getTicketId();
                     final String regNo = check_in_data.getVehicleReg();
                     final String inTime = check_in_data.getCreatedAt();
@@ -221,7 +230,7 @@ public class CheckInActivity extends AppCompatActivity {
 
                     SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
                     String ids = vehicleData.getString("vehicle_type_id", "");
-                    String names = vehicleData.getString("vehicle_type_name", "");
+                    String names = vehicleData.getString(ids, "");
 
                     String[] singleName = names.split(",");
                     String[] singleID = ids.split(",");
@@ -230,6 +239,7 @@ public class CheckInActivity extends AppCompatActivity {
 
                     AlertDialog.Builder checkInDialogue = new AlertDialog.Builder(CheckInActivity.this);
                     View checkInTicket = getLayoutInflater().inflate(R.layout.check_in_ticket, null);
+
 
                     TextView clientName = checkInTicket.findViewById(R.id.ticket_title);
                     clientName.setText(client_name);
@@ -260,12 +270,14 @@ public class CheckInActivity extends AppCompatActivity {
                         }
                     });
                 } else {
+                    progress.hide();
                     Toast.makeText(CheckInActivity.this, "Please fill in data again!!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<CheckInResponse> call, Throwable t) {
+                progress.hide();
                 Toast.makeText(CheckInActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
             }
         });
@@ -274,25 +286,27 @@ public class CheckInActivity extends AppCompatActivity {
 
     public void printCheckIn(String client_name, String ticketNo, String regNo, String entryAt, String vType) {
 
+        String x = regNo.substring(0, 2) + "-" + regNo.substring(2, regNo.length());
 
         BluetoothUtil.connectBlueTooth(CheckInActivity.this);
-
-        BluetoothUtil.sendData(ESCUtil.getPrintQRCode(ticketNo, 8, 1));
         String BILL = "";
-        BILL = "\n \n " + client_name + "\n"
-                + "Parking Ticket\n ";
+        BILL = "\n \n Product of DEXHUB";
+        BluetoothUtil.sendData(ESCUtil.getPrintQRCode(ticketNo, 8, 1));
+
+        BILL = BILL + "\n\n" + client_name;
+        BILL = BILL + "\n Parking Ticket \n ";
         BILL = BILL
                 + "-----------------------------------------------\n";
 
-        BILL = BILL + String.format("%1$-10s %2$10s", "Ticket Number", ticketNo);
+        BILL = BILL + String.format("%1$-10s %2$10s", "Ticket No.", ticketNo);
         BILL = BILL + "\n";
-        //BILL = BILL
-        // + "-----------------------------------------------";
-        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Registration Number", regNo);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Registration No.", x);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Entry At", entryAt);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Vehicle Type", vType);
         BILL = BILL
-                + "\n-----------------------------------------------";
+                + "\n-----------------------------------------------\n";
+        BILL = BILL + " +8801631448877 \n";
+        BILL = BILL + " info@dexhub.com \n";
         BILL = BILL + "\n\n ";
         BILL = BILL + "\n\n ";
 
@@ -344,5 +358,67 @@ public class CheckInActivity extends AppCompatActivity {
         Intent logoutIntent = new Intent(this, LoginActivity.class);
         logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(logoutIntent);
+    }
+
+    public void getStats() {
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String get_token = userData.getString("token", "");
+
+        Stats getStatus = new Stats(get_token);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Stats> call = apiInterface.getStats(getStatus);
+
+        call.enqueue(new Callback<Stats>() {
+            @Override
+            public void onResponse(Call<Stats> call, Response<Stats> response) {
+                if (response.isSuccessful()) {
+                    progress.hide();
+
+                    SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                    final String emp_name = userData.getString("emp_name", "");
+
+                    AlertDialog.Builder reportDialog = new AlertDialog.Builder(CheckInActivity.this);
+                    View reportData = getLayoutInflater().inflate(R.layout.employee_report, null);
+
+                    TextView eName = reportData.findViewById(R.id.emp_name);
+                    eName.setText(emp_name);
+
+                    java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+                    TextView dateTime = reportData.findViewById(R.id.date_and_time);
+                    dateTime.setText(String.valueOf(currentTimestamp));
+
+                    TextView checkIN = reportData.findViewById(R.id.checkIn_count);
+                    checkIN.setText(String.valueOf(response.body().getCheckIn()));
+
+                    TextView checkOut = reportData.findViewById(R.id.checkOut_count);
+                    checkOut.setText(String.valueOf(response.body().getCheckOut()));
+
+                    TextView earning = reportData.findViewById(R.id.earning_count);
+                    earning.setText(String.valueOf(response.body().getIncome()));
+
+                    reportDialog.setView(reportData);
+                    final AlertDialog dialogue = reportDialog.create();
+                    dialogue.show();
+
+                    final Button end = reportData.findViewById(R.id.end_report_dialog);
+                    end.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogue.dismiss();
+                        }
+                    });
+                } else {
+                    progress.hide();
+                    Toast.makeText(CheckInActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Stats> call, Throwable t) {
+                progress.hide();
+                Toast.makeText(CheckInActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

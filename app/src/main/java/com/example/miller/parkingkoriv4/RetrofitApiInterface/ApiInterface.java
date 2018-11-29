@@ -6,6 +6,9 @@ import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckOut.CheckOut;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckOut.CheckOutResponse;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.Login.LoginEmployee;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.Login.LoginResponse;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Reports.Report;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Reports.ReportResponse;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Stats.Stats;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VIPRegistration.VIPRequest;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VIPRegistration.VIPRequestResponse;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.VipCheckIn.VipCheckIn;
@@ -41,4 +44,9 @@ public interface ApiInterface {
     @POST("vip-check-out")
     Call<VipCheckOutResponse> vipcheckedOut(@Body VipCheckOut VipCheckOutVehicle);
 
+    @POST("reports")
+    Call<ReportResponse> GetEmployeeReport(@Body Report EmployeeReport);
+
+    @POST("stats")
+    Call<Stats> getStats(@Body Stats parkingStats);
 }

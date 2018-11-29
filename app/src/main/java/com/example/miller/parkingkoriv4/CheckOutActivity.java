@@ -1,5 +1,6 @@
 package com.example.miller.parkingkoriv4;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +14,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +27,7 @@ import com.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
 import com.example.miller.parkingkoriv4.RetrofitApiInterface.ApiInterface;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckOut.CheckOut;
 import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckOut.CheckOutResponse;
+import com.example.miller.parkingkoriv4.RetrofitApiModel.Stats.Stats;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -38,19 +39,21 @@ import retrofit2.Response;
 
 public class CheckOutActivity extends AppCompatActivity {
 
-    private static final int RC_BARCODE_CAPTURE = 9001;
-    EditText ticket_id;
+    EditText ticket_id, vech_reg;
     Button checkOutButton;
     TextView toolTitle;
     private DrawerLayout mDrawerLayout;
-    private ApiInterface apiInterface;
+    private ProgressDialog progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_out);
+        progress = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
 
         ticket_id = findViewById(R.id.checkout_regnum_input);
+        vech_reg = findViewById(R.id.checkout_reg_num);
 
 
         navigationFunction();
@@ -131,10 +134,9 @@ public class CheckOutActivity extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch (menuItem.getItemId()) {
-                            case R.id.end_shift:
-                                Log.d("clicked", "end shift clicked");
-                                break;
+
                             case R.id.report:
+                                getStats();
                                 break;
                             case R.id.info:
                                 infoAlert();
@@ -172,6 +174,7 @@ public class CheckOutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String tID = ticket_id.getText().toString();
+                String vechNo = vech_reg.getText().toString();
                 SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
                 String client_id = userData.getString("client_id", "");
                 String emp_id = String.valueOf(userData.getInt("emp_id", 0));
@@ -179,7 +182,10 @@ public class CheckOutActivity extends AppCompatActivity {
 
                 java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
-                checkOutVehicle(tID, emp_id, currentTimestamp.toString(), get_token);
+                progress.setTitle("Please wait.......");
+                progress.show();
+
+                checkOutVehicle(tID, emp_id, currentTimestamp.toString(), get_token, vechNo);
 
                 SharedPreferences outTime = getSharedPreferences("outTime", Context.MODE_PRIVATE);
 
@@ -191,19 +197,21 @@ public class CheckOutActivity extends AppCompatActivity {
 
     }
 
-    public void checkOutVehicle(final String ticketID, String employee, String check_out_at, String _token) {
+    public void checkOutVehicle(final String ticketID, String employee, String check_out_at, String _token, String vech_no) {
 
-        CheckOut checkoutVehicle = new CheckOut(ticketID, employee, check_out_at, _token);
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        CheckOut checkoutVehicle = new CheckOut(ticketID, employee, check_out_at, _token, vech_no);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<CheckOutResponse> call = apiInterface.checkedOut(checkoutVehicle);
 
         call.enqueue(new Callback<CheckOutResponse>() {
             @Override
             public void onResponse(Call<CheckOutResponse> call, Response<CheckOutResponse> response) {
                 if (response.isSuccessful()) {
+                    progress.hide();
+
                     CheckOut check_out_data = response.body().getData();
 
-                    SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+                    SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
                     final String client_name = userData.getString("client_name", "");
 
                     //final String ticID = check_out_data.getTicketId();
@@ -214,7 +222,6 @@ public class CheckOutActivity extends AppCompatActivity {
                     final String vType = check_out_data.getVehicleType();
                     final String fair = String.valueOf(check_out_data.getFair());
                     final String receipt_id = String.valueOf(check_out_data.getReceiptId());
-
 
                     //Toast.makeText(CheckOutActivity.this, ticID, Toast.LENGTH_SHORT).show();
 
@@ -254,16 +261,18 @@ public class CheckOutActivity extends AppCompatActivity {
                             printCheckOut(client_name, receipt_id, regNo, inTime, vType, outTime, fair);
                             dialogue.dismiss();
                             ticket_id.setText("");
+                            vech_reg.setText("");
                         }
                     });
                 } else {
-                    Toast.makeText(CheckOutActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    progress.hide();
+                    Toast.makeText(CheckOutActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<CheckOutResponse> call, Throwable t) {
-                Toast.makeText(CheckOutActivity.this, "Not Connected" + t, Toast.LENGTH_SHORT).show();
+                progress.hide();
+                Toast.makeText(CheckOutActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -271,22 +280,28 @@ public class CheckOutActivity extends AppCompatActivity {
 
     public void printCheckOut(String clientName, String receiptID, String regNo, String entryAt, String vType, String outTime, String totalFair) {
 
-
-        BluetoothUtil.connectBlueTooth(CheckOutActivity.this);
+        String x = regNo.substring(0, 2) + "-" + regNo.substring(2, regNo.length());
         String BILL = "";
-        BILL = "\n \n " + clientName + "  \n"
-                + "Parking Ticket\n ";
+
+        BILL = "Product of DEXHUB\n\n";
+        BluetoothUtil.connectBlueTooth(CheckOutActivity.this);
+
+        BILL = BILL + "\n \n " + clientName + "  \n"
+                + "Parking Receipt\n ";
         BILL = BILL
                 + "-----------------------------------------------\n";
         BILL = BILL + String.format("%1$-10s %2$10s", "Ticket Number", receiptID);
         BILL = BILL + "\n";
-        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Registration Number", regNo);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Registration No.", x);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Vehicle Type", vType);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Entry At", entryAt);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Exit At", outTime);
-        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Total Fair", totalFair);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Total Fare", totalFair);
         BILL = BILL
-                + "\n-----------------------------------------------";
+                + "\n-----------------------------------------------\n\n";
+
+        BILL = BILL + " +8801631448877 \n";
+        BILL = BILL + " info@dexhub.com \n";
         BILL = BILL + "\n\n ";
         BILL = BILL + "\n\n ";
         PrintUtil printThis = new PrintUtil();
@@ -342,5 +357,67 @@ public class CheckOutActivity extends AppCompatActivity {
         Intent logoutIntent = new Intent(this, LoginActivity.class);
         logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(logoutIntent);
+    }
+
+    public void getStats() {
+
+        SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String get_token = userData.getString("token", "");
+
+        Stats getStatus = new Stats(get_token);
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Stats> call = apiInterface.getStats(getStatus);
+
+        call.enqueue(new Callback<Stats>() {
+            @Override
+            public void onResponse(Call<Stats> call, Response<Stats> response) {
+                if (response.isSuccessful()) {
+                    progress.hide();
+
+                    SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                    final String emp_name = userData.getString("emp_name", "");
+
+                    AlertDialog.Builder reportDialog = new AlertDialog.Builder(CheckOutActivity.this);
+                    View reportData = getLayoutInflater().inflate(R.layout.employee_report, null);
+
+                    TextView eName = reportData.findViewById(R.id.emp_name);
+                    eName.setText(emp_name);
+
+                    java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+                    TextView dateTime = reportData.findViewById(R.id.date_and_time);
+                    dateTime.setText(String.valueOf(currentTimestamp));
+
+                    TextView checkIN = reportData.findViewById(R.id.checkIn_count);
+                    checkIN.setText(String.valueOf(response.body().getCheckIn()));
+
+                    TextView checkOut = reportData.findViewById(R.id.checkOut_count);
+                    checkOut.setText(String.valueOf(response.body().getCheckOut()));
+
+                    TextView earning = reportData.findViewById(R.id.earning_count);
+                    earning.setText(String.valueOf(response.body().getIncome()));
+
+                    reportDialog.setView(reportData);
+                    final AlertDialog dialogue = reportDialog.create();
+                    dialogue.show();
+
+                    final Button end = reportData.findViewById(R.id.end_report_dialog);
+                    end.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogue.dismiss();
+                        }
+                    });
+                } else {
+                    progress.hide();
+                    Toast.makeText(CheckOutActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Stats> call, Throwable t) {
+                progress.hide();
+                Toast.makeText(CheckOutActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
