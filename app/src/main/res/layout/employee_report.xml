@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dashboard_background"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/end_report_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@color/backgroundWhite"
+        android:text="X"
+        android:textColor="@color/buttonColor" />
+
+    <TextView
+        android:id="@+id/info_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Report"
+        android:textAlignment="center"
+        android:textAppearance="@style/CustomFont"
+        android:textColor="@color/buttonColor"
+        android:textSize="10pt" />
+
+    <TextView
+        android:id="@+id/emp_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/a_product_of_dex_hub"
+        android:textAlignment="center"
+        android:textAppearance="@style/CustomFont"
+        android:textColor="@color/blackText"
+        android:textSize="5pt" />
+
+    <TextView
+        android:id="@+id/date_and_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/a_product_of_dex_hub"
+        android:textAlignment="center"
+        android:textAppearance="@style/CustomFont"
+        android:textColor="@color/blackText"
+        android:textSize="5pt" />
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@color/backgroundWhite"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/checkIn_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="CheckIN"
+            android:textAppearance="@style/CustomFont"
+            android:textColor="@color/buttonColor"
+            android:textSize="10pt" />
+
+        <TextView
+            android:id="@+id/checkIn_count_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Total CheckIn"
+            android:textAlignment="center"
+            android:textAppearance="@style/CustomFont"
+            android:textColor="@color/blackText"
+            android:textSize="5pt" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@color/backgroundWhite"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/checkOut_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="CheckOut"
+            android:textAppearance="@style/CustomFont"
+            android:textColor="@color/buttonColor"
+            android:textSize="10pt" />
+
+        <TextView
+            android:id="@+id/checkOut_count_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Total CheckOut"
+            android:textAlignment="center"
+            android:textAppearance="@style/CustomFont"
+            android:textColor="@color/blackText"
+            android:textSize="5pt" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@color/backgroundWhite"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/earning_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Total"
+            android:textAppearance="@style/CustomFont"
+            android:textColor="@color/buttonColor"
+            android:textSize="10pt" />
+
+        <TextView
+            android:id="@+id/earning_count_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Total Earning"
+            android:textAlignment="center"
+            android:textAppearance="@style/CustomFont"
+            android:textColor="@color/blackText"
+            android:textSize="5pt" />
+    </LinearLayout>
+
+
+</LinearLayout>
