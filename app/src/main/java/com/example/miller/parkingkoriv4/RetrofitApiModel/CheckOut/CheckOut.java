@@ -25,48 +25,62 @@ public class CheckOut {
     @SerializedName("created_by")
     @Expose
     private String createdBy;
-    @SerializedName("employee")
+    @SerializedName("updated_by")
     @Expose
     private String updatedBy;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
-    @SerializedName("updatedAt")
+    @SerializedName("updated_at")
     @Expose
     private String updatedAt;
     @SerializedName("fair")
     @Expose
     private Integer fair;
+    @SerializedName("vehicle_name")
+    @Expose
+    private String vehicleName;
+    @SerializedName("vehicle_base_rate")
+    @Expose
+    private String vehicleBaseRate;
+    @SerializedName("vehicle_sub_rate")
+    @Expose
+    private String vehicleSubRate;
+    @SerializedName("total_hour")
+    @Expose
+    private Integer totalHour;
+    @SerializedName("total_minute")
+    @Expose
+    private Integer totalMinute;
     @SerializedName("_token")
     @Expose
     private String _token;
 
-
+    /**
+     * No args constructor for use in serialization
+     */
     public CheckOut() {
     }
 
-    public CheckOut(String ticketId, String updatedBy, String updatedAt, String _token, String vech_reg) {
-        this.ticketId = ticketId;
-        this.updatedBy = updatedBy;
-        this.updatedAt = updatedAt;
-        this._token = _token;
-        this.vehicleReg = vech_reg;
-    }
-
     /**
-     * @param updatedAt
+     * @param vehicleSubRate
+     * @param totalHour
+     * @param totalMinute
+     * @param fair
+     * @param clientId
+     * @param vehicleReg
+     * @param updatedBy
      * @param id
+     * @param updatedAt
      * @param ticketId
      * @param createdBy
+     * @param vehicleBaseRate
      * @param createdAt
+     * @param vehicleName
      * @param vehicleType
-     * @param fair
-     * @param vehicleReg
-     * @param clientId
-     * @param updatedBy
      * @param receiptId
      */
-    public CheckOut(Integer id, String clientId, String ticketId, String receiptId, String vehicleType, String vehicleReg, String createdBy, String updatedBy, String createdAt, String updatedAt, Integer fair) {
+    public CheckOut(Integer id, String clientId, String ticketId, String receiptId, String vehicleType, String vehicleReg, String createdBy, String updatedBy, String createdAt, String updatedAt, Integer fair, String vehicleName, String vehicleBaseRate, String vehicleSubRate, Integer totalHour, Integer totalMinute, String _token) {
         super();
         this.id = id;
         this.clientId = clientId;
@@ -79,6 +93,22 @@ public class CheckOut {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.fair = fair;
+        this.vehicleName = vehicleName;
+        this.vehicleBaseRate = vehicleBaseRate;
+        this.vehicleSubRate = vehicleSubRate;
+        this.totalHour = totalHour;
+        this.totalMinute = totalMinute;
+        this._token = _token;
+    }
+
+    public CheckOut(String ticketID, String employee, String check_out_at, String token, String vech_no) {
+        this.ticketId = ticketID;
+        this.updatedBy = employee;
+        this.updatedAt = check_out_at;
+        this._token = token;
+        this.vehicleReg = vech_no;
+
+
     }
 
     public Integer getId() {
@@ -167,6 +197,46 @@ public class CheckOut {
 
     public void setFair(Integer fair) {
         this.fair = fair;
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
+    }
+
+    public String getVehicleBaseRate() {
+        return vehicleBaseRate;
+    }
+
+    public void setVehicleBaseRate(String vehicleBaseRate) {
+        this.vehicleBaseRate = vehicleBaseRate;
+    }
+
+    public String getVehicleSubRate() {
+        return vehicleSubRate;
+    }
+
+    public void setVehicleSubRate(String vehicleSubRate) {
+        this.vehicleSubRate = vehicleSubRate;
+    }
+
+    public Integer getTotalHour() {
+        return totalHour;
+    }
+
+    public void setTotalHour(Integer totalHour) {
+        this.totalHour = totalHour;
+    }
+
+    public Integer getTotalMinute() {
+        return totalMinute;
+    }
+
+    public void setTotalMinute(Integer totalMinute) {
+        this.totalMinute = totalMinute;
     }
 
     public String get_token() {

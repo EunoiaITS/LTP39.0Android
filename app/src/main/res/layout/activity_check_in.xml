@@ -112,10 +112,10 @@
                     android:ems="10"
                     android:hint="@string/_12457"
                     android:inputType="number"
+                    android:maxLength="6"
                     android:paddingStart="20dp"
                     android:paddingLeft="20dp"
                     android:textAlignment="center"
-                    android:maxLength="6"
                     android:textColor="@color/blackText" />
 
 

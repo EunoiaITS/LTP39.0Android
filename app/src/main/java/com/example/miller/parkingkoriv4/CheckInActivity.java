@@ -165,15 +165,15 @@ public class CheckInActivity extends AppCompatActivity {
         final String names = vehicleData.getString(ids, "");
 
         String[] singleName = names.split(",");
-        String[] singleID = ids.split(",");
+        final String[] singleID = ids.split(",");
 
         typeSpinner = findViewById(R.id.vehicle_type_spinner);
 
-        ArrayList<String> namelist = new ArrayList<>();
+        final ArrayList<String> namelist = new ArrayList<>();
 
         for (int i = 0; i < singleName.length; i++) {
-            namelist.add(singleID[i].concat(" ".concat(singleName[i])));
-            //namelist.add(singleName[i]);
+            //namelist.add(singleID[i].concat(" ".concat(singleName[i])));
+            namelist.add(singleName[i]);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, namelist);
         typeSpinner.setAdapter(adapter);
@@ -190,23 +190,25 @@ public class CheckInActivity extends AppCompatActivity {
                 String typeName = String.valueOf(typeSpinner.getSelectedItem());
                 String reg_no = regNum.getText().toString();
 
-                if (names == typeName) {
+                int typeNamePosition = typeSpinner.getSelectedItemPosition();
 
-                }
+                String typeId = singleID[typeNamePosition];
+
+
 
                 progress.setTitle("Please wait.......");
                 progress.show();
-                checkInVehicle(client_id, reg_no, typeName, emp_id, get_token);
+                checkInVehicle(client_id, reg_no, typeId, emp_id, get_token);
             }
         });
     }
 
     public void checkInVehicle(String clientID, String reg, final String type, final String created_by, String get_token) {
 
-        final String vtypesID = type.split(" ")[0];
-        final String vtypesName = type.split(" ")[1];
+        //final String vtypesID = type.split(" ")[0];
+        //final String vtypesName = type.split(" ")[1];
 
-        CheckIn checkInVehicle = new CheckIn(clientID, reg, vtypesID, created_by, get_token);
+        CheckIn checkInVehicle = new CheckIn(clientID, reg, type, created_by, get_token);
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<CheckInResponse> call = apiInterface.checkedIn(checkInVehicle);
 
@@ -254,7 +256,9 @@ public class CheckInActivity extends AppCompatActivity {
                     createdAt.setText(inTime);
 
                     final TextView vty = checkInTicket.findViewById(R.id.checkin_print_vehicle_type_show);
+                    final String vtypesName = singleName[Integer.parseInt(type) - 1];
                     vty.setText(vtypesName);
+
 
                     checkInDialogue.setView(checkInTicket);
                     final AlertDialog dialogue = checkInDialogue.create();

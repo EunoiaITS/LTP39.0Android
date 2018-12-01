@@ -176,7 +176,6 @@ public class CheckOutActivity extends AppCompatActivity {
                 String tID = ticket_id.getText().toString();
                 String vechNo = vech_reg.getText().toString();
                 SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-                String client_id = userData.getString("client_id", "");
                 String emp_id = String.valueOf(userData.getInt("emp_id", 0));
                 String get_token = userData.getString("token", "");
 
@@ -197,7 +196,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
     }
 
-    public void checkOutVehicle(final String ticketID, String employee, String check_out_at, String _token, String vech_no) {
+    public void checkOutVehicle(final String ticketID, String employee, final String check_out_at, String _token, String vech_no) {
 
         CheckOut checkoutVehicle = new CheckOut(ticketID, employee, check_out_at, _token, vech_no);
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
@@ -214,16 +213,31 @@ public class CheckOutActivity extends AppCompatActivity {
                     SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
                     final String client_name = userData.getString("client_name", "");
 
-                    //final String ticID = check_out_data.getTicketId();
                     final String regNo = check_out_data.getVehicleReg();
                     final String inTime = check_out_data.getCreatedAt();
                     SharedPreferences cot = getSharedPreferences("outTime", Context.MODE_PRIVATE);
                     final String outTime = cot.getString("out_time", "");
-                    final String vType = check_out_data.getVehicleType();
                     final String fair = String.valueOf(check_out_data.getFair());
                     final String receipt_id = String.valueOf(check_out_data.getReceiptId());
+                    final String vType = String.valueOf(check_out_data.getVehicleName());
+                    final String parkedTimeHour = String.valueOf(check_out_data.getTotalHour());
+                    final String parkedTimeMin = String.valueOf(check_out_data.getTotalMinute());
+                    final String baseFare = String.valueOf(check_out_data.getVehicleBaseRate());
+                    final String subrate = String.valueOf(check_out_data.getVehicleSubRate());
 
-                    //Toast.makeText(CheckOutActivity.this, ticID, Toast.LENGTH_SHORT).show();
+                    final String parkedTime = parkedTimeHour + ":" + parkedTimeMin;
+
+                    /*SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
+                    String ids = vehicleData.getString("vehicle_type_id", "");
+                    String names = vehicleData.getString("vehicle_type", "");
+                    String base = vehicleData.getString("vehicle_type", "");
+                    String cons = vehicleData.getString("vehicle_type", "");
+
+                    String[] singleID = ids.split(",");
+                    String[] singleName = names.split(",");
+                    String[] singleBase = base.split(",");
+                    String[] singleCons = cons.split(",");*/
+
 
                     AlertDialog.Builder checkInDialogue = new AlertDialog.Builder(CheckOutActivity.this);
                     View checkOutReceipt = getLayoutInflater().inflate(R.layout.check_out_ticket, null);
@@ -258,10 +272,11 @@ public class CheckOutActivity extends AppCompatActivity {
                     printCheckOut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            printCheckOut(client_name, receipt_id, regNo, inTime, vType, outTime, fair);
+                            printCheckOut(client_name, receipt_id, regNo, inTime, vType, outTime, fair, baseFare, subrate, parkedTime);
                             dialogue.dismiss();
                             ticket_id.setText("");
                             vech_reg.setText("");
+                            CheckOutActivity.this.finish();
                         }
                     });
                 } else {
@@ -269,6 +284,7 @@ public class CheckOutActivity extends AppCompatActivity {
                     Toast.makeText(CheckOutActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<CheckOutResponse> call, Throwable t) {
                 progress.hide();
@@ -278,7 +294,7 @@ public class CheckOutActivity extends AppCompatActivity {
     }
 
 
-    public void printCheckOut(String clientName, String receiptID, String regNo, String entryAt, String vType, String outTime, String totalFair) {
+    public void printCheckOut(String clientName, String receiptID, String regNo, String entryAt, String vType, String outTime, String totalFair, String baseRate, String subRate, String parkedTime) {
 
         String x = regNo.substring(0, 2) + "-" + regNo.substring(2, regNo.length());
         String BILL = "";
@@ -296,6 +312,9 @@ public class CheckOutActivity extends AppCompatActivity {
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Vehicle Type", vType);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Entry At", entryAt);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Exit At", outTime);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Base Rate", baseRate);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Subsequent Hour Rate", subRate);
+        BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Total Time Parked", parkedTime);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Total Fare", totalFair);
         BILL = BILL
                 + "\n-----------------------------------------------\n\n";

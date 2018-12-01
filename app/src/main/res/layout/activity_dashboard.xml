@@ -96,7 +96,7 @@
 
                 <Button
                     android:id="@+id/vip_button"
-                    android:layout_width="135dp"
+                    android:layout_width="150dp"
                     android:layout_height="93dp"
                     android:layout_marginTop="52dp"
                     android:layout_marginEnd="32dp"

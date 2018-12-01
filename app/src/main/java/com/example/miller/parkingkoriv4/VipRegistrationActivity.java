@@ -70,7 +70,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
 
         SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
         String ids = vehicleData.getString("vehicle_type_id", "");
-        String names = vehicleData.getString("vehicle_type_name", "");
+        final String names = vehicleData.getString(ids, "");
 
         String[] singleName = names.split(",");
         String[] singleID = ids.split(",");
@@ -172,7 +172,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
     public void RegisterVIP(String name, String car_reg, String phone, final String purpose, String vTy) {
 
         String vtypesID = vTy.split(" ")[0];
-        //final String vtypesName = vTy.split(" ")[1];
+        final String vtypesName = vTy.split(" ")[1];
 
         final SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         final String client_id = userData.getString("client_id", "");
@@ -264,12 +264,12 @@ public class VipRegistrationActivity extends AppCompatActivity {
         BluetoothUtil.sendData(ESCUtil.getPrintQRCode(vipID, 8, 1));
         String BILL = "";
 
-        BILL = "Product of DEXHUB\n\n";
+        BILL = "Product of DEXHUB";
         BILL = BILL + "\n \n " + clientName + "  \n"
                 + "Parking Ticket\n ";
         BILL = BILL
                 + "-----------------------------------------------\n";
-        BILL = BILL + String.format("%1$-10s %2$10s", "Ticket Number ", vipID);
+        BILL = BILL + String.format("%1$-10s %2$10s", "VIP ID Number ", vipID);
         BILL = BILL + "\n";
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Name ", vipName);
         BILL = BILL + "\n " + String.format("%1$-1s %2$1s", "Phone ", phone);

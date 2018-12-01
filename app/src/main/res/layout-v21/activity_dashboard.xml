@@ -111,12 +111,12 @@
 
                 <TableLayout
                     android:id="@+id/report_table"
-                    android:layout_height="wrap_content"
                     android:layout_width="368dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/scanbarcode_button">
 
                 </TableLayout>

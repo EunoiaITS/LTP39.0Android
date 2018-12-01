@@ -119,54 +119,66 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
 
+                    String status = response.body().getStatus();
                     progress.hide();
-                    SharedPreferences userDetails = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = userDetails.edit();
-                    editor.putString("token", response.body().getUser().getApiToken());
-                    editor.putString("emp_email", response.body().getUser().getDetails().getEmail());
-                    editor.putString("emp_search_id", response.body().getUser().getDetails().getEmployeeId());
-                    editor.putInt("emp_id", response.body().getUser().getId());
-                    editor.putString("emp_name", response.body().getUser().getName());
-                    editor.putString("client_id", response.body().getUser().getDetails().getClientId());
-                    editor.putString("client_name", response.body().getUser().getClient().getName());
-                    editor.apply();
+                    if (status.equals("true")) {
+                        SharedPreferences userDetails = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = userDetails.edit();
+                        editor.putString("token", response.body().getUser().getApiToken());
+                        editor.putString("emp_email", response.body().getUser().getDetails().getEmail());
+                        editor.putString("emp_search_id", response.body().getUser().getDetails().getEmployeeId());
+                        editor.putInt("emp_id", response.body().getUser().getId());
+                        editor.putString("emp_name", response.body().getUser().getName());
+                        editor.putString("client_id", response.body().getUser().getDetails().getClientId());
+                        editor.putString("client_name", response.body().getUser().getClient().getName());
+                        editor.apply();
+
+                        StringBuilder vID = new StringBuilder();
+                        StringBuilder vName = new StringBuilder();
+                        StringBuilder vCount = new StringBuilder();
+
+                        List<VehicleType> vt = response.body().getUser().getVehicleTypes();
+                        for (int i = 0; i < vt.size(); i++) {
+                            SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor vehicleEditor = vehicleData.edit();
+
+                            vID.append(vt.get(i).getId()).append(",");
+                            vName.append(vt.get(i).getTypeName()).append(",");
+                            vCount.append(vt.get(i).getParkingSetting().getAmount()).append(",");
 
 
-                    StringBuilder vID = new StringBuilder();
-                    StringBuilder vName = new StringBuilder();
-                    List<VehicleType> vt = response.body().getUser().getVehicleTypes();
-                    for (int i = 0; i < vt.size(); i++) {
-                        SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor vehicleEditor = vehicleData.edit();
+                            vehicleEditor.putString("vehicle_type_id", vID.toString());
+                            //vehicleEditor.putString("vehicle_type_name", vName.toString());
+                            vehicleEditor.putString(vID.toString(), vName.toString());
+                            vehicleEditor.putString("vehicle_count", vCount.toString());
 
-                        vID.append(vt.get(i).getId()).append(",");
-                        vName.append(vt.get(i).getTypeName()).append(",");
-
-                        vehicleEditor.putString("vehicle_type_id", vID.toString());
-                        //vehicleEditor.putString("vehicle_type_name", vName.toString());
-                        vehicleEditor.putString(vID.toString(), vName.toString());
-
-                        vehicleEditor.apply();
-                    }
-
-                    String emp_email = String.valueOf(Collections.singleton(response.body().getUser().getDetails().getEmail()));
-                    listEmails = getFromPrefs(LoginActivity.this);
-                    if (listEmails == null) {
-                        listEmails = new ArrayList<>();
-                        listEmails.add(emp_email);
-                    } else {
-                        if (!listEmails.contains(emp_email)) {
-                            listEmails.add(emp_email);
+                            vehicleEditor.apply();
                         }
+
+                        String emp_email = String.valueOf(Collections.singleton(response.body().getUser().getDetails().getEmail()));
+                        listEmails = getFromPrefs(LoginActivity.this);
+                        if (listEmails == null) {
+                            listEmails = new ArrayList<>();
+                            listEmails.add(emp_email);
+                        } else {
+                            if (!listEmails.contains(emp_email)) {
+                                listEmails.add(emp_email);
+                            }
+                        }
+                        saveToPrefs(LoginActivity.this, listEmails);
+
+
+                        login_success = true;
+                        Intent dashboard = new Intent(LoginActivity.this, DashboardActivity.class);
+                        startActivity(dashboard);
+
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Wrong User Email or Password", Toast.LENGTH_SHORT).show();
                     }
-                    saveToPrefs(LoginActivity.this, listEmails);
 
-
-                    login_success = true;
-                    Intent dashboard = new Intent(LoginActivity.this, DashboardActivity.class);
-                    startActivity(dashboard);
 
                 } else {
+                    progress.hide();
                     Toast.makeText(LoginActivity.this, "User Does Not Exist!!", Toast.LENGTH_SHORT).show();
                 }
             }

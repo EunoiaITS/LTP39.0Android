@@ -83,6 +83,11 @@ public class DashboardActivity extends AppCompatActivity {
         navigationFunction();
         buttonsClicked();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         try {
             timer = new Timer();
             timerTask = new TimerTask() {
@@ -96,17 +101,12 @@ public class DashboardActivity extends AppCompatActivity {
         } catch (IllegalStateException e) {
             android.util.Log.i("Damn", "resume error");
         }
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        this.timer.cancel();
     }
 
     public void navigationFunction() {
@@ -303,26 +303,40 @@ public class DashboardActivity extends AppCompatActivity {
                         reportTable.removeAllViews();
                     }
 
-                    StringBuilder vID = new StringBuilder();
+                    SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
+                    String ids = vehicleData.getString("vehicle_type_id", "");
+                    String vCount = vehicleData.getString("vehicle_count", "");
+
+                    String[] splitCount = vCount.split(",");
+
                     for (int i = 0; i < showReport.size(); i++) {
 
                         TableRow row = new TableRow(DashboardActivity.this);
 
-                        row.setLayoutParams(new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+                        TableLayout.LayoutParams tableRowParams =
+                                new TableLayout.LayoutParams
+                                        (TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+                        tableRowParams.setMargins(10, 10, 10, 10);
+                        row.setLayoutParams(tableRowParams);
 
                         for (int j = 0; j < 1; j++) {
+
                             TextView name = new TextView(DashboardActivity.this);
                             TextView stat = new TextView(DashboardActivity.this);
 
                             name.setTextColor(Color.RED);
-                            name.setTextSize(2, 15);
-                            stat.setTextColor(Color.BLACK);
-                            stat.setTextSize(2, 15);
+                            name.setTextSize(2, 20);
 
-                            name.setText(showReport.get(i).getTypeName());
+                            stat.setTextColor(Color.BLACK);
+                            stat.setTextSize(2, 20);
+
+                            int eachCount = Integer.parseInt(splitCount[i]) - showReport.get(i).getCheckIn();
+
+                            name.setText("Available Parking for " + showReport.get(i).getTypeName());
                             row.addView(name);
 
-                            stat.setText(String.valueOf(showReport.get(i).getCheckIn()));
+                            //stat.setText(String.valueOf(showReport.get(i).getCheckIn()));
+                            stat.setText(":  " + String.valueOf(eachCount));
                             row.addView(stat);
 
                         }

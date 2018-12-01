@@ -29,6 +29,12 @@ public class VehicleType {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("parking_setting")
+    @Expose
+    private ParkingSetting parkingSetting;
+    @SerializedName("parking_rate")
+    @Expose
+    private ParkingRate parkingRate;
 
     /**
      * No args constructor for use in serialization
@@ -46,7 +52,7 @@ public class VehicleType {
      * @param typeId
      * @param clientId
      */
-    public VehicleType(Integer id, Integer clientId, String typeId, String typeName, String createdBy, String modifiedBy, String createdAt, String updatedAt) {
+    public VehicleType(Integer id, Integer clientId, String typeId, String typeName, String createdBy, String modifiedBy, String createdAt, String updatedAt, ParkingSetting parkingSetting, ParkingRate parkingRate) {
         super();
         this.id = id;
         this.clientId = clientId;
@@ -56,6 +62,8 @@ public class VehicleType {
         this.modifiedBy = modifiedBy;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.parkingSetting = parkingSetting;
+        this.parkingRate = parkingRate;
     }
 
     public Integer getId() {
@@ -120,5 +128,21 @@ public class VehicleType {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public ParkingRate getParkingRate() {
+        return parkingRate;
+    }
+
+    public void setParkingRate(ParkingRate parkingRate) {
+        this.parkingRate = parkingRate;
+    }
+
+    public ParkingSetting getParkingSetting() {
+        return parkingSetting;
+    }
+
+    public void setParkingSetting(ParkingSetting parkingSetting) {
+        this.parkingSetting = parkingSetting;
     }
 }
