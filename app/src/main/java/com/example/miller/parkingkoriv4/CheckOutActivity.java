@@ -65,8 +65,6 @@ public class CheckOutActivity extends AppCompatActivity {
 
     public void scanBarcode(View view) {
         Intent intent = new Intent(CheckOutActivity.this, QRReader.class);
-        //intent.putExtra(QRReader.AutoFocus, true);
-        //intent.putExtra(QRReader.UseFlash, true);
         startActivityForResult(intent, 0);
     }
 
@@ -225,19 +223,7 @@ public class CheckOutActivity extends AppCompatActivity {
                     final String baseFare = String.valueOf(check_out_data.getVehicleBaseRate());
                     final String subrate = String.valueOf(check_out_data.getVehicleSubRate());
 
-                    final String parkedTime = parkedTimeHour + ":" + parkedTimeMin;
-
-                    /*SharedPreferences vehicleData = getSharedPreferences("vehicleData", Context.MODE_PRIVATE);
-                    String ids = vehicleData.getString("vehicle_type_id", "");
-                    String names = vehicleData.getString("vehicle_type", "");
-                    String base = vehicleData.getString("vehicle_type", "");
-                    String cons = vehicleData.getString("vehicle_type", "");
-
-                    String[] singleID = ids.split(",");
-                    String[] singleName = names.split(",");
-                    String[] singleBase = base.split(",");
-                    String[] singleCons = cons.split(",");*/
-
+                    final String parkedTime = parkedTimeHour + " hours " + parkedTimeMin + " minutes";
 
                     AlertDialog.Builder checkInDialogue = new AlertDialog.Builder(CheckOutActivity.this);
                     View checkOutReceipt = getLayoutInflater().inflate(R.layout.check_out_ticket, null);
@@ -361,17 +347,12 @@ public class CheckOutActivity extends AppCompatActivity {
     }
 
     public void logoutApp() {
-        //Remove token
-        SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
-        SharedPreferences.Editor tokenDataEditor = authToken.edit();
-        tokenDataEditor.clear();
-        tokenDataEditor.commit();
-
         //remove user data
-        SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", MODE_PRIVATE);
         SharedPreferences.Editor userDataEditor = userData.edit();
         userDataEditor.clear();
         userDataEditor.commit();
+
 
         Intent logoutIntent = new Intent(this, LoginActivity.class);
         logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

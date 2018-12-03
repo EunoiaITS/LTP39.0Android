@@ -20,24 +20,26 @@ public class MainActivity extends AppCompatActivity {
         gotoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent activityIntent;
 
+                SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                String get_token = userData.getString("token", "");
 
-                SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-                String token = authToken.getString("token", "");
-
-
-                if (token != "") {
+                if (get_token != "") {
                     activityIntent = new Intent(MainActivity.this, DashboardActivity.class);
                 } else {
                     activityIntent = new Intent(MainActivity.this, LoginActivity.class);
                 }
-
-
                 startActivity(activityIntent);
-                finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }

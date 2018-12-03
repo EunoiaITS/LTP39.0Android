@@ -51,7 +51,6 @@ public class ScanVipBarcode extends AppCompatActivity {
         setContentView(R.layout.activity_scan_vip_barcode);
 
         navigationFunction();
-        //clickCancel();
         progress = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
 
     }
@@ -166,15 +165,11 @@ public class ScanVipBarcode extends AppCompatActivity {
     //vipcheckin
     public void scanBarcode(View view) {
         Intent intent = new Intent(ScanVipBarcode.this, QRReader.class);
-        //intent.putExtra(QRReader.AutoFocus, true);
-        //intent.putExtra(QRReader.UseFlash, true);
         startActivityForResult(intent, 0);
     }
 
     public void scanVipCheckOut(View view) {
         Intent intent = new Intent(ScanVipBarcode.this, QRReader.class);
-        //intent.putExtra(QRReader.AutoFocus, true);
-        //intent.putExtra(QRReader.UseFlash, true);
         startActivityForResult(intent, 1);
     }
 
@@ -213,7 +208,6 @@ public class ScanVipBarcode extends AppCompatActivity {
 
     public void checkInVip(String vipID) {
 
-
         SharedPreferences userData = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String client_id = userData.getString("client_id", "");
         String emp_id = String.valueOf(userData.getInt("emp_id", 0));
@@ -221,8 +215,6 @@ public class ScanVipBarcode extends AppCompatActivity {
 
         VipCheckIn checkInVehicle = new VipCheckIn(vipID, client_id, emp_id, get_token);
 
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-        String token = authToken.getString("token", "");
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<VipCheckInResponse> call = apiInterface.vipcheckedIn(checkInVehicle);
 
@@ -242,7 +234,6 @@ public class ScanVipBarcode extends AppCompatActivity {
 
                     TextView receiptText = checkOutReceipt.findViewById(R.id.textView15);
                     receiptText.setText(response.message());
-
 
                     checkInDialogue.setView(checkOutReceipt);
                     final AlertDialog dialogue = checkInDialogue.create();
@@ -281,8 +272,7 @@ public class ScanVipBarcode extends AppCompatActivity {
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
         VipCheckOut checkoutVehicle = new VipCheckOut(vip_id, emp_id, currentTimestamp.toString(), client_id, get_token);
-        SharedPreferences authToken = getSharedPreferences("authToken", Context.MODE_PRIVATE);
-        String token = authToken.getString("token", "");
+
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<VipCheckOutResponse> call = apiInterface.vipcheckedOut(checkoutVehicle);
 

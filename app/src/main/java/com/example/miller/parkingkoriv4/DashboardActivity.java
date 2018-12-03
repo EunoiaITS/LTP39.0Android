@@ -46,7 +46,7 @@ public class DashboardActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     TextView toolTitle;
     private DrawerLayout mDrawerLayout;
-    private boolean exit = false;
+    //private boolean exit = false;
     private ProgressDialog progress;
     private TableLayout reportTable;
 
@@ -107,6 +107,13 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         this.timer.cancel();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void navigationFunction() {
@@ -262,20 +269,14 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void logoutApp() {
-        //Remove token
-        SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
-        SharedPreferences.Editor tokenDataEditor = authToken.edit();
-        tokenDataEditor.clear();
-        tokenDataEditor.commit();
-
         //remove user data
-        SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", MODE_PRIVATE);
         SharedPreferences.Editor userDataEditor = userData.edit();
         userDataEditor.clear();
         userDataEditor.commit();
 
 
-        Intent logoutIntent = new Intent(this, LoginActivity.class);
+        Intent logoutIntent = new Intent(DashboardActivity.this, LoginActivity.class);
         logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(logoutIntent);
 
@@ -325,7 +326,7 @@ public class DashboardActivity extends AppCompatActivity {
                             TextView stat = new TextView(DashboardActivity.this);
 
                             name.setTextColor(Color.RED);
-                            name.setTextSize(2, 20);
+                            name.setTextSize(2, 13);
 
                             stat.setTextColor(Color.BLACK);
                             stat.setTextSize(2, 20);
@@ -335,8 +336,7 @@ public class DashboardActivity extends AppCompatActivity {
                             name.setText("Available Parking for " + showReport.get(i).getTypeName());
                             row.addView(name);
 
-                            //stat.setText(String.valueOf(showReport.get(i).getCheckIn()));
-                            stat.setText(":  " + String.valueOf(eachCount));
+                            stat.setText(":  " + String.valueOf(eachCount) + "/" + splitCount[i]);
                             row.addView(stat);
 
                         }

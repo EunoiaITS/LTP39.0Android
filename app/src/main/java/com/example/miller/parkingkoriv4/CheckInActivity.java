@@ -32,6 +32,7 @@ import com.example.miller.parkingkoriv4.RetrofitApiModel.CheckIn.CheckInResponse
 import com.example.miller.parkingkoriv4.RetrofitApiModel.Stats.Stats;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import retrofit2.Call;
@@ -53,9 +54,6 @@ public class CheckInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
         progress = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
-
-
-        //navigationFunction();
 
         navigationFunction();
 
@@ -205,9 +203,6 @@ public class CheckInActivity extends AppCompatActivity {
 
     public void checkInVehicle(String clientID, String reg, final String type, final String created_by, String get_token) {
 
-        //final String vtypesID = type.split(" ")[0];
-        //final String vtypesName = type.split(" ")[1];
-
         CheckIn checkInVehicle = new CheckIn(clientID, reg, type, created_by, get_token);
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<CheckInResponse> call = apiInterface.checkedIn(checkInVehicle);
@@ -255,8 +250,9 @@ public class CheckInActivity extends AppCompatActivity {
                     TextView createdAt = checkInTicket.findViewById(R.id.checkin_print_entry_at_show);
                     createdAt.setText(inTime);
 
+                    final int index = Arrays.asList(singleID).indexOf(type);
                     final TextView vty = checkInTicket.findViewById(R.id.checkin_print_vehicle_type_show);
-                    final String vtypesName = singleName[Integer.parseInt(type) - 1];
+                    final String vtypesName = singleName[index];
                     vty.setText(vtypesName);
 
 
@@ -347,17 +343,12 @@ public class CheckInActivity extends AppCompatActivity {
     }
 
     public void logoutApp() {
-        //Remove token
-        SharedPreferences authToken = getSharedPreferences("authToken", MODE_PRIVATE);
-        SharedPreferences.Editor tokenDataEditor = authToken.edit();
-        tokenDataEditor.clear();
-        tokenDataEditor.commit();
-
         //remove user data
-        SharedPreferences userData = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences userData = getSharedPreferences("userDetails", MODE_PRIVATE);
         SharedPreferences.Editor userDataEditor = userData.edit();
         userDataEditor.clear();
         userDataEditor.commit();
+
 
         Intent logoutIntent = new Intent(this, LoginActivity.class);
         logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

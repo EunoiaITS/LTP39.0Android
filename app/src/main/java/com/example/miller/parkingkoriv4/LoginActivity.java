@@ -92,16 +92,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
             for (int i = 0; i < splitEmail.length; i++) {
-
-                //String trim_again = splitEmail[i].substring(1, splitEmail[i].length()-1);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>
                         (this, android.R.layout.select_dialog_item, splitEmail);
 
                 userEmail.setThreshold(1);
                 userEmail.setAdapter(adapter);
-
-
-                //Toast.makeText(LoginActivity.this, splitEmail[0], Toast.LENGTH_SHORT).show();
             }
             Log.i("MainActivity", "onCreate: " + getFromPrefs(this).toString());
         }
@@ -148,7 +143,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             vehicleEditor.putString("vehicle_type_id", vID.toString());
-                            //vehicleEditor.putString("vehicle_type_name", vName.toString());
                             vehicleEditor.putString(vID.toString(), vName.toString());
                             vehicleEditor.putString("vehicle_count", vCount.toString());
 
@@ -195,4 +189,8 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity.this.finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        LoginActivity.this.finish();
+    }
 }
