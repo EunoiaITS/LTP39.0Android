@@ -6,15 +6,15 @@
     android:keepScreenOn="true"
     android:orientation="vertical">
 
-    <com.example.miller.parkingkoriv4.CameraUtils.CameraSourcePreview
+    <eis.example.miller.parkingkoriv4.CameraUtils.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.miller.parkingkoriv4.CameraUtils.GraphicOverlay
+        <eis.example.miller.parkingkoriv4.CameraUtils.GraphicOverlay
             android:id="@+id/graphicOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.example.miller.parkingkoriv4.CameraUtils.CameraSourcePreview>
+    </eis.example.miller.parkingkoriv4.CameraUtils.CameraSourcePreview>
 </LinearLayout>

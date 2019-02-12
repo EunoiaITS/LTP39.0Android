@@ -27,7 +27,7 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name="eis.example.miller.parkingkoriv4.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,17 +35,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="eis.example.miller.parkingkoriv4.LoginActivity"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".DashboardActivity"
+            android:name="eis.example.miller.parkingkoriv4.DashboardActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".CheckInActivity" />
-        <activity android:name=".CheckOutActivity" />
-        <activity android:name=".VipRegistrationActivity" />
-        <activity android:name=".ScanVipBarcode" />
-        <activity android:name=".QRScanActivity" />
-        <activity android:name=".QRReader" />
+        <activity android:name="eis.example.miller.parkingkoriv4.CheckInActivity" />
+        <activity android:name="eis.example.miller.parkingkoriv4.CheckOutActivity" />
+        <activity android:name="eis.example.miller.parkingkoriv4.VipRegistrationActivity" />
+        <activity android:name="eis.example.miller.parkingkoriv4.ScanVipBarcode" />
+        <activity android:name="eis.example.miller.parkingkoriv4.QRScanActivity" />
+        <activity android:name="eis.example.miller.parkingkoriv4.QRReader" />
     </application>
 
 </manifest>

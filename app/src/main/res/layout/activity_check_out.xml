@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dashboard_background"
-    tools:context=".CheckOutActivity">
+    tools:context="eis.example.miller.parkingkoriv4.CheckOutActivity">
 
 
     <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"

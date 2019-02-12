@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/landing_background"
-    tools:context=".LoginActivity">
+    tools:context="eis.example.miller.parkingkoriv4.LoginActivity">
 
     <Button
         android:id="@+id/login_button"

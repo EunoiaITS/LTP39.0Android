@@ -10,4 +10,5 @@
     <color name="appBarColorEnd">#efc69b</color>
     <color name="backgroundWhite">#fff</color>
     <color name="blackText">#000</color>
+    <color name="dashboardButtons">#af5d5d</color>
 </resources>
