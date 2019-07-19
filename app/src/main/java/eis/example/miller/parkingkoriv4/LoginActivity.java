@@ -181,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(LoginActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

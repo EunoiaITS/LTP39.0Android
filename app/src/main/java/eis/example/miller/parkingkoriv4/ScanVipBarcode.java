@@ -257,7 +257,7 @@ public class ScanVipBarcode extends AppCompatActivity {
             @Override
             public void onFailure(Call<VipCheckInResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(ScanVipBarcode.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanVipBarcode.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -316,7 +316,7 @@ public class ScanVipBarcode extends AppCompatActivity {
             @Override
             public void onFailure(Call<VipCheckOutResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(ScanVipBarcode.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanVipBarcode.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -378,7 +378,7 @@ public class ScanVipBarcode extends AppCompatActivity {
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(ScanVipBarcode.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanVipBarcode.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

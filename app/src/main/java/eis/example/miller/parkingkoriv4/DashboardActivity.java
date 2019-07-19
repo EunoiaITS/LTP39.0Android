@@ -54,6 +54,8 @@ public class DashboardActivity extends AppCompatActivity {
     private Timer timer;
     private TimerTask timerTask;
 
+    private static final String TAG = "DashboardActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -251,7 +253,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
@@ -338,7 +340,7 @@ public class DashboardActivity extends AppCompatActivity {
                             name.setText("Available Parking for " + showReport.get(i).getTypeName());
                             row.addView(name);
 
-                            stat.setText(":  " + String.valueOf(eachCount) + "/" + splitCount[i]);
+                            stat.setText(":  " + eachCount + "/" + splitCount[i]);
                             row.addView(stat);
 
                         }
@@ -353,7 +355,8 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ReportResponse> call, Throwable t) {
-                Toast.makeText(DashboardActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -417,7 +420,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(DashboardActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -286,7 +286,7 @@ public class CheckInActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<CheckInResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(CheckInActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckInActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -294,7 +294,7 @@ public class CheckInActivity extends AppCompatActivity {
 
     public void printCheckIn(String client_name, String ticketNo, String regNo, String entryAt, String vType) {
 
-        String x = regNo.substring(0, 2) + "-" + regNo.substring(2, regNo.length());
+        String x = regNo.substring(0, 2) + "-" + regNo.substring(2);
 
         BluetoothUtil.connectBlueTooth(CheckInActivity.this);
         String BILL = "";
@@ -420,7 +420,7 @@ public class CheckInActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(CheckInActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckInActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

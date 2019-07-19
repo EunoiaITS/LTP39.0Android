@@ -247,14 +247,14 @@ public class VipRegistrationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<VIPRequestResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(VipRegistrationActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VipRegistrationActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void printCheckOut(String clientName, String phone, String regNo, String purpose, String vipID, String vipName, String dateApply) {
 
-        String x = regNo.substring(0, 2) + "-" + regNo.substring(2, regNo.length());
+        String x = regNo.substring(0, 2) + "-" + regNo.substring(2);
         BluetoothUtil.connectBlueTooth(VipRegistrationActivity.this);
         BluetoothUtil.sendData(ESCUtil.getPrintQRCode(vipID, 8, 1));
         String BILL = "";
@@ -398,7 +398,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(VipRegistrationActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VipRegistrationActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

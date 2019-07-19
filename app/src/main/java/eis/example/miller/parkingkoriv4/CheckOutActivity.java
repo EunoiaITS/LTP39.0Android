@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ProgressDialog progress;
 
+    private static final String TAG = "CheckOutActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,6 +285,7 @@ public class CheckOutActivity extends AppCompatActivity {
             public void onFailure(Call<CheckOutResponse> call, Throwable t) {
                 progress.hide();
                 Toast.makeText(CheckOutActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: " + t);
             }
         });
     }
@@ -290,7 +293,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
     public void printCheckOut(String clientName, String receiptID, String regNo, String entryAt, String vType, String outTime, String totalFair, String baseRate, String subRate, String parkedTime) {
 
-        String x = regNo.substring(0, 2) + "-" + regNo.substring(2, regNo.length());
+        String x = regNo.substring(0, 2) + "-" + regNo.substring(2);
         String BILL = "";
 
         BILL = "Product of DEXHUB\n\n";
