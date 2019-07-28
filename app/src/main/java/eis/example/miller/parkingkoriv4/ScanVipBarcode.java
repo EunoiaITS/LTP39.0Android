@@ -24,6 +24,7 @@ import com.example.miller.parkingkoriv4.R;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import eis.example.miller.parkingkoriv4.RetrofitApiHelper.ApiClient;
@@ -250,14 +251,14 @@ public class ScanVipBarcode extends AppCompatActivity {
                     });
                 } else {
                     progress.hide();
-                    Toast.makeText(ScanVipBarcode.this, "VIP not Registered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ScanVipBarcode.this, "VIP already checked in", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<VipCheckInResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(ScanVipBarcode.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanVipBarcode.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -270,9 +271,11 @@ public class ScanVipBarcode extends AppCompatActivity {
         String client_id = userData.getString("client_id", "");
         String emp_id = String.valueOf(userData.getInt("emp_id", 0));
         String get_token = userData.getString("token", "");
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
-        VipCheckOut checkoutVehicle = new VipCheckOut(vip_id, emp_id, currentTimestamp.toString(), client_id, get_token);
+        VipCheckOut checkoutVehicle = new VipCheckOut(vip_id, emp_id, formatter.format(currentTimestamp), client_id, get_token);
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<VipCheckOutResponse> call = apiInterface.vipcheckedOut(checkoutVehicle);
@@ -316,7 +319,7 @@ public class ScanVipBarcode extends AppCompatActivity {
             @Override
             public void onFailure(Call<VipCheckOutResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(ScanVipBarcode.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanVipBarcode.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -371,14 +374,14 @@ public class ScanVipBarcode extends AppCompatActivity {
                     });
                 } else {
                     progress.hide();
-                    Toast.makeText(ScanVipBarcode.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ScanVipBarcode.this, "Response delay. Please wait.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(ScanVipBarcode.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanVipBarcode.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

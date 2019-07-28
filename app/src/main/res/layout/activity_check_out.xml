@@ -71,7 +71,7 @@
                     android:layout_margin="10dp"
                     android:backgroundTint="@color/buttonColor"
                     android:onClick="scanBarcode"
-                    android:text="Scan to  Check Out"
+                    android:text="Scan To  Check Out"
                     android:textAppearance="@style/CustomFont"
                     android:textColor="@color/backgroundWhite" />
 
@@ -156,7 +156,8 @@
                         android:layout_margin="20dp"
                         android:layout_weight="1"
                         android:background="@color/buttonColor"
-                        android:text="@string/confirm" />
+                        android:text="Confirm"
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/cancel_checkout_button"
@@ -165,7 +166,9 @@
                         android:layout_margin="20dp"
                         android:layout_weight="1"
                         android:background="@color/buttonColor"
-                        android:text="Cancel" />
+                        android:text="Cancel"
+                        android:textAllCaps="false" />
+
                 </LinearLayout>
 
 

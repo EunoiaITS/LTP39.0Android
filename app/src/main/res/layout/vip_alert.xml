@@ -44,7 +44,8 @@
             android:layout_margin="3dp"
             android:layout_weight="1"
             android:background="@color/buttonColor"
-            android:text="DISMISS" />
+            android:text="Dismiss"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 

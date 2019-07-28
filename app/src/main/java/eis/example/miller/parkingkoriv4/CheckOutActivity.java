@@ -26,6 +26,7 @@ import com.example.miller.parkingkoriv4.R;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import eis.example.miller.parkingkoriv4.PrintUtil.BluetoothUtil;
@@ -180,17 +181,18 @@ public class CheckOutActivity extends AppCompatActivity {
                 String emp_id = String.valueOf(userData.getInt("emp_id", 0));
                 String get_token = userData.getString("token", "");
 
+                SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
                 java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
 
                 progress.setTitle("Please wait.......");
                 progress.show();
 
-                checkOutVehicle(tID, emp_id, currentTimestamp.toString(), get_token, vechNo);
+                checkOutVehicle(tID, emp_id, formatter.format(currentTimestamp), get_token, vechNo);
 
                 SharedPreferences outTime = getSharedPreferences("outTime", Context.MODE_PRIVATE);
 
                 SharedPreferences.Editor checkOutTime = outTime.edit();
-                checkOutTime.putString("out_time", String.valueOf(currentTimestamp));
+                checkOutTime.putString("out_time", String.valueOf(formatter.format(currentTimestamp)));
                 checkOutTime.apply();
             }
         });
@@ -277,7 +279,7 @@ public class CheckOutActivity extends AppCompatActivity {
                     }
                 } else {
                     progress.hide();
-                    Toast.makeText(CheckOutActivity.this, "Please Check Ticket Number/Vehicle Number!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CheckOutActivity.this, "Please check ticket number/vehicle number!!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -420,14 +422,14 @@ public class CheckOutActivity extends AppCompatActivity {
                     });
                 } else {
                     progress.hide();
-                    Toast.makeText(CheckOutActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CheckOutActivity.this, "Response delay. Please wait.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(CheckOutActivity.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckOutActivity.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (email != null && pass != null) {
                     clickLogin(email, pass);
                 }
-                progress.setTitle("Please wait for server to log you in");
+                progress.setTitle("Please wait for server to log you in.");
                 progress.show();
             }
         });

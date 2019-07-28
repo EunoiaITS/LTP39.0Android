@@ -286,7 +286,7 @@ public class CheckInActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<CheckInResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(CheckInActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckInActivity.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -413,14 +413,14 @@ public class CheckInActivity extends AppCompatActivity {
                     });
                 } else {
                     progress.hide();
-                    Toast.makeText(CheckInActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CheckInActivity.this, "Response delay. Please wait.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(CheckInActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckInActivity.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

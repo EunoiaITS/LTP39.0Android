@@ -349,13 +349,13 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                 } else {
-                    Toast.makeText(DashboardActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(DashboardActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ReportResponse> call, Throwable t) {
-                Toast.makeText(DashboardActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(DashboardActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -413,14 +413,14 @@ public class DashboardActivity extends AppCompatActivity {
                     });
                 } else {
                     progress.hide();
-                    Toast.makeText(DashboardActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DashboardActivity.this, "Response delay. Please wait.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(DashboardActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

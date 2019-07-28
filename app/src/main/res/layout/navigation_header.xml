@@ -3,7 +3,7 @@
     android:id="@+id/navigation_drawer_header"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="@drawable/dashboard_background"
+    android:background="@drawable/nav_header_background"
     android:orientation="vertical">
 
 

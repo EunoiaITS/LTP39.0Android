@@ -247,7 +247,7 @@ public class VipRegistrationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<VIPRequestResponse> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(VipRegistrationActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VipRegistrationActivity.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -391,14 +391,14 @@ public class VipRegistrationActivity extends AppCompatActivity {
                     });
                 } else {
                     progress.hide();
-                    Toast.makeText(VipRegistrationActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VipRegistrationActivity.this, "Something went wrong. Please wait.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Stats> call, Throwable t) {
                 progress.hide();
-                Toast.makeText(VipRegistrationActivity.this, "Network error, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VipRegistrationActivity.this, "Network error. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

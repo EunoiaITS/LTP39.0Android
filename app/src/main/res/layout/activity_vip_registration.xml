@@ -204,7 +204,8 @@
                         android:layout_margin="20dp"
                         android:layout_weight="1"
                         android:background="@color/buttonColor"
-                        android:text="Apply" />
+                        android:text="Apply"
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/cancel_vipReg_button"
@@ -214,7 +215,8 @@
                         android:layout_margin="20dp"
                         android:layout_weight="1"
                         android:background="@color/buttonColor"
-                        android:text="Cancel" />
+                        android:text="Cancel"
+                        android:textAllCaps="false" />
                 </LinearLayout>
             </LinearLayout>
 

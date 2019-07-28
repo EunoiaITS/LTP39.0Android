@@ -31,7 +31,7 @@ public class CheckOut {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
-    @SerializedName("updated_at")
+    @SerializedName("check_out_time")
     @Expose
     private String updatedAt;
     @SerializedName("fair")

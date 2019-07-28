@@ -200,7 +200,8 @@
             android:layout_margin="3dp"
             android:layout_weight="1"
             android:background="@color/buttonColor"
-            android:text="Print" />
+            android:text="Print"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 

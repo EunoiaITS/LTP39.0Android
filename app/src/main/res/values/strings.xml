@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Parking Kori</string>
-    <string name="goto_login">LOGIN</string>
-    <string name="login">LOGIN</string>
+    <string name="goto_login">Login</string>
+    <string name="login">Login</string>
     <string name="cancel">Cancel</string>
     <string name="keep_me_logged_in">Keep me logged in</string>
     <string name="action_settings">Profile</string>
